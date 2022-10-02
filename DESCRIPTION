@@ -1,19 +1,14 @@
 Package: book.of.utilities
 Title: Book of Utilities: Data-processing helpers
-Version: 1.7.2
-Authors@R: 
-    person(given = "Chionesu",
-           family = "George",
-           role = c("aut", "cre"),
-           email = "cgeorge@alliancehealthplan.org")
+Version: 2.0.0
 Description: The Book of Utilities provides functions to help with data-processing tasks.
 License: Unicorn Overlords
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
-Author: Chionesu George <cgeorge@alliancehealthplan.org> [aut, cre]
-Maintainer: Alliance Health Data Science Department <DScience@alliancehealthplan.org>
+Author: Chionesu George <sapienti.Dei@outlook.com> [aut, cre]
+Maintainer: Chionesu George <sapienti.Dei@outlook.com>
 Depends: R (>= 4.1.0)
 	, data.table
 	, foreach
