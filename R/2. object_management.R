@@ -25,7 +25,7 @@ distinct.list <- function(i, logical.only = FALSE){
 	x = foreach::`%dopar%`(f, { jsonlite::serializeJSON(j) %>% jsonlite::base64_enc() %>% purrr::reduce(paste0) });
 	if (logical.only){ x } else { i[x] }
 }
-
+#
 enlist <- function(x, ...){
 #' Create a Named List
 #'
@@ -44,10 +44,12 @@ enlist <- function(x, ...){
 	idx = 1:length(x);
 	old.names = purrr::map(x, names);
 	new.names = as.character(c(...))[idx];
-	purrr::map(idx, ~ifelse(is.null(old.names[[.x]]), ifelse(is.na(new.names[.x]), x[[.x]], new.names[.x]), old.names[[.x]])) %>% unlist() %>% {
-		names(x) <- ifelse(is.na(.), unlist(x), .);
-		as.list(x)
-	}
+	.out = purrr::map(idx, ~{
+			ifelse(is.null(old.names[[.x]]), ifelse(is.na(new.names[.x]), x[[.x]], new.names[.x]), old.names[[.x]])
+		}) %>% unlist()
+
+	names(x) <- ifelse(is.na(.out), unlist(x), .out);
+	as.list(x)
 }
 #
 scrub.data <- function(input, condFn = is.na, replacement, ...) {
@@ -67,7 +69,9 @@ scrub.data <- function(input, condFn = is.na, replacement, ...) {
   has.dimensions =  any(class(input) %ilike% "matrix|data|array|tibb|tabl");
   class(replacement) <- class(input);
 
-  input[which(condFn(input), arr.ind = has.dimensions)] <- replacement;
+  .index = which(condFn(input), arr.ind = has.dimensions);
+
+  input[.index] <- replacement[ifelse(length(replacement) == 1, 1, .index)];
   input;
 }
 #

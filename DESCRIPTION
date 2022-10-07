@@ -1,7 +1,6 @@
 Package: book.of.utilities
-Title: Book of Utilities: Data-processing helpers
+Title: Data-processing helpers
 Version: 2.0.1
-Description: The Book of Utilities provides functions to help with data-processing tasks.
 License: Unicorn Overlords
 Encoding: UTF-8
 LazyData: true

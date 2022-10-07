@@ -47,3 +47,13 @@ c(as.regex("test", "this"), "or_that") %>% is.regex() # TRUE TRUE FALSE
 unregex(i = c(as.regex("mp|[cye]+"), "hp", "hq"), x = colnames(mtcars)) #  "mpg"  "cyl"  "qsec" "gear" "carb" "hp
 
 unregex(i = c(as.regex("mp|[cye]+"), "hp", "hq"), x = mtcars) #  "mpg"  "cyl"  "qsec" "gear" "carb" "hp
+
+# ::: ----
+x <- data.table(i = sample(100, 10), j = sample(100, 10), key = c("i", "j")) %>% unique()
+y <- data.table(i = sample(200, 10, TRUE), j = sample(200, 10, TRUE), key = c("i", "j")) %>% unique()
+z <- x %><% y
+q <- x %::% y
+v <- z %??% q
+v
+
+v %$% result
