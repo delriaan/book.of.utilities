@@ -18,7 +18,7 @@
 	attr(.out_data, "mod_diff_ratio") <- .mod_diff_ratio;
 	.out_data;
 }
-
+#
 `%><%` <- function(a, z, temporal = FALSE, as.text = FALSE, debug = FALSE){
 #' "Between" Operator
 #'
@@ -80,7 +80,7 @@
 					)
 		)
 }
-
+#
 `%::%` <- function(tr = TRUE, fls = FALSE, id = 0, ...){
 #' Decision Operator
 #'
