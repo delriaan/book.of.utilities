@@ -7,7 +7,7 @@
 scrub.data(input, condFn = is.na, replacement, ...)
 }
 \arguments{
-\item{...}{Not used}
+\item{...}{(Not used)}
 
 \item{input:}{An object that contains values to scrub}
 

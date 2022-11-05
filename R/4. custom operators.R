@@ -39,11 +39,11 @@
 #'
 #' @export
 
-	if ((FALSE %in% class(z) %like% "(frame|table|tibble|atrix)") | length(z %>% unlist()) == 1) {
+	if ((FALSE %in% class(z) %like% "(frame|table|tibble|atrix)") | rlang::has_length(unlist(z), 1)) {
 	  stop("Argument 'z' cannot be a single value: two values are required at a minimum")
 	}
-	if (!is.data.table(a)){ a %<>% as.data.table() }
-	if (!is.data.table(z)){ z %<>% as.data.table() }
+	if (!data.table::is.data.table(a)){ a %<>% data.table::as.data.table() }
+	if (!data.table::is.data.table(z)){ z %<>% data.table::as.data.table() }
 
 	# The case of a single-valued `a` argument is addressed by choosing the `*apply` function based on its length
 	apply.exprs <- list(
@@ -56,14 +56,17 @@
 			i %<>% unlist(); j %<>% unlist(); k %<>% unlist();
 			if (!(j | k)) {
 				# :: Default mode of "between-ness"
-				(min(o) <= max(i)) & (max(o) >= min(i))
+				(min(o, na.rm = TRUE) <= max(i, na.rm = TRUE)) & (max(o, na.rm = TRUE) >= min(i, na.rm = TRUE))
 			} else {
 				# :: Temporal mode to return "before"(-1), "during"(0), "after"(1)
-				t1 = min(o) > max(i)
-				t2 = (min(o) <= max(i)) & (max(o) >= min(i))
-				t3 = c(1, 0, -1)[max(which(t1, t2, TRUE))]
+				t1 = min(o) > max(i, na.rm = TRUE)
+				t2 = (min(o) <= max(i)) & (max(o, na.rm = TRUE) >= min(i, na.rm = TRUE))
+				t3 = c(1, 0, -1)[max(which(t1, t2, TRUE), na.rm = TRUE)]
+
 				# :: Temporal mode to return "before"(-1), "during"(0), "after"(1)
-				if (k) { c("-1" = "before", "0" = "during", "1" = "after")[as.character(t3)] } else { t3 }
+				if (k) {
+					c("-1" = "before", "0" = "during", "1" = "after")[as.character(t3)]
+				} else { t3 }
 			}
 		}
 		o %<>% unlist();
@@ -75,8 +78,8 @@
 	  matrix(
 	  	nrow	= nrow(a), byrow 		= TRUE
 			, dimnames	= list(
-					apply.exprs$stage.dimname[[1 + as.integer(length(unlist(a)) > 1)]] %>% eval()
-					, z %>% apply(1, stringi::stri_flatten, collapse = ":")
+					apply.exprs$stage.dimname[[1 + as.integer(length(unlist(a)) > 1)]] |> eval()
+					, z |> apply(1, stringi::stri_flatten, collapse = ":")
 					)
 		)
 }
@@ -89,6 +92,7 @@
 #' @param tr (logical) : Scalar or vector value to return as the TRUE  value
 #' @param fls (logical) : Scalar or vector value to return as the FALSE value
 #' @param id (scalar) : Scalar or vector value to return as the identifier for the result
+#' @param ... (Not used)
 #'
 #' @return a \code{\link[data.table]{data.table}} of resultant values options for `true` and `false`
 #'
@@ -100,7 +104,7 @@
 	if (!rlang::is_empty(dim(fls))){ fls <- apply(fls, 1, as.list) }
 
 	# if (length(tr) != length(fls)) { stop("Vectors for TRUE and FALSE must be of the same length: exiting ...") }
-	as.data.table(list(false = fls, true = tr, id = c(id)))
+	data.table::as.data.table(list(false = fls, true = tr, id = c(id)))
 }
 #
 `%?%` <- function(cond, result){
@@ -113,14 +117,12 @@
 #'
 #' @return A \code{\link[data.table]{data.table}} object comprised of values occupying the 'then' and 'else' slots in the 'if-then-else' logical test
 #'
-#' @aliases `%?%`
-#'
 #' @family Custom operators
 #'
 #' @export
 #'
 
-	as.data.table(purrr::imap_dfr(cond + 1, ~c(result = rlang::new_box(result[[.x]]), cond_id = .y)))
+	data.table::as.data.table(purrr::imap_dfr(cond + 1, ~c(result = rlang::new_box(result[[.x]]), cond_id = .y)))
 }
 #
 `%??%` <- function(cond, result){
@@ -137,10 +139,10 @@
 #' @export
 #'
 
-	if (is.environment(result)){ result <<- as.data.table(mget(c("true", "false"), envir = result)) }
-	if (!is.data.table(result)){ result <<- as.data.table(result) }
+	if (is.environment(result)){ result <<- data.table::as.data.table(mget(c("true", "false"), envir = result)) }
+	if (!data.table::is.data.table(result)){ result <<- data.table::as.data.table(result) }
 
-	foreach(x = cond, y = iapply(X = result, MARGIN = 1), id = sequence(length(cond)), .combine = rbind) %do% {  `%?%`(x, y) }
+	foreach::foreach(x = cond, y = iterators::iapply(X = result, MARGIN = 1), id = sequence(length(cond)), .combine = rbind) %do% {  `%?%`(x, y) }
 }
 #
 `%all%` <- function(i, ..., logical.out = FALSE, chatty = FALSE){
@@ -159,9 +161,11 @@
 #'
 #' @export
 
-  nms = unique(as.character(rlang::exprs(...))) %>% book.of.utilities::enlist();
+  nms = unique(as.character(rlang::enexprs(...))) |> book.of.utilities::enlist();
 
-  purrr::map(nms, ~{ if (logical.out){ .x == names(i) } else { i[.x == names(i)] }} %>%
-  					 	sapply(rlang::new_box)) %>% purrr::flatten()
+  purrr::map(nms, ~{
+  	.out = if (logical.out){ .x == names(i) } else { i[.x == names(i)] };
+  	sapply(.out, rlang::new_box)
+  }) |> purrr::flatten()
 }
 #

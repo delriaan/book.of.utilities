@@ -43,7 +43,7 @@ ranking.algorithm(
 }
 \seealso{
 Other Calculators: 
-\code{\link{calc.range_diff}()},
+\code{\link{range_diff}()},
 \code{\link{ratio}()}
 }
 \concept{Calculators}

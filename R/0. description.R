@@ -9,8 +9,10 @@
 #' \item{Miscellaneous: }
 #' }
 #'
-#' @importFrom magrittr %>% %T>% or
+#' @importFrom magrittr %>% %T>% or %<>%
 #' @importFrom purrr map map_lgl map_chr reduce modify modify_if modify_at
 #' @importFrom rlang is_empty %||%
+#' @importFrom data.table %ilike% %like% like
+#' @importFrom foreach %do% %dopar%
 #' @name book.of.utilities-package
 NULL

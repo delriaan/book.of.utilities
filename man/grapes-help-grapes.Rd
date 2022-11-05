@@ -2,7 +2,6 @@
 % Please edit documentation in R/4. custom operators.R
 \name{\%?\%}
 \alias{\%?\%}
-\alias{`\%?\%`}
 \title{Simple IF-THEN-ELSE Comparison}
 \usage{
 cond \%?\% result

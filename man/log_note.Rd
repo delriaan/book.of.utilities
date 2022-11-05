@@ -7,7 +7,7 @@
 log_note(..., file = "", show = FALSE, append = TRUE)
 }
 \arguments{
-\item{...}{(string[]) The string(s) of text to write to the file.  Multiple values are collapsed into a single string separated by a newline. Expressions are allowed and will have the captured output included.}
+\item{...}{(\code{\link[rlang]{dots_list}}): The string(s) of text to write to the file.  Multiple values are collapsed into a single string separated by a newline. Expressions are allowed and will have the captured output included.}
 
 \item{file}{(string|"") The name of the file to (over)write.  If no file is given, the output is sent to the console.}
 

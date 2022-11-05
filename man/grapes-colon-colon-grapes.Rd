@@ -12,6 +12,8 @@ tr \%::\% fls
 \item{fls}{(logical) : Scalar or vector value to return as the FALSE value}
 
 \item{id}{(scalar) : Scalar or vector value to return as the identifier for the result}
+
+\item{...}{(Not used)}
 }
 \value{
 a \code{\link[data.table]{data.table}} of resultant values options for \code{true} and \code{false}
