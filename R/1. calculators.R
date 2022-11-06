@@ -15,7 +15,6 @@ range_diff <- function(...){
 
 	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
-#' @family Deprecated
 #' @export
 calc.range_diff <- range_diff;
 #
