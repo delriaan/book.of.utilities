@@ -13,14 +13,14 @@ cond \%??\% result
 }
 \description{
 For each element \code{E} in \code{cond}, when \code{E} is \code{TRUE}, the corresponding index of \code{result$true} is returned: the same for \code{cond == FALSE}.
-For \code{result}, the easiest way to set the available choices is to use \code{\%::\%}; otherwise, a environment(-like) object with members named \code{true} and \code{false}
+For \code{result}, the easiest way to set the available choices is to use \code{\link{\%::\%}}; otherwise, a environment(-like) object with members named \code{true} and \code{false}
 }
 \seealso{
 Other Custom operators: 
-\code{\link{\%::\%}()},
 \code{\link{\%><\%}()},
 \code{\link{\%?\%}()},
 \code{\link{\%all\%}()},
-\code{\link{\%bin\%}()}
+\code{\link{\%bin\%}()},
+\code{\link{\%tf\%}()}
 }
 \concept{Custom operators}

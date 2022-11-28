@@ -18,6 +18,7 @@
 	attr(.out_data, "mod_diff_ratio") <- .mod_diff_ratio;
 	.out_data;
 }
+
 #
 `%><%` <- function(a, z, temporal = FALSE, as.text = FALSE, debug = FALSE){
 #' "Between" Operator
@@ -83,11 +84,12 @@
 					)
 		)
 }
+
 #
-`%::%` <- function(tr = TRUE, fls = FALSE, id = 0, ...){
-#' Decision Operator
+`%tf%`  <- function(true = TRUE, false = FALSE, id = 0, ...){
+#' Decision Operator: \code{\%tf\%}
 #'
-#' Use \code{\%::\%} anywhere where binary choice vectors can be useful
+#' Use \code{\%tf\%} or \code{\%::\%} anywhere where binary choice vectors can be useful
 #'
 #' @param tr (logical) : Scalar or vector value to return as the TRUE  value
 #' @param fls (logical) : Scalar or vector value to return as the FALSE value
@@ -106,11 +108,15 @@
 	# if (length(tr) != length(fls)) { stop("Vectors for TRUE and FALSE must be of the same length: exiting ...") }
 	data.table::as.data.table(list(false = fls, true = tr, id = c(id)))
 }
+
+#' @export
+`%::%` <- `%tf%`
+
 #
 `%?%` <- function(cond, result){
-#' Simple IF-THEN-ELSE Comparison
+#' Simple IF-THEN-ELSE Operator
 #'
-#' When \code{cond} is \code{TRUE}, \code{result$true} is returned, and the same for \code{cond == FALSE}.  For \code{result}, the easiest way to set the available choices is to use \code{`\%::\%`}; otherwise, a environment(-like) object with members named 'true' and 'false' must be provided
+#' When \code{cond} is \code{TRUE}, \code{result$true} is returned, and the same for \code{cond == FALSE}.  For \code{result}, the easiest way to set the available choices is to use \code{\%::\%}; otherwise, a environment(-like) object with members named 'true' and 'false' must be provided
 #'
 #' @param cond (logical) A \emph{vector} that evaluates to \code{TRUE} or \code{FALSE}
 #' @param result (tensor) Resultant values for TRUE and FALSE conditionals
@@ -124,12 +130,13 @@
 
 	data.table::as.data.table(purrr::imap_dfr(cond + 1, ~c(result = rlang::new_box(result[[.x]]), cond_id = .y)))
 }
+
 #
 `%??%` <- function(cond, result){
 #' Correlated IF-THEN-ELSE Comparison
 #'
 #' For each element \code{E} in \code{cond}, when \code{E} is \code{TRUE}, the corresponding index of \code{result$true} is returned: the same for \code{cond == FALSE}.
-#' For \code{result}, the easiest way to set the available choices is to use \code{\%::\%}; otherwise, a environment(-like) object with members named \code{true} and \code{false}
+#' For \code{result}, the easiest way to set the available choices is to use \code{\link{\%::\%}}; otherwise, a environment(-like) object with members named \code{true} and \code{false}
 #'
 #' @param cond (logical) A \emph{vector} or \emph{tensor} that evaluates to \code{TRUE} or \code{FALSE}
 #' @param result (vector) Resultant values for TRUE and FALSE conditionals, ideally stored in a dimension-ed object (e.g, \code{\link[base]{data.frame}}, \code{\link[data.table]{data.table}})
@@ -144,11 +151,12 @@
 
 	foreach::foreach(x = cond, y = iterators::iapply(X = result, MARGIN = 1), id = sequence(length(cond)), .combine = rbind) %do% {  `%?%`(x, y) }
 }
+
 #
 `%all%` <- function(i, ..., logical.out = FALSE, chatty = FALSE){
-#' Retrieve all elements with the given object names
+#' Retrieve \code{\%all\%} Elements by Name
 #'
-#' This is intended to operate on a named object with duplicate names.  The idea is to allow for "soft" accessing by name
+#' \code{\%all\%} is intended to operate on a named object with duplicate names.  The idea is to allow for "soft" accessing by name
 #'
 #' @param i The named input object
 #' @param ... Symbols or strings of objects to return
@@ -168,4 +176,3 @@
   	sapply(.out, rlang::new_box)
   }) |> purrr::flatten()
 }
-#

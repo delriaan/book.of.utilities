@@ -15,6 +15,7 @@ range_diff <- function(...){
 
 	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
+
 #' @export
 calc.range_diff <- range_diff;
 #
@@ -173,14 +174,6 @@ ratio <- function(i, j = i, type = NULL, decimals = 2){
 		action(i, j)
 	}
 }
-	#' @export
-	`%ratio%` <- ratio;
-	#' @export
-	`%pareto%` <- {
-			assign("x", ratio);
-			formals(x) <- alist(i = , j = , type = "pareto");
-			x
-		};
 #
 ranking.algorithm <- function(
 	scores, rank.size, poss.scores, test = `>=`, rescale = 1

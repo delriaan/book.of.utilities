@@ -1,4 +1,5 @@
-#' @title Book of Utilities Overview
+#'@title Book of Utilities Overview
+#
 #' @description
 #' `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
 #'
@@ -54,5 +55,5 @@
 #' @importFrom data.table %ilike% %like% like
 #' @importFrom foreach %do% %dopar%
 #' @name Book of Utilities Package
-NULL
+
 

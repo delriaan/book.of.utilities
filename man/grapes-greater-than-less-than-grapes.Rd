@@ -28,10 +28,10 @@ An Boolean object comprised of the results of testing for "between-ness"
 }
 \seealso{
 Other Custom operators: 
-\code{\link{\%::\%}()},
 \code{\link{\%??\%}()},
 \code{\link{\%?\%}()},
 \code{\link{\%all\%}()},
-\code{\link{\%bin\%}()}
+\code{\link{\%bin\%}()},
+\code{\link{\%tf\%}()}
 }
 \concept{Custom operators}
