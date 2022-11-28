@@ -19,10 +19,10 @@ The input after subtracting Modulo(b): x - (x \%\% b)
 }
 \seealso{
 Other Custom operators: 
-\code{\link{\%::\%}()},
 \code{\link{\%><\%}()},
 \code{\link{\%??\%}()},
 \code{\link{\%?\%}()},
-\code{\link{\%all\%}()}
+\code{\link{\%all\%}()},
+\code{\link{\%tf\%}()}
 }
 \concept{Custom operators}

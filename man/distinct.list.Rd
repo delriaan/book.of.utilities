@@ -15,7 +15,7 @@ distinct.list(i, logical.only = FALSE)
 The list with unique, first-level child elements
 }
 \description{
-Return the distinct set of first-level list elements based on their respective base64-encoded signatures
+Return the distinct set of first-level list elements based on their respective base64-encoded signatures.  This is an inefficient implementation used for nested lists
 }
 \seealso{
 Other Object management: 

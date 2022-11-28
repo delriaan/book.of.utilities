@@ -1,7 +1,7 @@
 Package: book.of.utilities
 Title: Utilities for Working with Data
-Version: 2.0.1
-License: Unicorn Overlords
+Version: 1.0.0
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -9,10 +9,12 @@ RoxygenNote: 7.2.0
 Author: Chionesu George <sapienti.Dei@outlook.com> [aut, cre]
 Maintainer: Chionesu George <sapienti.Dei@outlook.com>
 Depends: R (>= 4.1.0)
-	, data.table
-	, foreach
-	, iterators
-	, stringi
-	, stringdist
-	, magrittr
-Imports: doParallel, purrr
+Imports: doParallel, 
+	purrr, 
+	rlang,
+	data.table, 
+	foreach, 
+	iterators, 
+	stringi, 
+	stringdist, 
+	magrittr

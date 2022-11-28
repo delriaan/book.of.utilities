@@ -15,9 +15,9 @@ do_count <- function(i, distinct = FALSE) {
  switch(
 	cls
 	, "list"		= length(if(distinct){ distinct.list(i) } else { i })
-	, "matrix"	= if (distinct){ nrow(unique(as.data.table(i))) } else { nrow(i) }
-	, "data.frame" = if (distinct){ nrow(unique(as.data.table(i))) } else { nrow(i) }
-	, "data.table" = if (distinct){ nrow(unique(as.data.table(i))) } else { nrow(i) }
+	, "matrix"	= if (distinct){ nrow(unique(data.table::as.data.table(i))) } else { nrow(i) }
+	, "data.frame" = if (distinct){ nrow(unique(data.table::as.data.table(i))) } else { nrow(i) }
+	, "data.table" = if (distinct){ nrow(unique(data.table::as.data.table(i))) } else { nrow(i) }
 	, length(if (distinct) { unique(i) } else { i })
 	)
 }

@@ -25,7 +25,7 @@ ratio(i, j = i, type = NULL, decimals = 2)
 }
 \seealso{
 Other Calculators: 
-\code{\link{calc.range_diff}()},
+\code{\link{range_diff}()},
 \code{\link{ranking.algorithm}()}
 }
 \concept{Calculators}

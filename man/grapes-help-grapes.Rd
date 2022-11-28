@@ -2,8 +2,7 @@
 % Please edit documentation in R/4. custom operators.R
 \name{\%?\%}
 \alias{\%?\%}
-\alias{`\%?\%`}
-\title{Simple IF-THEN-ELSE Comparison}
+\title{Simple IF-THEN-ELSE Operator}
 \usage{
 cond \%?\% result
 }
@@ -16,14 +15,14 @@ cond \%?\% result
 A \code{\link[data.table]{data.table}} object comprised of values occupying the 'then' and 'else' slots in the 'if-then-else' logical test
 }
 \description{
-When \code{cond} is \code{TRUE}, \code{result$true} is returned, and the same for \code{cond == FALSE}.  For \code{result}, the easiest way to set the available choices is to use \code{`\%::\%`}; otherwise, a environment(-like) object with members named 'true' and 'false' must be provided
+When \code{cond} is \code{TRUE}, \code{result$true} is returned, and the same for \code{cond == FALSE}.  For \code{result}, the easiest way to set the available choices is to use \code{\%::\%}; otherwise, a environment(-like) object with members named 'true' and 'false' must be provided
 }
 \seealso{
 Other Custom operators: 
-\code{\link{\%::\%}()},
 \code{\link{\%><\%}()},
 \code{\link{\%??\%}()},
 \code{\link{\%all\%}()},
-\code{\link{\%bin\%}()}
+\code{\link{\%bin\%}()},
+\code{\link{\%tf\%}()}
 }
 \concept{Custom operators}

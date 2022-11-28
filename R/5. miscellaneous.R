@@ -55,7 +55,7 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 #'
 #' \code{log_note} serves as a wrapper for \code{\link[base]{cat}} and provides an easy way to write to a plain-text file
 #' Even though the original use-case is the real-time capturing of developer notes, it can be used for incremental writing to a file when needed.
-#' @param ... (string[]) The string(s) of text to write to the file.  Multiple values are collapsed into a single string separated by a newline. Expressions are allowed and will have the captured output included.
+#' @param ... (\code{\link[rlang]{dots_list}}): The string(s) of text to write to the file.  Multiple values are collapsed into a single string separated by a newline. Expressions are allowed and will have the captured output included.
 #' @param file (string|"") The name of the file to (over)write.  If no file is given, the output is sent to the console.
 #' @param show (logical | \code{FALSE}) When \code{TRUE}, print the contents of \code{file} (requires library \code{readtext}).
 #' @param append (logical | \code{TRUE}) When \code{TRUE} new content is appended.
@@ -63,7 +63,7 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 #' @return See parameter \code{show}
 #' @export
 #'
-	tstamp = sprintf("[%s, %s]\n", Sys.time(), Sys.getenv("USERNAME"));
+	tstamp = sprintf("[%s]\n", Sys.time());
 
 	if (...length() > 0){
 		out.txt = paste0(
@@ -71,7 +71,7 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 			, tstamp
 			, purrr::map_chr(
 					unname(rlang::exprs(...))
-					, ~ if (!is.character(.x)){ capture.output(eval(.x)) %>% paste(collapse = "\n") } else { .x }
+					, ~ if (!is.character(.x)){ capture.output(eval(.x)) |> paste(collapse = "\n") } else { .x }
 				) %>% paste(collapse = "\n")
 		);
 
@@ -112,15 +112,15 @@ vlogical <- function(vector, vpattern, test, simplify_with = NULL, ...){
 as.regex <- function(...){
 #' Tag a Regular-Expression String
 #'
-#' \code{as.regex} adds class "regex" to a strings passed to \code{...}
+#' `as.regex()` adds class "regex" to a strings passed to \code{...}
 #'
-#' @param ... The string to set "as regex"
+#' @param ... (\code{\link[rlang]{dots_list}}): The string to set "as regex"
 #'
 #' @return The string appended with attribute "regex" set to \code{TRUE}
 #'
 #' @export
 
-	purrr::map(rlang::exprs(...), ~setattr(eval(.x), name = "regex", value = TRUE));
+	purrr::map(rlang::exprs(...), ~data.table::setattr(eval(.x), name = "regex", value = TRUE));
 }
 #
 is.regex <- function(i){
@@ -132,7 +132,7 @@ is.regex <- function(i){
 #'
 #' @export
 
-	purrr::map(i, ~ifelse(is.null(attr(.x, "regex")), FALSE, attr(.x, "regex"))) %>% unlist();
+	purrr::map(i, ~ifelse(is.null(attr(.x, "regex")), FALSE, attr(.x, "regex"))) |> unlist();
 }
 #
 unregex <- function(i, x){
@@ -146,9 +146,9 @@ unregex <- function(i, x){
 #' @export
 	x = if (any(class(x) %in% c("data.table", "data.frame", "matrix", "tibble"))){ names(x) } else { x }
 
-	reg.needle = i[is.regex(i)] %>% unlist();
+	reg.needle = i[is.regex(i)] |> unlist();
 
-	no_reg.needle = i[!is.regex(i)] %>% unlist();
+	no_reg.needle = i[!is.regex(i)] |> unlist();
 
 	reg.match = if (!is_empty(reg.needle)){ x[x %like% paste(reg.needle, collapse = "|")] }
 
@@ -177,11 +177,9 @@ polyname2orig <- function(poly.names, orig.names, degree, ...){
 			, collapse = ifelse("collapse" %in% ...names(), list(...)$collapse, "_x_")
 			);
 
-	.new.names = stri_split_fixed(poly.names, ".", simplify = TRUE) %>%
-    rbind() %>%
-    apply(1, function(j){
-        paste(orig.names[j != "0"], j[j != "0"], sep = .paste.args$sep, collapse = .paste.args$collapse)
-      });
+	.new.names = stringi::stri_split_fixed(poly.names, ".", simplify = TRUE) |>
+    rbind() |>
+		apply(MARGIN = 1, FUN = function(j){ paste(orig.names[j != "0"], j[j != "0"], sep = .paste.args$sep, collapse = .paste.args$collapse) });
 
   return(.new.names);
 }
@@ -203,8 +201,8 @@ gen.primes <- function(n = 1, domain = 2:n, random = FALSE, distinct = TRUE, cha
 
 	# Initialize
 	set.seed(Sys.time(), kind = sample(c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Knuth-TAOCP-2002", "L'Ecuyer-CMRG"), 1));
-	x = min(domain):max(domain);
-	z = 1:max(domain);
+	x = min(domain, na.rm = TRUE):max(domain, na.rm = TRUE);
+	z = 1:max(domain, na.rm = TRUE);
 
 	logi.vec = rowSums(outer(x, z, `%%`) == 0) == 2;
 

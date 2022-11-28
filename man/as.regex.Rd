@@ -7,11 +7,11 @@
 as.regex(...)
 }
 \arguments{
-\item{...}{The string to set "as regex"}
+\item{...}{(\code{\link[rlang]{dots_list}}): The string to set "as regex"}
 }
 \value{
 The string appended with attribute "regex" set to \code{TRUE}
 }
 \description{
-\code{as.regex} adds class "regex" to a strings passed to \code{...}
+\code{as.regex()} adds class "regex" to a strings passed to \code{...}
 }

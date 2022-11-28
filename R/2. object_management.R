@@ -1,7 +1,7 @@
 distinct.list <- function(i, logical.only = FALSE){
 #' Unique List Selection
 #'
-#' Return the distinct set of first-level list elements based on their respective base64-encoded signatures
+#' Return the distinct set of first-level list elements based on their respective base64-encoded signatures.  This is an inefficient implementation used for nested lists
 #'
 #' @param i (object) The input list object (or coercible)
 #' @param logical.only (logical) When \code{TRUE}, a logical vector is returned
@@ -29,10 +29,10 @@ distinct.list <- function(i, logical.only = FALSE){
 enlist <- function(x, ...){
 #' Create a Named List
 #'
-#' \code{enlist} creates a list from an atomic vector.  When names having the length of the input are provided to \code{...}, a list with members named accordingly is produced.  Otherwise, the members are named by their values (eg. \code{list(this="this", that="that")} ): this is the default behavior.
+#' `enlist()` creates a list from an atomic vector.  When names having the length of the input are provided to \code{...}, a list with members named accordingly is produced.  Otherwise, the members are named by their values (eg. \code{list(this="this", that="that")} ): this is the default behavior.
 #'
 #' @param x A vector of values
-#' @param ... Names to use for the list members: must be the same length as \code{x}.  Can be a vector or an atomic listing.
+#' @param ... (\code{\link[rlang]{dots_list}}):: Names to use for the list members: must be the same length as \code{x}.  Can be a vector or an atomic listing.
 #'
 #' @return A list, the names of which being the values of \code{x}
 #'
@@ -43,10 +43,10 @@ enlist <- function(x, ...){
 
 	idx = 1:length(x);
 	old.names = purrr::map(x, names);
-	new.names = as.character(c(...))[idx];
+	new.names = as.character(rlang::enexprs(...))[idx];
 	.out = purrr::map(idx, ~{
 			ifelse(is.null(old.names[[.x]]), ifelse(is.na(new.names[.x]), x[[.x]], new.names[.x]), old.names[[.x]])
-		}) %>% unlist()
+		}) |> unlist()
 
 	names(x) <- ifelse(is.na(.out), unlist(x), .out);
 	as.list(x)
@@ -60,7 +60,7 @@ scrub.data <- function(input, condFn = is.na, replacement, ...) {
 #' @param input: An object that contains values to scrub
 #' @param condFn: A function name or function expression that serves as the test for values to scrub
 #' @param replacement: The replacement value
-#' @param ... Not used
+#' @param ... (Not used)
 #'
 #' @family Object management
 #'

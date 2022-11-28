@@ -1,9 +1,9 @@
-calc.range_diff <- function(...){
+range_diff <- function(...){
 #' Magnitude of a Range of Values
 #'
 #' \code{calc.range_diff} calculates the difference in the range of values given by \code{input}
 #'
-#' @param ... (numeric[]): A numeric vector for which the range and corresponding difference is calculated. If a list is provided, the calculation is executed over each element of the list.
+#' @param ... (\code{\link[rlang]{dots_list}}): A numeric vector for which the range and corresponding difference is calculated. If a list is provided, the calculation is executed over each element of the list.
 #' @return A scalar value of the inclusive difference of upper and lower boundaries of the range of the input vector
 #' @family Calculators
 #'
@@ -15,6 +15,9 @@ calc.range_diff <- function(...){
 
 	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
+
+#' @export
+calc.range_diff <- range_diff;
 #
 calc.means <- function(a, mean.type = "am", post.op = eval) {
 #' Calculate Means
@@ -47,11 +50,12 @@ calc.means <- function(a, mean.type = "am", post.op = eval) {
       am	= function(i){ if (length(unique(i)) == 1) { 0 } else { mean(i, na.rm = TRUE) }}
 		, zm	= function(i){ if (length(unique(i)) == 1) { 0 } else { i - mean(i, na.rm = TRUE) }}
 		, gm	= function(i){
+				i <- i[!i==0]
 				if (any(sign(i) == -1)) { i <- as.complex(i) }
-				prod(i, na.rm = TRUE)^(length(i) ^ -1)
+				prod(i, na.rm = TRUE)^(length(i)^-1)
 			}
-		, hm	= function(i){ length(i) / sum(i^-1, na.rm = TRUE) }
-		, rms = function(i){ ifelse(length(unique(i)) == 1, i, sapply(i, `^`, 2) %>% mean(na.rm = TRUE) %>% sqrt) }
+		, hm	= function(i){ i <- i[!i==0]; length(i) / sum(i^-1, na.rm = TRUE) }
+		, rms = function(i){ ifelse(rlang::has_length(unique(i), 1), i, sapply(i, `^`, 2) %>% mean(na.rm = TRUE) |> sqrt()) }
     )}
 
   if ("*" %in% mean.type) { mean.type <- names(func.list) }
@@ -79,7 +83,7 @@ calc.zero_mean <- function(a, post.op = eval) {
 #'
 #' @export
 
-  calc.means(a, mean.type = "zm", post.op = post.op) %>% unlist()
+  calc.means(a, mean.type = "zm", post.op = post.op) |> unlist()
 }
 #
 calc.rms <- function(a, post.op = eval) {
@@ -151,21 +155,25 @@ ratio <- function(i, j = i, type = NULL, decimals = 2){
 			if (!is.list(.j)){
 				switch(
 					k
-					, "pareto" = cumsum(.i)/sum(.j)
-					, "of.max" = .i/max(.j)
-					, "of.min" = .i/min(.j)
+					, "pareto" = cumsum(.i)/sum(.j, na.rm = TRUE)
+					, "of.max" = .i/max(.j, na.rm = TRUE)
+					, "of.min" = .i/min(.j, na.rm = TRUE)
 					, .i/sum(.j)
-					) %>% round(.d)
-			} else { map(.j, ~sub.fn(k = k, .i = .i, .j = .x)) }
+					) |> round(.d)
+			} else { purrr::map(.j, ~sub.fn(k = k, .i = .i, .j = .x)) }
 		}
-		if (length(type) > 1){ enlist(type) %>% map(sub.fn, ii, jj, decimals) } else { sub.fn(type, ii, jj, decimals) }
+		if (!rlang::has_length(type, 1)){
+			purrr::set_names(type) %>% purrr::map(sub.fn, ii, jj, decimals)
+		} else {
+			sub.fn(type, ii, jj, decimals)
+		}
 	}
-	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map2(i, j, action) } else { action(i, j) }
+	if (any(purrr::map_lgl(i, ~length(.x) > 1))){
+		purrr::map2(i, j, action)
+	} else {
+		action(i, j)
+	}
 }
-	#' @export
-	`%ratio%` <- ratio;
-	#' @export
-	`%pareto%` <- { assign("x", ratio); formals(x) <- alist(i = , j = , type = "pareto"); x };
 #
 ranking.algorithm <- function(
 	scores, rank.size, poss.scores, test = `>=`, rescale = 1
@@ -199,17 +207,20 @@ ranking.algorithm <- function(
   # :: Ensure atomic vectors are used
   scores		= rescale * unlist(scores);
   ranks 		= 1:rank.size - 1;
-  increment = calc.range_diff(poss.scores) / length(ranks);
+  increment = range_diff(poss.scores) / length(ranks);
 
   # ::  Create the vector of thresholds using the value of `rescale` to ensure correct results
-  thresholds.list <- min(poss.scores) + (ranks * increment);
+  thresholds.list <- min(poss.scores, na.rm = TRUE) + (ranks * increment);
 
   # :: Put the ranks output on a 1-based scale
   ranks <- ranks + 1;
 
-  if (map.only) { return(data.table(ranks = ranks, thresholds = thresholds.list))} else {
-    output <- map.fn(scores, ~ ranks[ test(.x, thresholds.list) |> which() |> max() ]) |>
-    	unlist() |> scrub.data(replacement = dflt.fn(ranks))
+  if (map.only) {
+  	return(data.table(ranks = ranks, thresholds = thresholds.list))
+  } else {
+    output <- map.fn(scores, ~ ranks[ test(.x, thresholds.list) |> which() |> max(na.rm = TRUE) ]) |>
+    	unlist() |>
+    	scrub.data(replacement = dflt.fn(ranks))
 
 		if (show.all) {
 			data.table(

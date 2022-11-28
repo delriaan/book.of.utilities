@@ -26,6 +26,7 @@ enlist(test_x$test_2);
 # %>% Unnamed Vector & Provided Names (Full) -> All elements have names in 'nms'
 enlist(test_x$test_1, nms);
 enlist(test_x$test_2, nms);
+enlist(test_x$test_2, up, down, left, right, center);
 
 # %>% Unnamed Vector & Provided Names (Partial) -> First two names are 'nms[1:2]' with the balance as default
 enlist(test_x$test_1, nms[1:2]);
@@ -41,19 +42,19 @@ vlogical(
 	)
 
 # *regex ====
-as.regex("test") %>% is.regex() # TRUE
-c(as.regex("test", "this"), "or_that") %>% is.regex() # TRUE TRUE FALSE
+as.regex("test") |> is.regex() # TRUE
+c(as.regex("test", "this"), "or_that") |> is.regex() # TRUE TRUE FALSE
 
 unregex(i = c(as.regex("mp|[cye]+"), "hp", "hq"), x = colnames(mtcars)) #  "mpg"  "cyl"  "qsec" "gear" "carb" "hp
 
 unregex(i = c(as.regex("mp|[cye]+"), "hp", "hq"), x = mtcars) #  "mpg"  "cyl"  "qsec" "gear" "carb" "hp
 
 # ::: ----
-x <- data.table(i = sample(100, 10), j = sample(100, 10), key = c("i", "j")) %>% unique()
-y <- data.table(i = sample(200, 10, TRUE), j = sample(200, 10, TRUE), key = c("i", "j")) %>% unique()
+x <- data.table::data.table(i = sample(100, 10), j = sample(100, 10), key = c("i", "j")) |> unique()
+y <- data.table::data.table(i = sample(200, 10, TRUE), j = sample(200, 10, TRUE), key = c("i", "j")) |> unique()
 z <- x %><% y
 q <- x %::% y
 v <- z %??% q
 v
 
-v %$% result
+purrr::reduce(v$result, rbind)

@@ -18,6 +18,7 @@
 	attr(.out_data, "mod_diff_ratio") <- .mod_diff_ratio;
 	.out_data;
 }
+
 #
 `%><%` <- function(a, z, temporal = FALSE, as.text = FALSE, debug = FALSE){
 #' "Between" Operator
@@ -39,11 +40,11 @@
 #'
 #' @export
 
-	if ((FALSE %in% class(z) %like% "(frame|table|tibble|atrix)") | length(z %>% unlist()) == 1) {
+	if ((FALSE %in% class(z) %like% "(frame|table|tibble|atrix)") | rlang::has_length(unlist(z), 1)) {
 	  stop("Argument 'z' cannot be a single value: two values are required at a minimum")
 	}
-	if (!is.data.table(a)){ a %<>% as.data.table() }
-	if (!is.data.table(z)){ z %<>% as.data.table() }
+	if (!data.table::is.data.table(a)){ a %<>% data.table::as.data.table() }
+	if (!data.table::is.data.table(z)){ z %<>% data.table::as.data.table() }
 
 	# The case of a single-valued `a` argument is addressed by choosing the `*apply` function based on its length
 	apply.exprs <- list(
@@ -56,14 +57,17 @@
 			i %<>% unlist(); j %<>% unlist(); k %<>% unlist();
 			if (!(j | k)) {
 				# :: Default mode of "between-ness"
-				(min(o) <= max(i)) & (max(o) >= min(i))
+				(min(o, na.rm = TRUE) <= max(i, na.rm = TRUE)) & (max(o, na.rm = TRUE) >= min(i, na.rm = TRUE))
 			} else {
 				# :: Temporal mode to return "before"(-1), "during"(0), "after"(1)
-				t1 = min(o) > max(i)
-				t2 = (min(o) <= max(i)) & (max(o) >= min(i))
-				t3 = c(1, 0, -1)[max(which(t1, t2, TRUE))]
+				t1 = min(o) > max(i, na.rm = TRUE)
+				t2 = (min(o) <= max(i)) & (max(o, na.rm = TRUE) >= min(i, na.rm = TRUE))
+				t3 = c(1, 0, -1)[max(which(t1, t2, TRUE), na.rm = TRUE)]
+
 				# :: Temporal mode to return "before"(-1), "during"(0), "after"(1)
-				if (k) { c("-1" = "before", "0" = "during", "1" = "after")[as.character(t3)] } else { t3 }
+				if (k) {
+					c("-1" = "before", "0" = "during", "1" = "after")[as.character(t3)]
+				} else { t3 }
 			}
 		}
 		o %<>% unlist();
@@ -75,20 +79,22 @@
 	  matrix(
 	  	nrow	= nrow(a), byrow 		= TRUE
 			, dimnames	= list(
-					apply.exprs$stage.dimname[[1 + as.integer(length(unlist(a)) > 1)]] %>% eval()
-					, z %>% apply(1, stringi::stri_flatten, collapse = ":")
+					apply.exprs$stage.dimname[[1 + as.integer(length(unlist(a)) > 1)]] |> eval()
+					, z |> apply(1, stringi::stri_flatten, collapse = ":")
 					)
 		)
 }
+
 #
-`%::%` <- function(tr = TRUE, fls = FALSE, id = 0, ...){
-#' Decision Operator
+`%tf%`  <- function(true = TRUE, false = FALSE, id = 0, ...){
+#' Decision Operator: \code{\%tf\%}
 #'
-#' Use \code{\%::\%} anywhere where binary choice vectors can be useful
+#' Use \code{\%tf\%} or \code{\%::\%} anywhere where binary choice vectors can be useful
 #'
 #' @param tr (logical) : Scalar or vector value to return as the TRUE  value
 #' @param fls (logical) : Scalar or vector value to return as the FALSE value
 #' @param id (scalar) : Scalar or vector value to return as the identifier for the result
+#' @param ... (Not used)
 #'
 #' @return a \code{\link[data.table]{data.table}} of resultant values options for `true` and `false`
 #'
@@ -100,34 +106,37 @@
 	if (!rlang::is_empty(dim(fls))){ fls <- apply(fls, 1, as.list) }
 
 	# if (length(tr) != length(fls)) { stop("Vectors for TRUE and FALSE must be of the same length: exiting ...") }
-	as.data.table(list(false = fls, true = tr, id = c(id)))
+	data.table::as.data.table(list(false = fls, true = tr, id = c(id)))
 }
+
+#' @export
+`%::%` <- `%tf%`
+
 #
 `%?%` <- function(cond, result){
-#' Simple IF-THEN-ELSE Comparison
+#' Simple IF-THEN-ELSE Operator
 #'
-#' When \code{cond} is \code{TRUE}, \code{result$true} is returned, and the same for \code{cond == FALSE}.  For \code{result}, the easiest way to set the available choices is to use \code{`\%::\%`}; otherwise, a environment(-like) object with members named 'true' and 'false' must be provided
+#' When \code{cond} is \code{TRUE}, \code{result$true} is returned, and the same for \code{cond == FALSE}.  For \code{result}, the easiest way to set the available choices is to use \code{\%::\%}; otherwise, a environment(-like) object with members named 'true' and 'false' must be provided
 #'
 #' @param cond (logical) A \emph{vector} that evaluates to \code{TRUE} or \code{FALSE}
 #' @param result (tensor) Resultant values for TRUE and FALSE conditionals
 #'
 #' @return A \code{\link[data.table]{data.table}} object comprised of values occupying the 'then' and 'else' slots in the 'if-then-else' logical test
 #'
-#' @aliases `%?%`
-#'
 #' @family Custom operators
 #'
 #' @export
 #'
 
-	as.data.table(purrr::imap_dfr(cond + 1, ~c(result = rlang::new_box(result[[.x]]), cond_id = .y)))
+	data.table::as.data.table(purrr::imap_dfr(cond + 1, ~c(result = rlang::new_box(result[[.x]]), cond_id = .y)))
 }
+
 #
 `%??%` <- function(cond, result){
 #' Correlated IF-THEN-ELSE Comparison
 #'
 #' For each element \code{E} in \code{cond}, when \code{E} is \code{TRUE}, the corresponding index of \code{result$true} is returned: the same for \code{cond == FALSE}.
-#' For \code{result}, the easiest way to set the available choices is to use \code{\%::\%}; otherwise, a environment(-like) object with members named \code{true} and \code{false}
+#' For \code{result}, the easiest way to set the available choices is to use \code{\link{\%::\%}}; otherwise, a environment(-like) object with members named \code{true} and \code{false}
 #'
 #' @param cond (logical) A \emph{vector} or \emph{tensor} that evaluates to \code{TRUE} or \code{FALSE}
 #' @param result (vector) Resultant values for TRUE and FALSE conditionals, ideally stored in a dimension-ed object (e.g, \code{\link[base]{data.frame}}, \code{\link[data.table]{data.table}})
@@ -137,16 +146,17 @@
 #' @export
 #'
 
-	if (is.environment(result)){ result <<- as.data.table(mget(c("true", "false"), envir = result)) }
-	if (!is.data.table(result)){ result <<- as.data.table(result) }
+	if (is.environment(result)){ result <<- data.table::as.data.table(mget(c("true", "false"), envir = result)) }
+	if (!data.table::is.data.table(result)){ result <<- data.table::as.data.table(result) }
 
-	foreach(x = cond, y = iapply(X = result, MARGIN = 1), id = sequence(length(cond)), .combine = rbind) %do% {  `%?%`(x, y) }
+	foreach::foreach(x = cond, y = iterators::iapply(X = result, MARGIN = 1), id = sequence(length(cond)), .combine = rbind) %do% {  `%?%`(x, y) }
 }
+
 #
 `%all%` <- function(i, ..., logical.out = FALSE, chatty = FALSE){
-#' Retrieve all elements with the given object names
+#' Retrieve \code{\%all\%} Elements by Name
 #'
-#' This is intended to operate on a named object with duplicate names.  The idea is to allow for "soft" accessing by name
+#' \code{\%all\%} is intended to operate on a named object with duplicate names.  The idea is to allow for "soft" accessing by name
 #'
 #' @param i The named input object
 #' @param ... Symbols or strings of objects to return
@@ -159,9 +169,10 @@
 #'
 #' @export
 
-  nms = unique(as.character(rlang::exprs(...))) %>% book.of.utilities::enlist();
+  nms = unique(as.character(rlang::enexprs(...))) |> book.of.utilities::enlist();
 
-  purrr::map(nms, ~{ if (logical.out){ .x == names(i) } else { i[.x == names(i)] }} %>%
-  					 	sapply(rlang::new_box)) %>% purrr::flatten()
+  purrr::map(nms, ~{
+  	.out = if (logical.out){ .x == names(i) } else { i[.x == names(i)] };
+  	sapply(.out, rlang::new_box)
+  }) |> purrr::flatten()
 }
-#

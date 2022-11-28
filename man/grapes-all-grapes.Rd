@@ -2,7 +2,7 @@
 % Please edit documentation in R/4. custom operators.R
 \name{\%all\%}
 \alias{\%all\%}
-\title{Retrieve all elements with the given object names}
+\title{Retrieve \code{\%all\%} Elements by Name}
 \usage{
 i \%all\% ...
 }
@@ -19,14 +19,14 @@ i \%all\% ...
 An object containing the values or logical results relative to the names of the input
 }
 \description{
-This is intended to operate on a named object with duplicate names.  The idea is to allow for "soft" accessing by name
+\code{\%all\%} is intended to operate on a named object with duplicate names.  The idea is to allow for "soft" accessing by name
 }
 \seealso{
 Other Custom operators: 
-\code{\link{\%::\%}()},
 \code{\link{\%><\%}()},
 \code{\link{\%??\%}()},
 \code{\link{\%?\%}()},
-\code{\link{\%bin\%}()}
+\code{\link{\%bin\%}()},
+\code{\link{\%tf\%}()}
 }
 \concept{Custom operators}

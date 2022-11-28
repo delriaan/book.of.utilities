@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^desc[.]instr
 ^valid
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
