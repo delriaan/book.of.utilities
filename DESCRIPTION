@@ -1,6 +1,6 @@
 Package: book.of.utilities
 Title: Utilities for Working with Data
-Version: 1.0.0
+Version: 1.0.1
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
