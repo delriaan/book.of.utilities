@@ -25,7 +25,6 @@ data.table::data.table(cond_vec = (runif(1000) >= 0.7) \%>\% sample(100), rand_c
 }
 \seealso{
 Other Counters: 
-\code{\link{do_count}()},
 \code{\link{factor.int}()}
 }
 \concept{Counters}

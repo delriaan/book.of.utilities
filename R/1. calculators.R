@@ -15,7 +15,6 @@ range_diff <- function(...){
 
 	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
-
 #' @export
 calc.range_diff <- range_diff;
 #
@@ -77,7 +76,7 @@ calc.means <- function(a, mean.type = "am", post.op = eval){
 	post.op(if (rlang::has_length(output, 1)){ output[[1]] } else { output })
 }
 #
-calc.zero_mean <- function(a, post.op = eval) {
+calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE) {
 #' Calculate the Zero-Mean
 #'
 #' \code{calc.zero_mean} subtracts the mean from the input
@@ -86,12 +85,19 @@ calc.zero_mean <- function(a, post.op = eval) {
 #'
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
+#' @param as.zscore (logical | \code{FALSE}) Should the output be transformed to Z-scores?
+#' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE})?
 #'
 #' @family Central-tendency calculations
 #'
 #' @export
 
-  calc.means(a, mean.type = "zm", post.op = post.op) |> unlist()
+  .out = calc.means(a, mean.type = "zm", post.op = post.op) |> unlist()
+  if (as.zscore){
+  	if (use.population){
+  		.out/sqrt(mean(.out^2, na.rm = TRUE))
+  	} else { .out/sd(.out, na.rm = TRUE) }
+  } else { .out }
 }
 #
 calc.rms <- function(a, post.op = eval) {
