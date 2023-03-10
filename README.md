@@ -23,7 +23,6 @@ The following functional families are covered in book.of.utilities:
 
 ## Counters
 
--   do.count
 -   count.cycles
 -   factor.int
 
@@ -38,7 +37,6 @@ The following functional families are covered in book.of.utilities:
 
 ## Miscellaneous
 
--   mark.time
 -   log_note
 -   vlogical
 -   as.regex

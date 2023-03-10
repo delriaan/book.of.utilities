@@ -62,7 +62,7 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 #'
 #' @return See parameter \code{show}
 #' @export
-#'
+
 	tstamp = sprintf("[%s]\n", Sys.time());
 
 	if (...length() > 0){
@@ -75,7 +75,7 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 				) %>% paste(collapse = "\n")
 		);
 
-		cat(out.txt, file = file, append = append & !(file == ""));
+		cat(paste0(out.txt, "\n"), file = file, append = append & !(file == ""));
 	}
 
 	if (show & (!file == "")){ readtext::readtext(file)$text %>% message() }

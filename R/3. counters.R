@@ -1,27 +1,3 @@
-do_count <- function(i, distinct = FALSE) {
-#' Count Stuff
-#'
-#' @param i A vector of things to count
-#' @param distinct (logical) When \code{TRUE}, a distinct count of objects is returned
-#'
-#' @return The count of elements in \code{i}, possibly distinct
-#'
-#' @family Counters
-#'
-#' @export
-
-  cls <- class(i)
-
- switch(
-	cls
-	, "list"		= length(if(distinct){ distinct.list(i) } else { i })
-	, "matrix"	= if (distinct){ nrow(unique(data.table::as.data.table(i))) } else { nrow(i) }
-	, "data.frame" = if (distinct){ nrow(unique(data.table::as.data.table(i))) } else { nrow(i) }
-	, "data.table" = if (distinct){ nrow(unique(data.table::as.data.table(i))) } else { nrow(i) }
-	, length(if (distinct) { unique(i) } else { i })
-	)
-}
-#
 count.cycles <- function(cond, offset = 1, reset){
 #' Cycle Counter
 #'

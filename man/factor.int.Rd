@@ -19,7 +19,6 @@ Factorization of Integers
 }
 \seealso{
 Other Counters: 
-\code{\link{count.cycles}()},
-\code{\link{do_count}()}
+\code{\link{count.cycles}()}
 }
 \concept{Counters}
