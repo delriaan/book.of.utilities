@@ -1,16 +1,19 @@
 Package: book.of.utilities
 Title: Utilities for Working with Data
+<<<<<<< Updated upstream
 Version: 1.0.1
+=======
+Version: 1.1.0
+>>>>>>> Stashed changes
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Author: Chionesu George <sapienti.Dei@outlook.com> [aut, cre]
 Maintainer: Chionesu George <sapienti.Dei@outlook.com>
-Depends: R (>= 4.1.0)
+Depends: R (>= 4.1.0), purrr(< 1.0.0)
 Imports: doParallel, 
-	purrr, 
 	rlang,
 	data.table, 
 	foreach, 

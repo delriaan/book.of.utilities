@@ -1,4 +1,4 @@
-#'@title Book of Utilities Overview
+#' @title Book of Utilities Overview
 #
 #' @description
 #' `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
@@ -24,7 +24,6 @@
 #' }
 #' @section Counters:
 #' \itemize{
-#'	\item{\code{\link{do.count}}}
 #'	\item{\code{\link{count.cycles}}}
 #'	\item{\code{\link{factor.int}}}
 #' }
@@ -54,6 +53,6 @@
 #' @importFrom rlang is_empty %||%
 #' @importFrom data.table %ilike% %like% like
 #' @importFrom foreach %do% %dopar%
-#' @name Book of Utilities Package
-
+#' @name book.of.utilities
+NULL
 

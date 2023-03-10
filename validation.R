@@ -3,6 +3,12 @@ calc.means(sample(30, 10));
 calc.means(sample(30, 10), "hm");
 calc.means(sample(30, 10), mean.type = c("am", "hm"));
 
+x <- sample(100, 50)
+calc.zero_mean(x)
+calc.zero_mean(x, as.zscore = TRUE)
+calc.zero_mean(x, use.population = TRUE )
+calc.zero_mean(x, as.zscore = TRUE, use.population = TRUE)
+
 # %>% List Output
 calc.harmonic_mean(list(set_1 = sample(30, 10), set_2 = sample(30, 10)));
 calc.means(list(set_1 = sample(30, 10), set_2 = sample(30, 10)), mean.type = c("am", "hm"));
@@ -56,5 +62,4 @@ z <- x %><% y
 q <- x %::% y
 v <- z %??% q
 v
-
 purrr::reduce(v$result, rbind)

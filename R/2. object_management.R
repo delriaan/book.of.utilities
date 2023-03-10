@@ -11,7 +11,7 @@ distinct.list <- function(i, logical.only = FALSE){
 #'
 #' @family Object management
 #'
-#' @export
+# @export
 
  if (!foreach::getDoParRegistered()){ foreach::registerDoSEQ() }
 
