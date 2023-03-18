@@ -21,6 +21,7 @@ A list, the names of which being the values of \code{x}
 Other Object management: 
 \code{\link{distinct.list}()},
 \code{\link{fill.na}()},
+\code{\link{get.object_sizes}()},
 \code{\link{scrub.data}()}
 }
 \concept{Object management}

@@ -23,6 +23,7 @@ Fill in a Sparse Vector
 Other Object management: 
 \code{\link{distinct.list}()},
 \code{\link{enlist}()},
+\code{\link{get.object_sizes}()},
 \code{\link{scrub.data}()}
 }
 \concept{Object management}

@@ -16,6 +16,9 @@
     <loc>/reference/as.regex.html</loc>
   </url>
   <url>
+    <loc>/reference/as_quantile.html</loc>
+  </url>
+  <url>
     <loc>/reference/Book-of-Utilities-Package.html</loc>
   </url>
   <url>
@@ -56,6 +59,9 @@
   </url>
   <url>
     <loc>/reference/gen.primes.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get.object_sizes.html</loc>
   </url>
   <url>
     <loc>/reference/grapes-all-grapes.html</loc>

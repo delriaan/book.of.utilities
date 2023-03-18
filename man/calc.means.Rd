@@ -4,17 +4,30 @@
 \alias{calc.means}
 \title{Calculate Means}
 \usage{
-calc.means(a, mean.type = "am", post.op = eval)
+calc.means(
+  data,
+  mean.type = "am",
+  post.op = eval,
+  as.zscore = FALSE,
+  use.population = FALSE,
+  ...
+)
 }
 \arguments{
-\item{a}{(numeric): A numeric vector}
+\item{data}{(numeric): A numeric vector}
 
 \item{mean.type}{(string): A character vector of the types of mean value operations to execute (see "Details")}
 
 \item{post.op}{(call | \code{\link[base]{eval}}): A function that will process the output before returning}
+
+\item{as.zscore}{(logical | \code{FALSE}) Should the output be transformed to Z-scores?}
+
+\item{use.population}{(logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE})?}
+
+\item{...}{Additional arguments passed to other functions}
 }
 \value{
-Arguments \code{a}, \code{mean.type}, and \code{post.op} determine the return type.
+Arguments \code{data}, \code{mean.type}, and \code{post.op} determine the return type.
 }
 \description{
 \code{calc.means} calculates various types of central-tendency measures for the vector passed to argument \code{a}

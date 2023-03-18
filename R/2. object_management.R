@@ -66,7 +66,7 @@ scrub.data <- function(input, condFn = is.na, replacement, ...) {
 #'
 #' @export
 
-  has.dimensions =  any(class(input) %ilike% "matrix|data|array|tibb|tabl");
+  has.dimensions <-  any(class(input) %ilike% "matrix|data|array|tibb|tabl");
   class(replacement) <- class(input);
 
   .index = which(condFn(input), arr.ind = has.dimensions);
@@ -99,38 +99,38 @@ fill.na <- function(i, incl.null = TRUE){
 	][, this_col]
 }
 #
-get.object_sizes <- function(i, nm = as.character(substitute(i)), depth = 0L, max.depth = 2L, chatty = FALSE, ...){
+get.object_sizes <- function(i = .GlobalEnv, nm = as.character(substitute(i)), depth = 0L, max.depth = 2L, chatty = FALSE, ...){
 #' Recursive Object Size Retrieval
-#' 
+#'
 #' \code{get.object_sizes} recursively steps into child environments, retrieving object sizes along the way
-#' 
-#' @param i (object) The top-level object 
-#' @param nm (string) The object name for the current iteration 
-#' @param depth (integer) The current iteration depth 
-#' @param max.depth (integer) The maximum recursion depth 
+#'
+#' @param i (object) The top-level object
+#' @param nm (string) The object name for the current iteration
+#' @param depth (integer) The current iteration depth
+#' @param max.depth (integer) The maximum recursion depth
 #' @param chatty (logical) Execution messages
 #' @param ... Additional arguments passed to \code{\link[base]{ls}}
-#' 
+#'
 #' @return A vector of object sizes
 #' @family Object management
-#' 
+#'
 #' @export
   if (class(i)[1] == "environment"){
-    imap(mget(ls(i, ...), envir = i), ~{
+    purrr::imap(mget(ls(i, ...), envir = i), ~{
       if (chatty){ message(sprintf("Stepping into %s", .y)) }
-      get_sizes(
+      get.object_sizes(
         i = .x
         , nm = paste(nm, .y, sep = "$")
         , depth = depth + 1
         , max.depth = max.depth
         );
-    }) |> 
-    reduce(rbind) |> 
+    }) |>
+    purrr::reduce(rbind) |>
     data.table::setattr("timestamp", Sys.time())
   } else {
     .out <- list(obj_path = stringi::stri_replace_first_regex(nm, "[.]GlobalEnv[$]", "")
                  , depth = depth, size = object.size(i));
-    units <- which(c(b = 0, Kb = 1, Mb = 2, Gb = 3) <= log(.out$size, base = 1024)) |> 
+    units <- which(c(b = 0, Kb = 1, Mb = 2, Gb = 3) <= log(.out$size, base = 1024)) |>
               names() %>% .[length(.)];
     .out$size_desc <- format(.out$size, units = units);
     .out;

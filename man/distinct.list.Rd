@@ -21,6 +21,7 @@ Return the distinct set of first-level list elements based on their respective b
 Other Object management: 
 \code{\link{enlist}()},
 \code{\link{fill.na}()},
+\code{\link{get.object_sizes}()},
 \code{\link{scrub.data}()}
 }
 \concept{List management}

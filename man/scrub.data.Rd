@@ -22,6 +22,7 @@ scrub.data(input, condFn = is.na, replacement, ...)
 Other Object management: 
 \code{\link{distinct.list}()},
 \code{\link{enlist}()},
-\code{\link{fill.na}()}
+\code{\link{fill.na}()},
+\code{\link{get.object_sizes}()}
 }
 \concept{Object management}

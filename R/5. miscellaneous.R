@@ -144,17 +144,17 @@ unregex <- function(i, x){
 #' @return Matching values in \code{x} based on values of \code{i}
 #'
 #' @export
-	x = if (any(class(x) %in% c("data.table", "data.frame", "matrix", "tibble"))){ names(x) } else { x }
+	x = if (any(class(x) %in% c("data.table", "data.frame", "tibble"))){ names(x) } else { x }
 
 	reg.needle = i[is.regex(i)] |> unlist();
 
 	no_reg.needle = i[!is.regex(i)] |> unlist();
 
-	reg.match = if (!is_empty(reg.needle)){ x[x %like% paste(reg.needle, collapse = "|")] }
+	reg.match = if (!rlang::is_empty(reg.needle)){ x[grepl(paste(reg.needle, collapse = "|"), x)] }
 
-	no_reg.match = if (!is_empty(no_reg.needle)){ intersect(x, no_reg.needle) }
+	no_reg.match = if (!rlang::is_empty(no_reg.needle)){ intersect(x, no_reg.needle) }
 
-	c(if (!any(is_empty(reg.match))) reg.match, if (!any(is_empty(no_reg.match))) no_reg.match);
+	c(if (!any(rlang::is_empty(reg.match))) reg.match, if (!any(rlang::is_empty(no_reg.match))) no_reg.match);
 }
 #
 polyname2orig <- function(poly.names, orig.names, degree, ...){

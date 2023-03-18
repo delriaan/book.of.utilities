@@ -25,6 +25,7 @@ ratio(i, j = i, type = NULL, decimals = 2)
 }
 \seealso{
 Other Calculators: 
+\code{\link{as_quantile}()},
 \code{\link{range_diff}()},
 \code{\link{ranking.algorithm}()}
 }

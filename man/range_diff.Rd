@@ -17,6 +17,7 @@ A scalar value of the inclusive difference of upper and lower boundaries of the 
 }
 \seealso{
 Other Calculators: 
+\code{\link{as_quantile}()},
 \code{\link{ranking.algorithm}()},
 \code{\link{ratio}()}
 }

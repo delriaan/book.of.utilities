@@ -18,7 +18,7 @@ range_diff <- function(...){
 #' @export
 calc.range_diff <- range_diff;
 #
-calc.means <- function(a, mean.type = "am", post.op = eval){
+calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE, use.population = FALSE, ...){
 #' Calculate Means
 #'
 #' \code{calc.means} calculates various types of central-tendency measures for the vector passed to argument \code{a}
@@ -33,47 +33,76 @@ calc.means <- function(a, mean.type = "am", post.op = eval){
 #' \item "rms"(Root Mean Squared \url{https://en.wikipedia.org/wiki/Root_mean_square}): Return the square-root of the arithmetic mean of the squares of the elements of the input vector
 #' }
 #'
-#' @param a (numeric): A numeric vector
+#' @param data (numeric): A numeric vector
 #' @param mean.type (string): A character vector of the types of mean value operations to execute (see "Details")
 #' @param post.op (call | \code{\link[base]{eval}}): A function that will process the output before returning
-#' @return Arguments \code{a}, \code{mean.type}, and \code{post.op} determine the return type.
+#' @param as.zscore (logical | \code{FALSE}) Should the output be transformed to Z-scores?
+#' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE})?
+#' @param ... Additional arguments passed to other functions
+#'
+#' @return Arguments \code{data}, \code{mean.type}, and \code{post.op} determine the return type.
 #'
 #' @family Central-tendency calculations
 #'
+#' @importFrom magrittr %>% %<>%
+#'
 #' @export
 
-	a = as.vector(a);
+	check_z <- rlang::inject(purrr::as_mapper(~if (!!as.zscore & (.y == "zm")){
+		  	if (!!use.population){
+		  		.x/sqrt(mean(.x^2, na.rm = TRUE))
+		  	} else { .x/sd(.x, na.rm = TRUE) }
+		  } else { .x }));
 
-  func.list <- { list(
-      	am = purrr::as_mapper(~mean(.x, na.rm = TRUE))
-		, zm = purrr::as_mapper(~.x - mean(.x, na.rm = TRUE))
-		, gm = purrr::as_mapper(~{
-					i <- .x[!.x == 0];
-					if (any(sign(i) == -1)) { i <- as.complex(i) }
-					prod(i, na.rm = TRUE)^(-length(i))
-				})
-		, hm = purrr::as_mapper(~{ 
-					i <- .x[!.x == 0]; 
-					length(i) / sum(i^-1, na.rm = TRUE) 
-				})
-		, rms = purrr::as_mapper(~{
-					i <- mean(.x^2, na.rm = TRUE) 
-					if (any(sign(i) == -1)) { i <- as.complex(i) }
-					sqrt(i)
-				})
-    )}
+  func.list <- list(
+	    am = function(i, ...){
+	    				i %<>% as.vector();
 
-  if ("*" %in% mean.type) { mean.type <- names(func.list) }
+	    				mean(i, na.rm = TRUE, ...);
+	    			}
+			, zm = function(i, ...){
+							i %<>% as.vector();
 
-	output = if ("list" %in% class(a)){
-		purrr::map(func.list[mean.type], ~{ fn = .x; purrr::map(a, fn) })
-		} else if (any(c("data.frame", "data.table", "matrix") %in% class(a))){
-			purrr::map(func.list[mean.type], ~{ apply(X = a, MARGIN = 2, FUN = .x, ...) })
-		} else { 
-			purrr::map(func.list[mean.type], ~.x(a) ) 
+							(i - mean(i, na.rm = TRUE, ...));
+						}
+			, gm = function(i){
+							i %<>% as.vector();
+							i[!i == 0] |>
+								purrr::modify_if(any(sign(.x) == -1), as.complex) |>
+								prod(na.rm = TRUE) %>%
+								magrittr::raise_to_power(-length(.))
+							}
+			, hm = function(i){
+							i %<>% as.vector();
+							i[!i == 0] %>%
+							magrittr::raise_to_power(-1) |>
+							mean(na.rm = TRUE) |>
+							magrittr::raise_to_power(-1)
+						}
+			, rms = function(i, ...){
+							i %<>% as.vector();
+
+							mean(i^2, na.rm = TRUE, ...) |>
+								purrr::modify_if(any(sign(.x) == -1), ~as.complex(.x, ...)) |>
+								sqrt()
+							}
+  		);
+
+  if (any(mean.type %in% c("*", "all"))){ mean.type <- names(func.list) }
+
+	output <- if ("list" %in% class(data)){
+			purrr::imap(func.list[mean.type], ~{
+					f <- .x;
+					nm <- .y
+					purrr::map(data, ~f(.x) |> check_z(nm))
+				})
+		} else if (any(is.data.frame(data) || data.table::is.data.table(data) || is.matrix(data) || is.array(data))){
+			purrr::imap(func.list[mean.type], ~apply(X = data, MARGIN = 2, FUN = .x) |> check_z(.y))
+		} else {
+			purrr:i:map(func.list[mean.type], ~.x(data) |> check_z(.y))
 		}
 
-	post.op(if (rlang::has_length(output, 1)){ output[[1]] } else { output })
+	post.op(if (rlang::has_length(output, 1)){ output[[1]] } else { output });
 }
 #
 calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE) {
@@ -248,20 +277,20 @@ ranking.algorithm <- function(
   }
 }
 #
-as_quantile <- function(x, ...){ 
+as_quantile <- function(x, ...){
 #' Quantiles Transformation
-#' 
+#'
 #' \code{as_quantile} is a wrapper for \code{\link[stats]{quantile}}.
-#' 
+#'
 #' @param x The input vector
 #' @param ... (\code{\link[rlang]{dots_list}}): Additional arguments sent to \code{\link[stats]{quantile}}
-#' 
+#'
 #' @return A quantile representation of the input
 #' @family Calculators
-#' @export 
+#' @export
 
-  q.vec <- rlang::inject(quantile(x = x, ...)); 
+  q.vec <- rlang::inject(quantile(x = x, ...));
   idx <- sapply(x, function(i){ max(which(q.vec <= i))})
-  
+
   return(q.vec[idx])
 }
