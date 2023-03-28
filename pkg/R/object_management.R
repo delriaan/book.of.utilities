@@ -15,7 +15,7 @@ distinct.list <- function(i, logical.only = FALSE){
 
 	i = if (any(class(i) %in% c("data.table", "data.frame", "tibble"))){ as.list(i) } else { i }
 
-	x <- slider::slide(.x = i, .step = 1, .f = purrr::as_mapper(~sodium::hash(as.raw(.x), size = 24))) |> duplicated() |> magrittr::not()
+	x <- slider::slide(.x = i, .step = 1, .f = purrr::as_mapper(~sodium::hash(serialize(.x), size = 24))) |> duplicated() |> magrittr::not()
 	if (logical.only){ x } else { i[x] }
 }
 #
