@@ -67,7 +67,7 @@ factor.int <- function(i, ...){
 	if (is.numeric(i)){ i <- as.integer(i) }
 
 	i <- purrr::set_names(i);
-	.out = purrr::map(i, ~{ .int = .x; purrr::keep(sequence(.int), ~.int %% .x == 0) });
+	.out <- purrr::map(i, ~{ .int = .x; purrr::keep(sequence(.int), ~.int %% .x == 0) });
 
 	if (length(i) > 1){ distinct.list(.out[order(as.integer(names(.out)))]) } else { unlist(.out, use.names = FALSE) }
 }
