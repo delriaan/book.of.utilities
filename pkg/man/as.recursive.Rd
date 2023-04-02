@@ -4,7 +4,7 @@
 \alias{as.recursive}
 \title{Recast a Function as Recursive}
 \usage{
-as.recursive(fun, cond_def, finalize = I)
+as.recursive(fun, cond_def, finalize = I, max.iter = 0)
 }
 \arguments{
 \item{fun}{A function}
@@ -12,6 +12,8 @@ as.recursive(fun, cond_def, finalize = I)
 \item{cond_def}{A lambda expression defining the condition for which recursion continues}
 
 \item{finalize}{A lambda expression or function that finalizes the result}
+
+\item{max.iter}{(integer) The maximum number of recursive iterations}
 }
 \description{
 \code{as.recursive} creates a recursive version of the function passed to \code{fun}.

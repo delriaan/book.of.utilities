@@ -159,7 +159,7 @@ gen.primes <- function(n = 1, domain = 2:n, random = FALSE, distinct = TRUE, cha
 	# gen.primes(n = 100, domain = c(450, 9571), random = FALSE, distinct = TRUE) %>% { data.table::data.table(x = ., d = c(0, diff(.))) } %T>% print %>% plot
 }
 #
-as.recursive <- function(fun, cond_def, finalize = I){
+as.recursive <- function(fun, cond_def, finalize = I, max.iter = 0){
 #' Recast a Function as Recursive
 #'
 #' \code{as.recursive} creates a recursive version of the function passed to \code{fun}.
@@ -167,6 +167,7 @@ as.recursive <- function(fun, cond_def, finalize = I){
 #' @param fun A function
 #' @param cond_def A lambda expression defining the condition for which recursion continues
 #' @param finalize A lambda expression or function that finalizes the result
+#' @param max.iter (integer) The maximum number of recursive iterations
 #'
 #' @importFrom magrittr %<>% %>%
 #'
@@ -184,7 +185,7 @@ as.recursive <- function(fun, cond_def, finalize = I){
 
     out[[i]] <- .;
 
-    while(cond){
+    while((i < max.iter) & (i > 0) & cond){
       . <- fun(...);
 
       cond <- rlang::eval_tidy(rlang::f_rhs(cond_def));
