@@ -6,7 +6,7 @@ The following functional families are covered in book.of.utilities:
 
 ## Calculators
 
--   range.diff
+-   range_diff
 -   calc.means
 -   calc.geo_means
 -   calc.harmonic_mean
