@@ -277,10 +277,10 @@ ranking.algorithm <- function(
   }
 }
 #
-as_quantile <- function(x, ...){
+as.quantile <- function(x, ...){
 #' Quantiles Transformation
 #'
-#' \code{as_quantile} is a wrapper for \code{\link[stats]{quantile}}.
+#' \code{as.quantile} is a wrapper for \code{\link[stats]{quantile}}.
 #'
 #' @param x The input vector
 #' @param ... (\code{\link[rlang]{dots_list}}): Additional arguments sent to \code{\link[stats]{quantile}}

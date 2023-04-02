@@ -59,6 +59,7 @@ The following functional chapters are covered in \code{book.of.utilities}:\cr
 \item{\code{\link{unregex}}}
 \item{\code{\link{polyname2orig}}}
 \item{\code{\link{gen.primes}}}
+\item{\code{\link{as.recursive}}}
 }
 }
 

@@ -43,7 +43,7 @@ ranking.algorithm(
 }
 \seealso{
 Other Calculators: 
-\code{\link{as_quantile}()},
+\code{\link{as.quantile}()},
 \code{\link{range_diff}()},
 \code{\link{ratio}()}
 }

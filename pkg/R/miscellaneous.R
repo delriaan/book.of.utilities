@@ -158,3 +158,44 @@ gen.primes <- function(n = 1, domain = 2:n, random = FALSE, distinct = TRUE, cha
 	sort(output)
 	# gen.primes(n = 100, domain = c(450, 9571), random = FALSE, distinct = TRUE) %>% { data.table::data.table(x = ., d = c(0, diff(.))) } %T>% print %>% plot
 }
+#
+as.recursive <- function(fun, cond_def, finalize = I){
+#' Recast a Function as Recursive
+#'
+#' \code{as.recursive} creates a recursive version of the function passed to \code{fun}.
+#'
+#' @param fun A function
+#' @param cond_def A lambda expression defining the condition for which recursion continues
+#' @param finalize A lambda expression or function that finalizes the result
+#'
+#' @importFrom magrittr %<>% %>%
+#'
+#' @export
+#'
+
+  function(...){
+    out <- list();
+
+    i <- 1;
+
+    . <- fun(...);
+
+    cond <- rlang::eval_tidy(rlang::f_rhs(cond_def));
+
+    out[[i]] <- .;
+
+    while(cond){
+      . <- fun(...);
+
+      cond <- rlang::eval_tidy(rlang::f_rhs(cond_def));
+
+      out[[i+1]] <- .;
+    }
+
+    if (purrr::is_function(finalize)){
+    	finalize(.)
+    } else {
+    	rlang::eval_tidy(rlang::f_rhs(finalize))
+    }
+  }
+}
