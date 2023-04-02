@@ -67,7 +67,6 @@ scrub.data <- function(input, condFn = is.na, replacement, ...) {
   input[.index] <- replacement[ifelse(length(replacement) == 1, 1, .index)];
   input;
 }
-
 #
 get.object_sizes <- function(i = .GlobalEnv, nm = as.character(substitute(i)), depth = 0L, max.depth = 2L, chatty = FALSE, ...){
 #' Recursive Object Size Retrieval

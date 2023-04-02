@@ -44,3 +44,4 @@ The following functional families are covered in book.of.utilities:
 -   unregex
 -   polyname2orig
 -   gen.primes
+-   as.recursive

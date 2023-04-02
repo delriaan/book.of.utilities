@@ -43,6 +43,7 @@
 #'	\item{\code{\link{unregex}}}
 #'	\item{\code{\link{polyname2orig}}}
 #'	\item{\code{\link{gen.primes}}}
+#'	\item{\code{\link{as.recursive}}}
 #' }
 #'
 #' @importFrom magrittr %>% %T>% or %<>%

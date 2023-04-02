@@ -83,4 +83,17 @@ y <- data.table::data.table(i = sample(200, 10, TRUE), j = sample(200, 10, TRUE)
 v
 purrr::reduce(v$result, rbind)
 
-# pkgdown::build_site()
+# as.recursive() ====
+fun <- as.recursive(
+        fun = function(...){
+            sample(rlang::list2(...) |> unlist() |> as.vector(), size = 10, replace = TRUE)
+          }
+        , cond_def = ~mean(.) <= median(.)
+        , finalize = ~list(x = rlang::set_names(., seq_along(.)), y = reduce(., ~mean(c(.x, .x + .y), na.rm = TRUE)))
+        )
+
+(inspect <- fun(!!!c(1:100)))
+
+# Build Site ----
+# usethis::use_pkgdown()
+pkgdown::build_site(pkg = "pkg", lazy = TRUE, override = list(destination = "../docs"))
