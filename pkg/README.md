@@ -47,3 +47,5 @@ The following functional families are covered in book.of.utilities:
 -   as.recursive
 -   gen_pass
 -   checksum
+-   keyring_export
+-   keyring_import

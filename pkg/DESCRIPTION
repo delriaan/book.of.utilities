@@ -1,7 +1,7 @@
 Package: book.of.utilities
 Title: Utilities for Working with Data
 Description: `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
-Version: 1.2.0
+Version: 1.2.1
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -10,15 +10,16 @@ Author: Chionesu George <sapienti.Dei@outlook.com> [aut, cre]
 Maintainer: Chionesu George <sapienti.Dei@outlook.com>
 Depends: R (>= 4.1.0), purrr(< 1.0.0)
 Imports: rlang,
+	methods, 
 	data.table, 
 	foreach, 
 	iterators, 
 	stringi, 
 	magrittr,
 	readtext, 
-	slider,
 	sodium, 
-	methods, 
-	random, 
 	digest, 
-	curl
+	slider,
+	jsonlite, 
+	glue,
+	keyring

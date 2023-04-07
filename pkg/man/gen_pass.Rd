@@ -2,25 +2,22 @@
 % Please edit documentation in R/miscellaneous.R
 \name{gen_pass}
 \alias{gen_pass}
-\title{Generate a Password
-Use \code{gen_pass} to generate a password and automatically save it to the clipboard to paste.  The \code{random} package is the engine for generating output when an internet connection is available; otherwise, \code{\link[base]{sample}} is used.}
+\title{Generate a Password}
 \usage{
-gen_pass(
-  out_length = 24,
-  .symbols = c("!", "@", "#", "$", "\%", ")", "(", "."),
-  .alpha = c(letters, LETTERS),
-  .nums = 1:9
-)
+gen_pass(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE)
 }
 \arguments{
-\item{out_length}{(integer) The length of the output}
+\item{glyphs}{Character-coercibles to use in the creation of the password: this is combined with the output of \code{\link[sodium]{keygen}}}
 
-\item{.alpha, .nums, .symbols}{Letters, numbers, and symbols to use}
-}
-\value{
-Invisibly, a string of length \code{out_length}
+\item{length}{(int) The length of the password in character format}
+
+\item{raw}{(logical) Should the output be returned as raw?}
+
+\item{chatty}{(logical) Should diagnostic information be provided?}
 }
 \description{
-Generate a Password
-Use \code{gen_pass} to generate a password and automatically save it to the clipboard to paste.  The \code{random} package is the engine for generating output when an internet connection is available; otherwise, \code{\link[base]{sample}} is used.
+\code{gen_pass} creates a password consisting of alphanumeric glyphs and symbols
+}
+\note{
+The generated string \emph{always} begins with a letter before being returned as-is or as a raw vector
 }

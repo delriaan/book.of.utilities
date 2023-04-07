@@ -201,55 +201,6 @@ as.recursive <- function(fun, cond_def, finalize = I, max.iter = 0){
   }
 }
 #
-gen_pass <- function(out_length = 24, .symbols = c("!","@","#","$","%",")","(","."), .alpha = c(letters, LETTERS), .nums = 1:9){
-#' Generate a Password
-#' Use \code{gen_pass} to generate a password and automatically save it to the clipboard to paste.  The \code{random} package is the engine for generating output when an internet connection is available; otherwise, \code{\link[base]{sample}} is used.
-#'
-#' @param out_length (integer) The length of the output
-#' @param .alpha,.nums,.symbols Letters, numbers, and symbols to use
-#'
-#' @return Invisibly, a string of length \code{out_length}
-#' @export
-
-	# Generate the true-random result if an internet connection is available
-	if (curl::has_internet()){
-		.alphanum <- purrr::map(1:5, ~random::randomStrings(n = 5, len = 3, digits = TRUE, upperalpha = TRUE, loweralpha = TRUE,
-																												unique = TRUE, check = TRUE)) |> purrr::reduce(cbind);
-
-		.search_array <- expand.grid(1:5, 1:5);
-		.next_index <- .search_array[1, ] |> unlist();
-		.search_array <- .search_array[-1, ];
-
-		.out <- paste0(.alphanum[.next_index[1], .next_index[2]], sample(.symbols, 1))
-		.out_len <- stringi::stri_length(.out)
-
-		while(.out_len < out_length){
-			.next_index <- .search_array[1, ] |> unlist();
-			.search_array <- .search_array[-1, ];
-			.out <- paste0(
-				.out
-				, .alphanum[.next_index[1], .next_index[2]]
-				, ifelse(stats::runif(1, .1, 1) > 0.8, sample(.symbols, 1), "")
-			)
-			.out_len <- stringi::stri_length(.out)
-		}
-
-		invisible(.out)
-
-	} else {
-		.out <- paste(.alpha, .symbols, sample(.nums, out_length * 2, TRUE), rev(.alpha), sep = "") |>
-			# Now split the strings for sampling and final combination
-			strsplit("") |> unlist() |> unique();
-
-		# Generate the default, pseudo-random result
-		sample(x = .out
-					 , size = out_length
-					 , replace = TRUE
-					 , prob = stats::runif(n = length(.out), .1, .8)
-		) |> paste(collapse = "") |> invisible();
-	}
-}
-#
 checksum <- function(object, hash, ...){
 #' Checksum Validation
 #'
@@ -273,4 +224,163 @@ checksum <- function(object, hash, ...){
 	}
 
 	identical(digest::digest(object = object, ...), hash)
+}
+#
+gen_pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
+#' Generate a Password
+#'
+#' \code{gen_pass} creates a password consisting of alphanumeric glyphs and symbols
+#'
+#' @param glyphs Character-coercibles to use in the creation of the password: this is combined with the output of \code{\link[sodium]{keygen}}
+#' @param length (int) The length of the password in character format
+#' @param raw (logical) Should the output be returned as raw?
+#' @param chatty (logical) Should diagnostic information be provided?
+#'
+#' @note The generated string \emph{always} begins with a letter before being returned as-is or as a raw vector
+#' @export
+
+	set.seed(Sys.time());
+
+	force(glyphs);
+
+	glyphs <- { c(sodium::keygen(), LETTERS, glyphs) |>
+			stringi::stri_extract_all_regex(".", simplify = TRUE) |>
+			as.vector() |>
+			purrr::keep(~.x != "") |>
+			table()
+	}
+
+	.sample_wgt <- c(.75, 1, .5);
+
+	sample_glyphs <- purrr::as_mapper(~{
+		.this <- { ifelse(
+			grepl("[0-9A-Z]", names(.x))
+			, .x * .sample_wgt[1]
+			, ifelse(
+				grepl("[a-z]", names(.x))
+				, .x * .sample_wgt[2]
+				, .x * .sample_wgt[3]
+			)) * (3/.x)
+		} |>
+			ceiling() |>
+			purrr::imap(~rep.int(.y, .x)) |>
+			unlist(use.names = FALSE);
+
+		sample(
+			x = .this
+			, size = ifelse(rlang::is_empty(length), length(.this), length)
+			, replace = TRUE
+			, prob = c(table(.this))[.this]
+		) |>
+			paste(collapse = "") |>
+			stringi::stri_extract_all_regex(pattern = ".", simplify = TRUE) |>
+			as.vector();
+	});
+
+	.out <- sample_glyphs(glyphs);
+	.alpha_r <- sum(.out %in% letters) / length(.out);
+	.ALPHA_r <- sum(.out %in% LETTERS) / length(.out);
+	.alpha_ratio <- abs(.alpha_r - .ALPHA_r);
+
+	.iter <- 0;
+
+	while((.alpha_ratio > .10) & (.iter < 1000L)){
+		set.seed(sample(.Random.seed, 1));
+
+		.out <- sample_glyphs(glyphs);
+		.alpha_r <- sum(.out %in% letters) / length(.out);
+		.ALPHA_r <- sum(.out %in% LETTERS) / length(.out);
+		.ALPHA_r <- sum(.out %in% LETTERS) / length(.out);
+		.alpha_ratio <- abs(.alpha_r - .ALPHA_r);
+		.iter <- .iter + 1
+	}
+
+	if (chatty){ message(glue::glue("\nPassword generated with replication \ntries: {.iter}\nalpha_ratio:{.alpha_ratio}")) }
+
+	.out <- paste(c(sample(c(letters,LETTERS), 1), .out), collapse = "");
+
+	if (raw){ charToRaw(.out) } else { .out }
+}
+#
+keyring_export <- function(keyring = NULL, as.raw = FALSE){
+	#' Export keyring Entries
+	#'
+	#' \code{keyring_export} creates JSON output for available \code{\link[keyring]{keyring}}s
+	#'
+	#' @param keyring (string[]) The name(s) of keyrings to export (defaults to all named keyrings when calling \code{\link[keyring]{keyring_list}})
+	#' @param as.raw (logical | FALSE) Should each entry be cast as a raw vector?
+	#'
+	#' @return Keyring entries as JSON or raw-encoded JSON
+	#' @family keyring Utilities
+	#' @export
+	kr_idx <- if (rlang::is_empty(keyring)){
+		which(keyring::keyring_list()$keyring != "")
+	} else {
+		which(keyring::keyring_list()$keyring %in% keyring) %||% which(keyring::keyring_list()$keyring != "")
+	}
+
+	keyring::keyring_list()[kr_idx, ] |>
+		purrr::modify_at(3, as.logical) |>
+		purrr::modify_at(2, as.integer) |>
+		purrr::pmap(~{
+			kr <- ..1;
+
+			if (..3){ keyring::keyring_unlock(keyring = ..1) }
+
+			f <- purrr::as_mapper(~{
+				rlang::inject(
+					c(!!!.x
+						, value = keyring::key_get(!!!purrr::discard(.x, ~.x == ""), keyring = kr)
+					)
+				)
+			})
+
+			.out <- rlang::list2(!!kr := keyring::key_list(keyring = kr) |>
+													 	apply(1, f, simplify = TRUE) |> t() |>
+													 	as.data.frame() |>
+													 	jsonlite::toJSON("columns"))
+			if (as.raw){ purrr::modify_at(.out, kr, charToRaw) } else { .out }
+		}) |>
+		purrr::flatten()
+}
+#
+keyring_import <- function(data, ...){
+	#' Import keyring Entries
+	#'
+	#' \code{keyring_import} registers exported \code{\link[keyring]{keyring}}s (see \code{\link{keyring_export}})
+	#'
+	#' @param data The named list of exported keyring data
+	#' @param ... Additional named keyring entries
+	#'
+	#' @note Unnamed inputs will not be imported but indicated via console message
+	#'
+	#' @return Keyring entries as JSON or raw-encoded JSON
+	#' @family keyring Utilities
+	#' @export
+
+	data <- append(data, rlang::list2(...));
+	no.names <- which(names(data) == "")
+	if (!identical(integer(), no.names)){
+		message(sprintf("Entries at the following positions will not be imported: %s", paste(no.names, collapse = ", ")))
+	}
+
+	data <- data[-no.names];
+
+	if (rlang::is_empty(data)){
+		message("No action taken (all entries are unnamed): exiting ..."); return()
+	}
+
+	purrr::iwalk(data, ~{
+		keyring <- .y
+		kr_data <- if (is.raw(.x)){ rawToChar(.x) } else { .x }
+		jsonlite::fromJSON(kr_data) |>
+			purrr::pwalk(~{
+				keyring::key_set_with_value(
+					service 		= ..1
+					, username	= ..2
+					, password	= ..3
+					, keyring 	= keyring
+				)
+			})
+	})
 }
