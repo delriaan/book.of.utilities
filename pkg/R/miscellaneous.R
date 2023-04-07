@@ -200,3 +200,77 @@ as.recursive <- function(fun, cond_def, finalize = I, max.iter = 0){
     }
   }
 }
+#
+gen_pass <- function(out_length = 24, .symbols = c("!","@","#","$","%",")","(","."), .alpha = c(letters, LETTERS), .nums = 1:9){
+#' Generate a Password
+#' Use \code{gen_pass} to generate a password and automatically save it to the clipboard to paste.  The \code{random} package is the engine for generating output when an internet connection is available; otherwise, \code{\link[base]{sample}} is used.
+#'
+#' @param out_length (integer) The length of the output
+#' @param .alpha,.nums,.symbols Letters, numbers, and symbols to use
+#'
+#' @return Invisibly, a string of length \code{out_length}
+#' @export
+
+	# Generate the true-random result if an internet connection is available
+	if (curl::has_internet()){
+		.alphanum <- purrr::map(1:5, ~random::randomStrings(n = 5, len = 3, digits = TRUE, upperalpha = TRUE, loweralpha = TRUE,
+																												unique = TRUE, check = TRUE)) |> purrr::reduce(cbind);
+
+		.search_array <- expand.grid(1:5, 1:5);
+		.next_index <- .search_array[1, ] |> unlist();
+		.search_array <- .search_array[-1, ];
+
+		.out <- paste0(.alphanum[.next_index[1], .next_index[2]], sample(.symbols, 1))
+		.out_len <- stringi::stri_length(.out)
+
+		while(.out_len < out_length){
+			.next_index <- .search_array[1, ] |> unlist();
+			.search_array <- .search_array[-1, ];
+			.out <- paste0(
+				.out
+				, .alphanum[.next_index[1], .next_index[2]]
+				, ifelse(stats::runif(1, .1, 1) > 0.8, sample(.symbols, 1), "")
+			)
+			.out_len <- stringi::stri_length(.out)
+		}
+
+		invisible(.out)
+
+	} else {
+		.out <- paste(.alpha, .symbols, sample(.nums, out_length * 2, TRUE), rev(.alpha), sep = "") |>
+			# Now split the strings for sampling and final combination
+			strsplit("") |> unlist() |> unique();
+
+		# Generate the default, pseudo-random result
+		sample(x = .out
+					 , size = out_length
+					 , replace = TRUE
+					 , prob = stats::runif(n = length(.out), .1, .8)
+		) |> paste(collapse = "") |> invisible();
+	}
+}
+#
+checksum <- function(object, hash, ...){
+#' Checksum Validation
+#'
+#' \code{checksum} provides a wrapper to \code{\link[digest]{digest}} to make checksum validation easy
+#'
+#' @param object See \code{\link[digest]{digest}}
+#' @param hash (string) The hash to compare
+#' @param ... See \code{\link[digest]{digest}}
+#'
+#' @return A logical scalar
+#'
+#' @export
+	msg_list <- list(object = "Enter the path of the file to check: ", hash = "Enter the hash to compare");
+
+	if (missing(object)){
+		object <- if (interactive()){ tcltk::tk_choose.files(msg_list$object) } else { readline(msg_list$object) }
+	}
+
+	if (missing(hash)){
+		hash <- if (interactive()){ tcltk::tk_choose.files(msg_list$hash) } else { readline(msg_list$hash) }
+	}
+
+	identical(digest::digest(object = object, ...), hash)
+}

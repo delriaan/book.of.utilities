@@ -45,3 +45,5 @@ The following functional families are covered in book.of.utilities:
 -   polyname2orig
 -   gen.primes
 -   as.recursive
+-   gen_pass
+-   checksum
