@@ -23,3 +23,15 @@ A logical matrix, with rows of the same length as \code{vector} and columns the 
 \description{
 \code{vlike} is a vectorized version of \code{\link[data.table]{like}} allowing a pattern vector to be supplied
 }
+\seealso{
+Other Chapter 5 - Miscellaneous Functions: 
+\code{\link{as.regex}()},
+\code{\link{checksum}()},
+\code{\link{gen.pass}()},
+\code{\link{gen.primes}()},
+\code{\link{is.regex}()},
+\code{\link{log_note}()},
+\code{\link{polyname2orig}()},
+\code{\link{unregex}()}
+}
+\concept{Chapter 5 - Miscellaneous Functions}

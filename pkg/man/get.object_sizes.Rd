@@ -33,9 +33,9 @@ A vector of object sizes
 \code{get.object_sizes} recursively steps into child environments, retrieving object sizes along the way
 }
 \seealso{
-Other Object management: 
+Other Chapter 2 - Object Management: 
 \code{\link{distinct.list}()},
 \code{\link{enlist}()},
 \code{\link{scrub.data}()}
 }
-\concept{Object management}
+\concept{Chapter 2 - Object Management}

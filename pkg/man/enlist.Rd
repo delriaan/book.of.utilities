@@ -18,9 +18,9 @@ A list, the names of which being the values of \code{x}
 \code{enlist} creates a list from an atomic vector.  When names having the length of the input are provided to \code{...}, a list with members named accordingly is produced.  Otherwise, the members are named by their values (eg. \code{list(this="this", that="that")} ): this is the default behavior.
 }
 \seealso{
-Other Object management: 
+Other Chapter 2 - Object Management: 
 \code{\link{distinct.list}()},
 \code{\link{get.object_sizes}()},
 \code{\link{scrub.data}()}
 }
-\concept{Object management}
+\concept{Chapter 2 - Object Management}

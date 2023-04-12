@@ -21,3 +21,15 @@ The polynomial names vector with positions replaced with original name elements
 \description{
 \code{polyname2orig} renames the column output of the call to \code{\link[stats]{poly}} by replacing each ordinal slot with the original name
 }
+\seealso{
+Other Chapter 5 - Miscellaneous Functions: 
+\code{\link{as.regex}()},
+\code{\link{checksum}()},
+\code{\link{gen.pass}()},
+\code{\link{gen.primes}()},
+\code{\link{is.regex}()},
+\code{\link{log_note}()},
+\code{\link{unregex}()},
+\code{\link{vlogical}()}
+}
+\concept{Chapter 5 - Miscellaneous Functions}

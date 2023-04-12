@@ -1,3 +1,4 @@
+dir("pkg/R", full.names = TRUE) |> sapply(source)
 library(magrittr, include.only = c("%<>%", "%>%"));
 
 # calc.means() ====
@@ -63,7 +64,7 @@ vlogical(
 	, ignore.case = TRUE
 	)
 
-# ----
+# miscellaneous ----
 get.object_sizes() |> View()
 #
 # *regex ====
@@ -74,12 +75,14 @@ unregex(i = c(as.regex("mp|[cye]+"), "hp", "hq"), x = colnames(mtcars)) #  "mpg"
 
 unregex(i = c(as.regex("mp|[cye]+"), "hp", "hq"), x = mtcars) #  "mpg"  "cyl"  "qsec" "gear" "carb" "hp
 
-# Custom operators ----
+# custom operators ----
 x <- data.table::data.table(i = sample(100, 10), j = sample(100, 10), key = c("i", "j")) |> unique()
 y <- data.table::data.table(i = sample(200, 10, TRUE), j = sample(200, 10, TRUE), key = c("i", "j")) |> unique()
 (z <- x %><% y) |> str()
-(q <- x %::% y) |> str()
-(v <- z %??% q) |> str()
+(q <- x %tf% y) |> str()
+
+debug(`%??%`)
+(v <- data.table::data.table(y$i > mean(y$i), y$j <= mean(y$j)) %??% q) |> str()
 v
 purrr::reduce(v$result, rbind)
 
@@ -89,11 +92,15 @@ fun <- as.recursive(
             sample(rlang::list2(...) |> unlist() |> as.vector(), size = 10, replace = TRUE)
           }
         , cond_def = ~mean(.) <= median(.)
-        , finalize = ~list(x = rlang::set_names(., seq_along(.)), y = reduce(., ~mean(c(.x, .x + .y), na.rm = TRUE)))
+        , finalize = ~list(x = rlang::set_names(., seq_along(.)), y = purrr::reduce(., ~mean(c(.x, .x + .y), na.rm = TRUE)))
         )
 
 (inspect <- fun(!!!c(1:100)))
 
+# counters
+sample(c(TRUE, FALSE), 50, TRUE) %>% print() %>% count.cycles(reset = cumsum(.) %% 5 == 0)
+factor.int(100, 90)
+#
 # Build Site ----
 # usethis::use_pkgdown()
-pkgdown::build_site(pkg = "pkg", lazy = TRUE, override = list(destination = "../docs"))
+# pkgdown::build_site(pkg = "pkg", lazy = TRUE, override = list(destination = "../docs"))

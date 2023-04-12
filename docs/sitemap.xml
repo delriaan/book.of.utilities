@@ -49,6 +49,9 @@
     <loc>/reference/calc.zero_mean.html</loc>
   </url>
   <url>
+    <loc>/reference/checksum.html</loc>
+  </url>
+  <url>
     <loc>/reference/count.cycles.html</loc>
   </url>
   <url>
@@ -65,6 +68,9 @@
   </url>
   <url>
     <loc>/reference/fill.na.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gen.pass.html</loc>
   </url>
   <url>
     <loc>/reference/gen.primes.html</loc>
@@ -95,6 +101,12 @@
   </url>
   <url>
     <loc>/reference/is.regex.html</loc>
+  </url>
+  <url>
+    <loc>/reference/keyring_export.html</loc>
+  </url>
+  <url>
+    <loc>/reference/keyring_import.html</loc>
   </url>
   <url>
     <loc>/reference/log_note.html</loc>

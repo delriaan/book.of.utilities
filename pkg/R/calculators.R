@@ -6,7 +6,7 @@ range_diff <- function(...){
 #' @param ... (\code{\link[rlang]{dots_list}}): A numeric vector for which the range and corresponding difference is calculated. If a list is provided, the calculation is executed over each element of the list.
 #'
 #' @return A scalar value of the inclusive difference of upper and lower boundaries of the range of the input vector
-#' @family Calculators
+#' @family Chapter 1 - Calculators
 #'
 #' @export
 
@@ -42,7 +42,7 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 #'
 #' @return Arguments \code{data}, \code{mean.type}, and \code{post.op} determine the return type.
 #'
-#' @family Central-tendency calculations
+#' @family Chapter 1 - Calculators
 #'
 #' @importFrom magrittr %>% %<>%
 #'
@@ -117,7 +117,7 @@ calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population 
 #' @param as.zscore (logical | \code{FALSE}) Should the output be transformed to Z-scores?
 #' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE})?
 #'
-#' @family Central-tendency calculations
+#' @family Chapter 1 - Calculators
 #'
 #' @export
 
@@ -137,7 +137,7 @@ calc.rms <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Central-tendency calculations
+#' @family Chapter 1 - Calculators
 #'
 #' @export
 
@@ -152,7 +152,7 @@ calc.harmonic_mean <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Central-tendency calculations
+#' @family Chapter 1 - Calculators
 #'
 #' @export
 
@@ -167,7 +167,7 @@ calc.geo_mean <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Central-tendency calculations
+#' @family Chapter 1 - Calculators
 #'
 #' @export
 
@@ -189,7 +189,7 @@ ratio <- function(i, j = i, type = NULL, decimals = 2){
 #' @param type (string[]) The types of ratio algorithms to use (see Details): a vector of values is supported
 #' @param decimals (integer | 2) The number of decimal places to which the output should be rounded
 #'
-#' @family Calculators
+#' @family Chapter 1 - Calculators
 #'
 #' @export
 
@@ -238,7 +238,7 @@ ranking.algorithm <- function(
 #' @param dflt.fn (function) The default function to use when replacing \code{NA} values in ranks
 #' @param map.fn (function) The function to iterate the scores when computing the output
 #'
-#' @family Calculators
+#' @family Chapter 1 - Calculators
 #'
 #' @export
 
@@ -278,7 +278,7 @@ ranking.algorithm <- function(
 }
 #
 as.quantile <- function(x, ...){
-#' Quantiles Transformation
+#' Quantile Transformation
 #'
 #' \code{as.quantile} is a wrapper for \code{\link[stats]{quantile}}.
 #'
@@ -286,7 +286,7 @@ as.quantile <- function(x, ...){
 #' @param ... (\code{\link[rlang]{dots_list}}): Additional arguments sent to \code{\link[stats]{quantile}}
 #'
 #' @return A quantile representation of the input
-#' @family Calculators
+#' @family Chapter 1 - Calculators
 #' @export
 
   q.vec <- rlang::inject(stats::quantile(x = x, ...));

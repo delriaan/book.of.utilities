@@ -16,11 +16,11 @@ For each element \code{E} in \code{cond}, when \code{E} is \code{TRUE}, the corr
 For \code{result}, the easiest way to set the available choices is to use \code{\link{\%tf\%}}; otherwise, a environment(-like) object with members named \code{true} and \code{false}
 }
 \seealso{
-Other Custom operators: 
+Other Chapter 4 - Custom Operators: 
 \code{\link{\%><\%}()},
 \code{\link{\%?\%}()},
 \code{\link{\%bin\%}()},
 \code{\link{\%tf\%}()},
 \code{\link{test_between}()}
 }
-\concept{Custom operators}
+\concept{Chapter 4 - Custom Operators}

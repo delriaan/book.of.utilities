@@ -9,7 +9,7 @@ distinct.list <- function(i, logical.only = FALSE){
 #' @return The list with unique, first-level child elements
 #' @family List management
 #'
-#' @family Object management
+#' @family Chapter 2 - Object Management
 #'
 # @export
 
@@ -29,7 +29,7 @@ enlist <- function(x, ...){
 #'
 #' @return A list, the names of which being the values of \code{x}
 #'
-#' @family Object management
+#' @family Chapter 2 - Object Management
 #'
 #' @export
 #'
@@ -55,7 +55,7 @@ scrub.data <- function(input, condFn = is.na, replacement, ...) {
 #' @param replacement The replacement value
 #' @param ... (Not used)
 #'
-#' @family Object management
+#' @family Chapter 2 - Object Management
 #'
 #' @export
 
@@ -81,7 +81,7 @@ get.object_sizes <- function(i = .GlobalEnv, nm = as.character(substitute(i)), d
 #' @param ... Additional arguments passed to \code{\link[base]{ls}}
 #'
 #' @return A vector of object sizes
-#' @family Object management
+#' @family Chapter 2 - Object Management
 #'
 #' @export
   if (class(i)[1] == "environment"){

@@ -22,10 +22,14 @@ calc.zero_mean(a, post.op = eval, as.zscore = FALSE, use.population = FALSE)
 This is an alias that calls \code{\link{calc.means}(a, "hm")}
 }
 \seealso{
-Other Central-tendency calculations: 
+Other Chapter 1 - Calculators: 
+\code{\link{as.quantile}()},
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},
-\code{\link{calc.rms}()}
+\code{\link{calc.rms}()},
+\code{\link{range_diff}()},
+\code{\link{ranking.algorithm}()},
+\code{\link{ratio}()}
 }
-\concept{Central-tendency calculations}
+\concept{Chapter 1 - Calculators}

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as.recursive</span><span class="op">(</span><span class="va">fun</span>, <span class="va">cond_def</span>, finalize <span class="op">=</span> <span class="va">I</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as.recursive</span><span class="op">(</span><span class="va">fun</span>, <span class="va">cond_def</span>, finalize <span class="op">=</span> <span class="va">I</span>, max.iter <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -59,6 +59,10 @@
 
 <dt>finalize</dt>
 <dd><p>A lambda expression or function that finalizes the result</p></dd>
+
+
+<dt>max.iter</dt>
+<dd><p>(integer) The maximum number of recursive iterations</p></dd>
 
 </dl></div>
 

@@ -29,3 +29,15 @@ A vector of prime numbers
 \description{
 \code{get.primes} generates \code{n} prime numbers..
 }
+\seealso{
+Other Chapter 5 - Miscellaneous Functions: 
+\code{\link{as.regex}()},
+\code{\link{checksum}()},
+\code{\link{gen.pass}()},
+\code{\link{is.regex}()},
+\code{\link{log_note}()},
+\code{\link{polyname2orig}()},
+\code{\link{unregex}()},
+\code{\link{vlogical}()}
+}
+\concept{Chapter 5 - Miscellaneous Functions}
