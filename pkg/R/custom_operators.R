@@ -160,9 +160,10 @@ test_between <- function(a, z, temporal = FALSE, as.text = FALSE){
 #' @export
 #'
 
-	if (is.environment(result)){ result <<- data.table::as.data.table(mget(c("true", "false"), envir = result)) }
-	if (!data.table::is.data.table(result)){ result <<- data.table::as.data.table(result) }
+	return({ message("Function needs to be fixed: returning input as-is"); cond })
+	if (is.environment(result)){ result <- data.table::as.data.table(mget(c("true", "false"), envir = result)) }
+	if (!data.table::is.data.table(result)){ result <- data.table::as.data.table(result) }
 
-	purrr::map2(cond, purrr::array_branch(result, margin = 1), `%?%`) |> purrr::reduce(rbind)
+	purrr::map2(cond, purrr::array_branch(result, margin = 1), `%?%`) |> purrr::list_rbind()
+
 }
-

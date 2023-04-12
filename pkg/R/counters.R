@@ -48,7 +48,7 @@ factor.int <- function(i, ...){
 #' @param i (integer[]) One or more integers to factor
 #' @param ... Additional integers to factor (can be used in conjunction with \code{i})
 #'
-#' @return The factors of the input given as an vector or list of vectors
+#' @return The factors of the input given as a vector or list of vectors
 #'
 #' @family Counters
 #'
@@ -56,15 +56,14 @@ factor.int <- function(i, ...){
 
 	if (missing(i) & ...length() == 0){ message("[ERROR] Please supply integer values to either 'i' or '...'"); return(0); }
 	if (missing(i) & ...length() != 0){ i <- 0 }
-	i <- c(i, rlang::list2(...));
 
-	if (is.list(i)){ i <- unlist(i, use.names = FALSE) }
-	if (is.factor(i)){ i <- as.integer(i) }
-	if (is.character(i)){ i <- as.integer(i) }
-	if (is.numeric(i)){ i <- as.integer(i) }
-
+	i <- c(i, rlang::list2(...)) |> unlist() |> purrr::keep(is.numeric) |> round() |> as.integer();
 	i <- purrr::set_names(i);
-	.out = purrr::map(i, ~{ .int = .x; purrr::keep(sequence(.int), ~.int %% .x == 0) });
 
-	if (length(i) > 1){ distinct.list(.out[order(as.integer(names(.out)))]) } else { unlist(.out, use.names = FALSE) }
+	.out <- purrr::map(i, \(x) which(x %% sequence(x) == 0))
+
+	if (rlang::has_length(.out, 1)){ .out[[1]] } else { .out }
+	# .out = purrr::map(i, ~{ .int = .x; purrr::keep(sequence(.int), ~.int %% .x == 0) });
+
+	# if (length(i) > 1){ distinct.list(.out[order(as.integer(names(.out)))]) } else { unlist(.out, use.names = FALSE) }
 }

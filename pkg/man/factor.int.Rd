@@ -12,7 +12,7 @@ factor.int(i, ...)
 \item{...}{Additional integers to factor (can be used in conjunction with \code{i})}
 }
 \value{
-The factors of the input given as an vector or list of vectors
+The factors of the input given as a vector or list of vectors
 }
 \description{
 Factorization of Integers
