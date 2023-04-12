@@ -18,11 +18,11 @@ A \code{\link[data.table]{data.table}} object comprised of values occupying the 
 When \code{cond} is \code{TRUE}, \code{result$true} is returned, and the same for \code{cond == FALSE}.  For \code{result}, the easiest way to set the available choices is to use \code{\%::\%}; otherwise, a environment(-like) object with members named 'true' and 'false' must be provided
 }
 \seealso{
-Other Custom operators: 
+Other Chapter 4 - Custom Operators: 
 \code{\link{\%><\%}()},
 \code{\link{\%??\%}()},
 \code{\link{\%bin\%}()},
 \code{\link{\%tf\%}()},
 \code{\link{test_between}()}
 }
-\concept{Custom operators}
+\concept{Chapter 4 - Custom Operators}

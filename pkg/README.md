@@ -6,20 +6,21 @@ The following functional families are covered in book.of.utilities:
 
 ## Calculators
 
--   range_diff
 -   calc.means
--   calc.geo_means
--   calc.harmonic_mean
--   calc.rms
--   ratio
+    -   calc.geo_mean
+    -   calc.harmonic_mean
+    -   calc.rms
+    -   calc.zero_mean
+-   range_diff
 -   ranking.algorithm
+-   ratio
 
 ## Object Management
 
 -   distinct.list
 -   enlist
--   scrub.data
 -   fill.na
+-   scrub.data
 
 ## Counters
 
@@ -28,24 +29,23 @@ The following functional families are covered in book.of.utilities:
 
 ## Custom Operators
 
--   %bin%
 -   %\>\<%
--   %tf%, %::%
 -   %?%
 -   %??%
--   %all%
+-   %bin%
+-   %tf%
 
 ## Miscellaneous
 
--   log_note
--   vlogical
--   as.regex
--   is.regex
--   unregex
--   polyname2orig
--   gen.primes
 -   as.recursive
--   gen_pass
+-   as.regex
 -   checksum
+-   gen.pass
+-   gen.primes
+-   is.regex
 -   keyring_export
 -   keyring_import
+-   log_note
+-   polyname2orig
+-   unregex
+-   vlogical

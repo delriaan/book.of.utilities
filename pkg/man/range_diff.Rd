@@ -16,9 +16,14 @@ A scalar value of the inclusive difference of upper and lower boundaries of the 
 \code{range_diff} calculates the difference in the range of values given by \code{input}
 }
 \seealso{
-Other Calculators: 
+Other Chapter 1 - Calculators: 
 \code{\link{as.quantile}()},
+\code{\link{calc.geo_mean}()},
+\code{\link{calc.harmonic_mean}()},
+\code{\link{calc.means}()},
+\code{\link{calc.rms}()},
+\code{\link{calc.zero_mean}()},
 \code{\link{ranking.algorithm}()},
 \code{\link{ratio}()}
 }
-\concept{Calculators}
+\concept{Chapter 1 - Calculators}

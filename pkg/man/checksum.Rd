@@ -19,3 +19,15 @@ A logical scalar
 \description{
 \code{checksum} provides a wrapper to \code{\link[digest]{digest}} to make checksum validation easy
 }
+\seealso{
+Other Chapter 5 - Miscellaneous Functions: 
+\code{\link{as.regex}()},
+\code{\link{gen.pass}()},
+\code{\link{gen.primes}()},
+\code{\link{is.regex}()},
+\code{\link{log_note}()},
+\code{\link{polyname2orig}()},
+\code{\link{unregex}()},
+\code{\link{vlogical}()}
+}
+\concept{Chapter 5 - Miscellaneous Functions}

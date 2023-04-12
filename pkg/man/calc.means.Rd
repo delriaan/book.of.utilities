@@ -44,10 +44,14 @@ Valid `mean.type` values are as follows:
 }
 }
 \seealso{
-Other Central-tendency calculations: 
+Other Chapter 1 - Calculators: 
+\code{\link{as.quantile}()},
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.rms}()},
-\code{\link{calc.zero_mean}()}
+\code{\link{calc.zero_mean}()},
+\code{\link{range_diff}()},
+\code{\link{ranking.algorithm}()},
+\code{\link{ratio}()}
 }
-\concept{Central-tendency calculations}
+\concept{Chapter 1 - Calculators}

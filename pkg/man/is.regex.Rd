@@ -9,6 +9,21 @@ is.regex(i)
 \arguments{
 \item{i}{(string[]) A string or string vector}
 }
-\description{
-\code{is.regex} returns \code{TRUE} when the value of \code{i} contains class "regex"
+\value{
+Returns \code{TRUE} when the value of \code{i} contains class "regex"
 }
+\description{
+Test for Class 'regex'
+}
+\seealso{
+Other Chapter 5 - Miscellaneous Functions: 
+\code{\link{as.regex}()},
+\code{\link{checksum}()},
+\code{\link{gen.pass}()},
+\code{\link{gen.primes}()},
+\code{\link{log_note}()},
+\code{\link{polyname2orig}()},
+\code{\link{unregex}()},
+\code{\link{vlogical}()}
+}
+\concept{Chapter 5 - Miscellaneous Functions}

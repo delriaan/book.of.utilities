@@ -103,4 +103,4 @@ factor.int(100, 90)
 #
 # Build Site ----
 # usethis::use_pkgdown()
-pkgdown::build_site(pkg = "pkg", lazy = TRUE, override = list(destination = "../docs"))
+# pkgdown::build_site(pkg = "pkg", lazy = TRUE, override = list(destination = "../docs"))

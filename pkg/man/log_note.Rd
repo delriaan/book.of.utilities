@@ -22,3 +22,15 @@ See parameter \code{show}
 \code{log_note} serves as a wrapper for \code{\link[base]{cat}} and provides an easy way to write to a plain-text file
 Even though the original use-case is the real-time capturing of developer notes, it can be used for incremental writing to a file when needed.
 }
+\seealso{
+Other Chapter 5 - Miscellaneous Functions: 
+\code{\link{as.regex}()},
+\code{\link{checksum}()},
+\code{\link{gen.pass}()},
+\code{\link{gen.primes}()},
+\code{\link{is.regex}()},
+\code{\link{polyname2orig}()},
+\code{\link{unregex}()},
+\code{\link{vlogical}()}
+}
+\concept{Chapter 5 - Miscellaneous Functions}

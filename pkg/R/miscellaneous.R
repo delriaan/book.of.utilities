@@ -9,6 +9,8 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 #' @param append (logical | \code{TRUE}) When \code{TRUE} new content is appended.
 #'
 #' @return See parameter \code{show}
+#'
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 
 	tstamp = sprintf("[%s]\n", Sys.time());
@@ -41,7 +43,7 @@ vlogical <- function(vector, vpattern, test, simplify_with = NULL, ...){
 #' @param ... Additional arguments to be sent to the function held by argument \code{test}
 #'
 #' @return A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} TRUE for items that match pattern. If vector is dimensional, multiple \code{TRUE} values may be found for each row.
-#'
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 
 	if (missing(test)){ test <- data.table::like }
@@ -65,7 +67,7 @@ as.regex <- function(...){
 #' @param ... (\code{\link[rlang]{dots_list}}): The string to set "as regex"
 #'
 #' @return The string appended with attribute "regex" set to \code{TRUE}
-#'
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 
 	purrr::map(rlang::exprs(...), ~data.table::setattr(eval(.x), name = "regex", value = TRUE));
@@ -74,10 +76,10 @@ as.regex <- function(...){
 is.regex <- function(i){
 #' Test for Class 'regex'
 #'
-#' \code{is.regex} returns \code{TRUE} when the value of \code{i} contains class "regex"
-#'
 #' @param i (string[]) A string or string vector
 #'
+#' @return Returns \code{TRUE} when the value of \code{i} contains class "regex"
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 
 	purrr::map(i, ~ifelse(is.null(attr(.x, "regex")), FALSE, attr(.x, "regex"))) |> unlist();
@@ -90,7 +92,7 @@ unregex <- function(i, x){
 #' @param x (object) The names to search OR an object with column names
 #'
 #' @return Matching values in \code{x} based on values of \code{i}
-#'
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 	x = if (any(class(x) %in% c("data.table", "data.frame", "tibble"))){ names(x) } else { x }
 
@@ -116,7 +118,7 @@ polyname2orig <- function(poly.names, orig.names, degree, ...){
 #' @param ... Arguments to send to \code{\link[base]{paste}}, namely \code{sep} (default "_") and \code{collapse} (default ("_x_"))
 #'
 #' @return The polynomial names vector with positions replaced with original name elements
-#'
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 
 	.paste.args = list(
@@ -142,7 +144,7 @@ gen.primes <- function(n = 1, domain = 2:n, random = FALSE, distinct = TRUE, cha
 #' @param chatty (logical) When \code{TRUE}, various output is printed to console, mainly for debugging purposes
 #'
 #' @return A vector of prime numbers
-#'
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 
 	# Initialize
@@ -211,7 +213,7 @@ checksum <- function(object, hash, ...){
 #' @param ... See \code{\link[digest]{digest}}
 #'
 #' @return A logical scalar
-#'
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 	msg_list <- list(object = "Enter the path of the file to check: ", hash = "Enter the hash to compare");
 
@@ -226,10 +228,10 @@ checksum <- function(object, hash, ...){
 	identical(digest::digest(object = object, ...), hash)
 }
 #
-gen_pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
+gen.pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
 #' Generate a Password
 #'
-#' \code{gen_pass} creates a password consisting of alphanumeric glyphs and symbols
+#' \code{gen.pass} creates a password consisting of alphanumeric glyphs and symbols
 #'
 #' @param glyphs Character-coercibles to use in the creation of the password: this is combined with the output of \code{\link[sodium]{keygen}}
 #' @param length (int) The length of the password in character format
@@ -237,6 +239,7 @@ gen_pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
 #' @param chatty (logical) Should diagnostic information be provided?
 #'
 #' @note The generated string \emph{always} begins with a letter before being returned as-is or as a raw vector
+#' @family Chapter 5 - Miscellaneous Functions
 #' @export
 
 	set.seed(Sys.time());

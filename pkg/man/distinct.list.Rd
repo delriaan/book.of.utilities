@@ -18,10 +18,10 @@ The list with unique, first-level child elements
 Return the distinct set of first-level list elements based on their respective base64-encoded signatures.  This is an inefficient implementation used for nested lists
 }
 \seealso{
-Other Object management: 
+Other Chapter 2 - Object Management: 
 \code{\link{enlist}()},
 \code{\link{get.object_sizes}()},
 \code{\link{scrub.data}()}
 }
+\concept{Chapter 2 - Object Management}
 \concept{List management}
-\concept{Object management}

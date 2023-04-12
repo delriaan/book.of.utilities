@@ -18,11 +18,11 @@ An Boolean object comprised of the results of testing for "between-ness"
 \code{\link{test_between}} Operator
 }
 \seealso{
-Other Custom operators: 
+Other Chapter 4 - Custom Operators: 
 \code{\link{\%??\%}()},
 \code{\link{\%?\%}()},
 \code{\link{\%bin\%}()},
 \code{\link{\%tf\%}()},
 \code{\link{test_between}()}
 }
-\concept{Custom operators}
+\concept{Chapter 4 - Custom Operators}

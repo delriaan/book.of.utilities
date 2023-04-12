@@ -42,9 +42,14 @@ ranking.algorithm(
 \code{ranking.algorithm} ranks values across a vector of values
 }
 \seealso{
-Other Calculators: 
+Other Chapter 1 - Calculators: 
 \code{\link{as.quantile}()},
+\code{\link{calc.geo_mean}()},
+\code{\link{calc.harmonic_mean}()},
+\code{\link{calc.means}()},
+\code{\link{calc.rms}()},
+\code{\link{calc.zero_mean}()},
 \code{\link{range_diff}()},
 \code{\link{ratio}()}
 }
-\concept{Calculators}
+\concept{Chapter 1 - Calculators}

@@ -9,7 +9,7 @@ count.cycles <- function(cond, offset = 1, reset){
 #'
 #' @return A one-based (default), conditionally-incremented series
 #'
-#' @family Counters
+#' @family Chapter 3 - Counters
 #'
 #' @export
 
@@ -50,7 +50,7 @@ factor.int <- function(i, ...){
 #'
 #' @return The factors of the input given as a vector or list of vectors
 #'
-#' @family Counters
+#' @family Chapter 3 - Counters
 #'
 #' @export
 

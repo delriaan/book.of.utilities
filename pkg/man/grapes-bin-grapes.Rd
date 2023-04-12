@@ -18,11 +18,11 @@ The input after subtracting Modulo(b): x - (x %% b)
 \code{\%bin\%} creates a vector of values in \code{a} represented as multiples of \code{b}
 }
 \seealso{
-Other Custom operators: 
+Other Chapter 4 - Custom Operators: 
 \code{\link{\%><\%}()},
 \code{\link{\%??\%}()},
 \code{\link{\%?\%}()},
 \code{\link{\%tf\%}()},
 \code{\link{test_between}()}
 }
-\concept{Custom operators}
+\concept{Chapter 4 - Custom Operators}

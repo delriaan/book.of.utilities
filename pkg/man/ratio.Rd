@@ -24,9 +24,14 @@ ratio(i, j = i, type = NULL, decimals = 2)
 }.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{j}.
 }
 \seealso{
-Other Calculators: 
+Other Chapter 1 - Calculators: 
 \code{\link{as.quantile}()},
+\code{\link{calc.geo_mean}()},
+\code{\link{calc.harmonic_mean}()},
+\code{\link{calc.means}()},
+\code{\link{calc.rms}()},
+\code{\link{calc.zero_mean}()},
 \code{\link{range_diff}()},
 \code{\link{ranking.algorithm}()}
 }
-\concept{Calculators}
+\concept{Chapter 1 - Calculators}

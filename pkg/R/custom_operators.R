@@ -8,7 +8,7 @@
 #'
 #' @return The input after subtracting Modulo(b): x - (x %% b)
 #'
-#' @family Custom operators
+#' @family Chapter 4 - Custom Operators
 #'
 #' @export
 
@@ -36,7 +36,7 @@ test_between <- function(a, z, temporal = FALSE, as.text = FALSE){
 #'
 #' @return An Boolean object comprised of the results of testing for "between-ness"
 #'
-#' @family Custom operators
+#' @family Chapter 4 - Custom Operators
 #'
 #' @export
 
@@ -97,7 +97,7 @@ test_between <- function(a, z, temporal = FALSE, as.text = FALSE){
 #'
 #' @return An Boolean object comprised of the results of testing for "between-ness"
 #'
-#' @family Custom operators
+#' @family Chapter 4 - Custom Operators
 #'
 #' @export
 	test_between(a = a, z = z)
@@ -115,7 +115,7 @@ test_between <- function(a, z, temporal = FALSE, as.text = FALSE){
 #'
 #' @return a \code{\link[data.table]{data.table}} of resultant values options for `true` and `false`
 #'
-#' @family Custom operators
+#' @family Chapter 4 - Custom Operators
 #'
 #' @export
 
@@ -137,7 +137,7 @@ test_between <- function(a, z, temporal = FALSE, as.text = FALSE){
 #'
 #' @return A \code{\link[data.table]{data.table}} object comprised of values occupying the 'then' and 'else' slots in the 'if-then-else' logical test
 #'
-#' @family Custom operators
+#' @family Chapter 4 - Custom Operators
 #'
 #' @export
 #'
@@ -155,7 +155,7 @@ test_between <- function(a, z, temporal = FALSE, as.text = FALSE){
 #' @param cond (logical) A \emph{vector} or \emph{tensor} that evaluates to \code{TRUE} or \code{FALSE}
 #' @param result (vector) Resultant values for TRUE and FALSE conditionals, ideally stored in a dimension-ed object (e.g, \code{\link[base]{data.frame}}, \code{\link[data.table]{data.table}})
 #'
-#' @family Custom operators
+#' @family Chapter 4 - Custom Operators
 #'
 #' @export
 #'
