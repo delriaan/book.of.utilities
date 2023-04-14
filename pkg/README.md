@@ -1,10 +1,10 @@
-# Book of Utilities Overview
+# ![book](../img/book_small.png) Book of Utilities
 
 *book.of.utilities* seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
 
 The following functional families are covered in book.of.utilities:
 
-## Calculators
+## Chapter 1 - Calculators
 
 -   calc.means
     -   calc.geo_mean
@@ -15,19 +15,19 @@ The following functional families are covered in book.of.utilities:
 -   ranking.algorithm
 -   ratio
 
-## Object Management
+## Chapter 2 - Object Management
 
 -   distinct.list
 -   enlist
 -   fill.na
 -   scrub.data
 
-## Counters
+## Chapter 3 - Counters
 
 -   count.cycles
 -   factor.int
 
-## Custom Operators
+## Chapter 4 - Custom Operators
 
 -   %\>\<%
 -   %?%
@@ -35,7 +35,7 @@ The following functional families are covered in book.of.utilities:
 -   %bin%
 -   %tf%
 
-## Miscellaneous
+## Chapter 5 - Miscellaneous
 
 -   as.recursive
 -   as.regex
