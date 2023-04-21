@@ -4,7 +4,13 @@
 \alias{calc.zero_mean}
 \title{Calculate the Zero-Mean}
 \usage{
-calc.zero_mean(a, post.op = eval, as.zscore = FALSE, use.population = FALSE)
+calc.zero_mean(
+  a,
+  post.op = eval,
+  as.zscore = FALSE,
+  use.population = FALSE,
+  sample_size = 0
+)
 }
 \arguments{
 \item{a}{(vector) A vector of numeric values}
@@ -13,7 +19,7 @@ calc.zero_mean(a, post.op = eval, as.zscore = FALSE, use.population = FALSE)
 
 \item{as.zscore}{(logical | \code{FALSE}) Should the output be transformed to Z-scores?}
 
-\item{use.population}{(logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE})?}
+\item{use.population}{(logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation.}
 }
 \description{
 \code{calc.zero_mean} subtracts the mean from the input

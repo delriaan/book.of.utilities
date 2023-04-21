@@ -16,7 +16,6 @@ range_diff <- function(...){
 
 	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
-
 #
 calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE, use.population = FALSE, ...){
 #' Calculate Means
@@ -105,7 +104,7 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 	post.op(if (rlang::has_length(output, 1)){ output[[1]] } else { output });
 }
 #
-calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE, SE = NULL, pop_sd = 1) {
+calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE, sample_size = 0){
 #' Calculate the Zero-Mean
 #'
 #' \code{calc.zero_mean} subtracts the mean from the input
@@ -115,19 +114,17 @@ calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population 
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #' @param as.zscore (logical | \code{FALSE}) Should the output be transformed to Z-scores?
-#' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE})?
+#' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation.
 #'
 #' @family Chapter 1 - Calculators
 #'
 #' @export
 
   .out <- calc.means(a, mean.type = "zm", post.op = post.op) |> unlist();
-	.sigma <- ifelse(use.population, sd(.a, na.rm = TRUE))
+
   if (as.zscore){
-  	ifelse(use.population, 1, sqrt(n)) * .out/sd(.out, na.rm = TRUE)
-  	} else {
-  		.out/sd(.out(.out^2, na.rm = TRUE))
-  	}
+		.sigma <- ifelse(use.population, sd(a, na.rm = TRUE), sd(.out, na.rm = TRUE)/sqrt(length(.out)));
+  	.out/.sigma
   } else { .out }
 }
 #
