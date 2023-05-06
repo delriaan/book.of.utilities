@@ -178,21 +178,14 @@ as.recursive <- function(fun, cond_def, finalize = I, max.iter = 0){
 
   function(...){
     out <- list();
+    out[[i]] <- . <- fun(...);
+    cond <- rlang::eval_tidy(rlang::f_rhs(cond_def));
 
     i <- 1;
 
-    . <- fun(...);
-
-    cond <- rlang::eval_tidy(rlang::f_rhs(cond_def));
-
-    out[[i]] <- .;
-
     while((i < max.iter) & (i > 0) & cond){
-      . <- fun(...);
-
       cond <- rlang::eval_tidy(rlang::f_rhs(cond_def));
-
-      out[[i+1]] <- .;
+    	out[[i+1]] <- . <- fun(...);
     }
 
     if (purrr::is_function(finalize)){
@@ -206,11 +199,10 @@ as.recursive <- function(fun, cond_def, finalize = I, max.iter = 0){
 checksum <- function(object, hash, ...){
 #' Checksum Validation
 #'
-#' \code{checksum} provides a wrapper to \code{\link[digest]{digest}} to make checksum validation easy
+#' \code{checksum} provides a wrapper to \code{\link[digest]{digest}} providing the hash to use for comparison
 #'
-#' @param object See \code{\link[digest]{digest}}
+#' @param object,... See \code{\link[digest]{digest}}
 #' @param hash (string) The hash to compare
-#' @param ... See \code{\link[digest]{digest}}
 #'
 #' @return A logical scalar
 #' @family Chapter 5 - Miscellaneous Functions
