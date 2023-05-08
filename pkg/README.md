@@ -37,8 +37,8 @@ The following functional families are covered in book.of.utilities:
 
 ## Chapter 5 - Miscellaneous
 
--   as.recursive
 -   as.regex
+-   call.recursion
 -   checksum
 -   gen.pass
 -   gen.primes

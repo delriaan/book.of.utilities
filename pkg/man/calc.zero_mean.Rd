@@ -4,13 +4,7 @@
 \alias{calc.zero_mean}
 \title{Calculate the Zero-Mean}
 \usage{
-calc.zero_mean(
-  a,
-  post.op = eval,
-  as.zscore = FALSE,
-  use.population = FALSE,
-  sample_size = 0
-)
+calc.zero_mean(a, post.op = eval, as.zscore = FALSE, use.population = FALSE)
 }
 \arguments{
 \item{a}{(vector) A vector of numeric values}

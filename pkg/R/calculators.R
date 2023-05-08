@@ -104,7 +104,7 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 	post.op(if (rlang::has_length(output, 1)){ output[[1]] } else { output });
 }
 #
-calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE, sample_size = 0){
+calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE){
 #' Calculate the Zero-Mean
 #'
 #' \code{calc.zero_mean} subtracts the mean from the input
