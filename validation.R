@@ -43,10 +43,15 @@ calc.zero_mean(x.boot, as.zscore = TRUE) |>
 
 
 # List Output
-x <- list(set_1 = sample(30, 10), set_2 = sample(90, 10))
+x <- list(set_1 = c(1, 26, 7, 21, 27, 3, 29, 24, 12, 20)
+					, set_2 = c(90, 78, 1, 54, 40, 11, 48, 20, 28, 22)
+					)
 
 print(x) |>
 	calc.harmonic_mean();
+
+print(x) |>
+	calc.geo_mean();
 
 print(x) |>
 	calc.means(mean.type = c("am", "hm"));
@@ -56,7 +61,7 @@ print(x) |>
 	calc.means(post.op = simplify2array);
 
 print(x) |>
-	calc.means(mean.type = c("am", "hm", "zm"), post.op = simplify2array) |> str()
+	calc.means(mean.type = c("am", "hm", "zm", "gm"), post.op = simplify2array) |> str()
 
 print(x) |>
 	calc.means(mean.type = c("am", "hm", "zm"), post.op = simplify2array, as.zscore = TRUE) |> str()

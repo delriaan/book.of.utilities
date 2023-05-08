@@ -55,12 +55,12 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 
   func.list <- list(
 	    am = function(i, ...){
-	    				i %<>% as.vector();
+	    				i <- as.vector(i);
 
 	    				mean(i, na.rm = TRUE, ...);
 	    			}
 			, zm = function(i, ...){
-							i %<>% as.vector();
+							i <- as.vector(i);
 
 							(i - mean(i, na.rm = TRUE, ...));
 						}
@@ -69,22 +69,23 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 
 							purrr::modify_if(i, ~any(sign(.x) == -1), as.complex) |>
 								prod(na.rm = TRUE) %>%
-								magrittr::raise_to_power(-length(i))
+								magrittr::raise_to_power(1/length(i))
 						}
 			, hm = function(i){
-							i %<>% as.vector();
-							i[!i == 0] %>%
-							magrittr::raise_to_power(-1) |>
-							mean(na.rm = TRUE) |>
-							magrittr::raise_to_power(-1)
+								i <- as.vector(i);
+
+								i[!i == 0] %>%
+									magrittr::raise_to_power(-1) |>
+									mean(na.rm = TRUE) |>
+									magrittr::raise_to_power(-1)
 						}
 			, rms = function(i, ...){
-							i %<>% as.vector();
+								i <- as.vector(i)
 
-							mean(i^2, na.rm = TRUE, ...) |>
-								purrr::modify_if(~any(sign(.x) == -1), ~as.complex(.x, ...)) |>
-								sqrt()
-							}
+								mean(i^2, na.rm = TRUE, ...) |>
+									purrr::modify_if(~any(sign(.x) == -1), ~as.complex(.x, ...)) |>
+									sqrt()
+								}
   		);
 
   if (any(mean.type %in% c("*", "all"))){ mean.type <- names(func.list) }
