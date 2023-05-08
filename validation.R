@@ -6,17 +6,52 @@ calc.means(sample(30, 10) |> print());
 calc.means(sample(30, 10) |> print(), "hm");
 calc.means(sample(30, 10) |> print(), mean.type = c("am", "hm"));
 
-x <- sample(100, 50)
-calc.zero_mean(x)
-calc.zero_mean(x, as.zscore = TRUE)
-calc.zero_mean(x, use.population = TRUE )
-calc.zero_mean(x, as.zscore = TRUE, use.population = TRUE)
+pop <- rnorm(n = 1000, 30, 1)
+samp <- sample(pop, 100)
+
+calc.zero_mean(pop)
+calc.zero_mean(pop, use.population = TRUE) # Should be identical to calling 'calc.zero_mean(pop)'
+
+calc.zero_mean(samp)
+calc.zero_mean(samp, use.population = TRUE) # Should be identical to calling 'calc.zero_mean(samp)'
+
+x.boot <- NULL
+x.boot <- replicate(100, sample(samp, length(samp), TRUE)) |> colMeans();
+calc.zero_mean(x.boot, as.zscore = TRUE) |>
+	sort() |>
+	print() |>
+	list() |>
+	rlang::set_names("z") |>
+	data.table::as.data.table(key = "z") %>%
+	.[, pareto := as.quantile(z, digits = 6) %>% magrittr::add(abs(min(.))) |> ratio(type = "of.max", decimals = 6)] |>
+	ggplot2::ggplot(ggplot2::aes(x = z, y = pareto)) +
+	ggplot2::geom_point() +
+	ggplot2::labs(title = "Bootstrapped Means")
+
+x.boot <- NULL
+x.boot <- replicate(100, sample(samp, length(samp), TRUE)) |> matrixStats::colMedians(); # Using a different point-estimate
+calc.zero_mean(x.boot, as.zscore = TRUE) |>
+	sort() |>
+	print() |>
+	list() |>
+	rlang::set_names("z") |>
+	data.table::as.data.table(key = "z") %>%
+	.[, pareto := as.quantile(z, digits = 6) %>% magrittr::add(abs(min(.))) |> ratio(type = "of.max", decimals = 6)] |>
+	ggplot2::ggplot(ggplot2::aes(x = z, y = pareto)) +
+	ggplot2::geom_point() +
+	ggplot2::labs(title = "Bootstrapped Medians")
+
 
 # List Output
-x <- list(set_1 = sample(30, 10), set_2 = sample(90, 10))
+x <- list(set_1 = c(1, 26, 7, 21, 27, 3, 29, 24, 12, 20)
+					, set_2 = c(90, 78, 1, 54, 40, 11, 48, 20, 28, 22)
+					)
 
 print(x) |>
 	calc.harmonic_mean();
+
+print(x) |>
+	calc.geo_mean();
 
 print(x) |>
 	calc.means(mean.type = c("am", "hm"));
@@ -26,7 +61,7 @@ print(x) |>
 	calc.means(post.op = simplify2array);
 
 print(x) |>
-	calc.means(mean.type = c("am", "hm", "zm"), post.op = simplify2array) |> str()
+	calc.means(mean.type = c("am", "hm", "zm", "gm"), post.op = simplify2array) |> str()
 
 print(x) |>
 	calc.means(mean.type = c("am", "hm", "zm"), post.op = simplify2array, as.zscore = TRUE) |> str()

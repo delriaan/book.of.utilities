@@ -16,7 +16,6 @@ range_diff <- function(...){
 
 	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
-
 #
 calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE, use.population = FALSE, ...){
 #' Calculate Means
@@ -56,12 +55,12 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 
   func.list <- list(
 	    am = function(i, ...){
-	    				i %<>% as.vector();
+	    				i <- as.vector(i);
 
 	    				mean(i, na.rm = TRUE, ...);
 	    			}
 			, zm = function(i, ...){
-							i %<>% as.vector();
+							i <- as.vector(i);
 
 							(i - mean(i, na.rm = TRUE, ...));
 						}
@@ -70,22 +69,23 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 
 							purrr::modify_if(i, ~any(sign(.x) == -1), as.complex) |>
 								prod(na.rm = TRUE) %>%
-								magrittr::raise_to_power(-length(i))
+								magrittr::raise_to_power(1/length(i))
 						}
 			, hm = function(i){
-							i %<>% as.vector();
-							i[!i == 0] %>%
-							magrittr::raise_to_power(-1) |>
-							mean(na.rm = TRUE) |>
-							magrittr::raise_to_power(-1)
+								i <- as.vector(i);
+
+								i[!i == 0] %>%
+									magrittr::raise_to_power(-1) |>
+									mean(na.rm = TRUE) |>
+									magrittr::raise_to_power(-1)
 						}
 			, rms = function(i, ...){
-							i %<>% as.vector();
+								i <- as.vector(i)
 
-							mean(i^2, na.rm = TRUE, ...) |>
-								purrr::modify_if(~any(sign(.x) == -1), ~as.complex(.x, ...)) |>
-								sqrt()
-							}
+								mean(i^2, na.rm = TRUE, ...) |>
+									purrr::modify_if(~any(sign(.x) == -1), ~as.complex(.x, ...)) |>
+									sqrt()
+								}
   		);
 
   if (any(mean.type %in% c("*", "all"))){ mean.type <- names(func.list) }
@@ -105,7 +105,7 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 	post.op(if (rlang::has_length(output, 1)){ output[[1]] } else { output });
 }
 #
-calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE) {
+calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE){
 #' Calculate the Zero-Mean
 #'
 #' \code{calc.zero_mean} subtracts the mean from the input
@@ -115,17 +115,17 @@ calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population 
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #' @param as.zscore (logical | \code{FALSE}) Should the output be transformed to Z-scores?
-#' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE})?
+#' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation.
 #'
 #' @family Chapter 1 - Calculators
 #'
 #' @export
 
-  .out = calc.means(a, mean.type = "zm", post.op = post.op) |> unlist()
+  .out <- calc.means(a, mean.type = "zm", post.op = post.op) |> unlist();
+
   if (as.zscore){
-  	if (use.population){
-  		.out/sqrt(mean(.out^2, na.rm = TRUE))
-  	} else { .out/sd(.out, na.rm = TRUE) }
+		.sigma <- ifelse(use.population, sd(a, na.rm = TRUE), sd(.out, na.rm = TRUE)/sqrt(length(.out)));
+  	.out/.sigma
   } else { .out }
 }
 #

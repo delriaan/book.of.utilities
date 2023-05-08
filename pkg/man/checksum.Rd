@@ -7,17 +7,15 @@
 checksum(object, hash, ...)
 }
 \arguments{
-\item{object}{See \code{\link[digest]{digest}}}
+\item{object, ...}{See \code{\link[digest]{digest}}}
 
 \item{hash}{(string) The hash to compare}
-
-\item{...}{See \code{\link[digest]{digest}}}
 }
 \value{
 A logical scalar
 }
 \description{
-\code{checksum} provides a wrapper to \code{\link[digest]{digest}} to make checksum validation easy
+\code{checksum} provides a wrapper to \code{\link[digest]{digest}} providing the hash to use for comparison
 }
 \seealso{
 Other Chapter 5 - Miscellaneous Functions: 

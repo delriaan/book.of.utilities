@@ -161,56 +161,74 @@ gen.primes <- function(n = 1, domain = 2:n, random = FALSE, distinct = TRUE, cha
 	# gen.primes(n = 100, domain = c(450, 9571), random = FALSE, distinct = TRUE) %>% { data.table::data.table(x = ., d = c(0, diff(.))) } %T>% print %>% plot
 }
 #
-as.recursive <- function(fun, cond_def, finalize = I, max.iter = 0){
-#' Recast a Function as Recursive
+call.recursion <- function(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simplify = TRUE){
+#' Execute a Function as Recursively
 #'
-#' \code{as.recursive} creates a recursive version of the function passed to \code{fun}.
+#' \code{call.recursion} Executes a recursive calls to \code{fun} based on the output of \code{test} up to \code{max.iter} times
 #'
-#' @param fun A function
-#' @param cond_def A lambda expression defining the condition for which recursion continues
-#' @param finalize A lambda expression or function that finalizes the result
-#' @param max.iter (integer) The maximum number of recursive iterations
+#' @param x The input object
+#' @param fun A function that operates on \code{x} and produces output
+#' @param test A single-argument function returning a single Boolean: \code{FALSE} stops iteration
+#' @param nxt A function that operates on the current output of \code{fun9x)} to send to the \emph{next} iterative call to \code{fun()}
+#' @param max.iter (integer) The maximum number of iterations
+#' @param cur.iter (integer) The current iteration index
+#' @param simplify (logical) Should only the last value be returned (\code{TRUE}) or intermediate values as well (\code{FALSE})?
 #'
 #' @importFrom magrittr %<>% %>%
 #'
+#' @examples
+#' output <- book.of.utilities::call.recursion(
+#'	x = sample(1000, size = 100)
+#'	, fun = \(x){ abs(x - mean(x, na.rm = TRUE)) }
+#'	, test = \(x){
+#'			if (length(unique(x)) == 1 || is.na(sd(x))){
+#'				FALSE
+#'			} else {
+#'				i <- abs(x - mean(x, na.rm = TRUE))/sd(x);
+#'				mean(i > 3) <= 0.7
+#'			}
+#'		}
+#'	, nxt = \(x){ sample(x, size = length(x)- 1, prob = runif(n = length(x), min = 0.1, max = 0.9)) }
+#'	, max.iter = 1000
+#'	, simplify = !FALSE
+#'	)
+#'
 #' @export
 #'
+	force(fun);
+	force(test);
+	force(nxt)
 
-  function(...){
-    out <- list();
+	iterations <- list();
 
-    i <- 1;
+	ans <- fun(x);
 
-    . <- fun(...);
+	iterations[[1]] <- mget(c("ans", "test"));
 
-    cond <- rlang::eval_tidy(rlang::f_rhs(cond_def));
+	while(test(ans) & (cur.iter < max.iter)){
+		cur.iter <- cur.iter + 1;
 
-    out[[i]] <- .;
+		x <- nxt(ans);
 
-    while((i < max.iter) & (i > 0) & cond){
-      . <- fun(...);
+		ans <- fun(x);
 
-      cond <- rlang::eval_tidy(rlang::f_rhs(cond_def));
+		iterations[[cur.iter]] <- mget(c("cur.iter", "x", "ans")) |> purrr::modify_at(c("x", "ans"), list);
+	}
 
-      out[[i+1]] <- .;
-    }
-
-    if (purrr::is_function(finalize)){
-    	finalize(.)
-    } else {
-    	rlang::eval_tidy(rlang::f_rhs(finalize))
-    }
-  }
+	if (!simplify){
+		purrr::map(iterations, \(x) x$ans)
+	} else {
+		iterations[[length(iterations)]][["ans"]]
+	}
 }
 #
 checksum <- function(object, hash, ...){
 #' Checksum Validation
 #'
-#' \code{checksum} provides a wrapper to \code{\link[digest]{digest}} to make checksum validation easy
+#' \code{checksum} provides a wrapper to \code{\link[digest]{digest}} providing the hash to use for comparison
 #'
-#' @param object See \code{\link[digest]{digest}}
+#' @param object,... See \code{\link[digest]{digest}}
 #' @param hash (string) The hash to compare
-#' @param ... See \code{\link[digest]{digest}}
 #'
 #' @return A logical scalar
 #' @family Chapter 5 - Miscellaneous Functions
