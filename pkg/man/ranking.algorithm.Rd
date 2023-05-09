@@ -43,7 +43,6 @@ ranking.algorithm(
 }
 \seealso{
 Other Chapter 1 - Calculators: 
-\code{\link{as.quantile}()},
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},

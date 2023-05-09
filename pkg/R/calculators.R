@@ -277,20 +277,4 @@ ranking.algorithm <- function(
   }
 }
 #
-as.quantile <- function(x, ...){
-#' Quantile Transformation
-#'
-#' \code{as.quantile} is a wrapper for \code{\link[stats]{quantile}}.
-#'
-#' @param x The input vector
-#' @param ... (\code{\link[rlang]{dots_list}}): Additional arguments sent to \code{\link[stats]{quantile}}
-#'
-#' @return A quantile representation of the input
-#' @family Chapter 1 - Calculators
-#' @export
 
-  q.vec <- rlang::inject(stats::quantile(x = x, ...));
-  idx <- sapply(x, function(i){ max(which(q.vec <= i))})
-
-  return(q.vec[idx])
-}

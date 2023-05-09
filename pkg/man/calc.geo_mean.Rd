@@ -16,7 +16,6 @@ This is an alias that calls \code{\link{calc.means}(a, "gm")}
 }
 \seealso{
 Other Chapter 1 - Calculators: 
-\code{\link{as.quantile}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},
 \code{\link{calc.rms}()},
