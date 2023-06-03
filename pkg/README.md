@@ -1,7 +1,7 @@
 # ![book](book_small.png) Book of Utilities: utilities for working with data
 
 *`book.of.utilities`* seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
-The following functional families are covered in book.of.utilities:
+The following functional families are covered in `book.of.utilities`:
 
 ## Chapter 1 - Calculators
 
