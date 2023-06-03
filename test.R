@@ -1,11 +1,11 @@
-#' @title Book of Utilities: utilities for working with data
+#' @title Book of Utilities Overview
 #
 #' @description
 #' `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
 #'
-#' The following functional chapters are covered in \code{pkg_name}:\cr
+#' The following functional chapters are covered in \code{book.of.utilities}:\cr
 #'
-#' @section Chapter 1 - Calculators: 
+#' @section Chapter 1 - Calculators:
 #' \itemize{
 #' \item{\code{\link{calc.geo_mean}}}
 #' \item{\code{\link{calc.harmonic_mean}}}
@@ -17,31 +17,23 @@
 #' \item{\code{\link{ratio}}}
 #' }
 #'
-#' @section Chapter 2 - Counters: 
+#' @section Chapter 2 - Counters:
 #' \itemize{
 #' \item{\code{\link{count.cycles}}}
 #' \item{\code{\link{factor.int}}}
 #' }
 #'
-#' @section Chapter 3 - Custom Operators: 
+#' @section Chapter 3 - Custom Operators:
 #' \itemize{
-#' \item{\code{\link{\%?\%}}}
-#' \item{\code{\link{\%??\%}}}
-#' \item{\code{\link{\%><\%}}}
-#' \item{\code{\link{\%bin\%}}}
-#' \item{\code{\link{\%tf\%}}}
+#' \item{\code{\link{%?%}}}
+#' \item{\code{\link{%??%}}}
+#' \item{\code{\link{%><%}}}
+#' \item{\code{\link{%bin%}}}
+#' \item{\code{\link{%tf%}}}
 #' \item{\code{\link{test_between}}}
 #' }
 #'
-#' @section Chapter 4 - Object Management: 
-#' \itemize{
-#' \item{\code{\link{distinct.list}}}
-#' \item{\code{\link{enlist}}}
-#' \item{\code{\link{get.object_sizes}}}
-#' \item{\code{\link{scrub.data}}}
-#' }
-#'
-#' @section Chapter 5 - Miscellaneous: 
+#' @section Chapter 4 - Miscellaneous:
 #' \itemize{
 #' \item{\code{\link{as.regex}}}
 #' \item{\code{\link{call.recursion}}}
@@ -57,14 +49,12 @@
 #' \item{\code{\link{vlogical}}}
 #' }
 #'
+#' @section Chapter 5 - Object Management:
+#' \itemize{
+#' \item{\code{\link{distinct.list}}}
+#' \item{\code{\link{enlist}}}
+#' \item{\code{\link{get.object_sizes}}}
+#' \item{\code{\link{scrub.data}}}
+#' }
 #'
-#' @importFrom magrittr %>% %T>% or %<>%
-#' @importFrom purrr map map_lgl map_chr reduce modify modify_if modify_at
-#' @importFrom rlang is_empty %||%
-#' @importFrom data.table %ilike% %like% like := .N .SD
-#' @importFrom foreach %do% %dopar%
-#' @importFrom methods new
-#' @importFrom stats sd
-#' @importFrom utils object.size
-#' @name book.of.utilities
 NULL

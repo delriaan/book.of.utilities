@@ -135,7 +135,3 @@ fun <- as.recursive(
 # counters
 sample(c(TRUE, FALSE), 50, TRUE) %>% print() %>% count.cycles(reset = cumsum(.) %% 5 == 0)
 factor.int(100, 90)
-#
-# Build Site ----
-# usethis::use_pkgdown()
-# pkgdown::build_site(pkg = "pkg", lazy = TRUE, override = list(destination = "../docs"))

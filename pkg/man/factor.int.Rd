@@ -9,7 +9,7 @@ factor.int(i, ...)
 \arguments{
 \item{i}{(integer[]) One or more integers to factor}
 
-\item{...}{Additional integers to factor (can be used in conjunction with \code{i})}
+\item{...}{\code{\link[rlang]{dots_list}}: Additional integers to factor (can be used in conjunction with \code{i})}
 }
 \value{
 The factors of the input given as a vector or list of vectors

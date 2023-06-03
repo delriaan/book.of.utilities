@@ -243,7 +243,17 @@ checksum <- function(object, hash, ...){
 		hash <- if (interactive()){ tcltk::tk_choose.files(msg_list$hash) } else { readline(msg_list$hash) }
 	}
 
-	identical(digest::digest(object = object, ...), hash)
+  arg_list <- rlang::list2(...)
+
+  if (is.character(object)){
+    arg_list$file <- object
+  } else {
+    arg_list$object <- object
+  }
+
+  check_result <- do.call(digest::digest, args = arg_list)
+
+  identical(check_result, hash)
 }
 #
 gen.pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
