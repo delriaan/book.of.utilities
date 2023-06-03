@@ -41,12 +41,13 @@ count.cycles <- function(cond, offset = 1, reset){
   # :: Call the counter function
   sapply(cond, counter);
 }
+
 #
 factor.int <- function(i, ...){
 #' Factorization of Integers
 #'
 #' @param i (integer[]) One or more integers to factor
-#' @param ... Additional integers to factor (can be used in conjunction with \code{i})
+#' @param ... \code{\link[rlang]{dots_list}}: Additional integers to factor (can be used in conjunction with \code{i})
 #'
 #' @return The factors of the input given as a vector or list of vectors
 #'
@@ -63,7 +64,4 @@ factor.int <- function(i, ...){
 	.out <- purrr::map(i, \(x) which(x %% sequence(x) == 0))
 
 	if (rlang::has_length(.out, 1)){ .out[[1]] } else { .out }
-	# .out = purrr::map(i, ~{ .int = .x; purrr::keep(sequence(.int), ~.int %% .x == 0) });
-
-	# if (length(i) > 1){ distinct.list(.out[order(as.integer(names(.out)))]) } else { unlist(.out, use.names = FALSE) }
 }
