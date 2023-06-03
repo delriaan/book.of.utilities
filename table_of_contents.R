@@ -9,7 +9,10 @@ toc_file <- "pkg/README.md"
 #
 # Generation ----
 pkg_doc_prep <- dir("pkg/R", pattern = "R$", recursive = TRUE, full.names = TRUE) |>
-	(\(x){ i <- which(grepl("miscell|other", x)); c(x[-i], x[i]) })() |>
+	(\(x){
+		i <- which(grepl("miscell|other", x));
+		if (rlang::is_empty(i)){ x } else { c(x[-i], x[i]) }
+	})() |>
 	purrr::discard(\(x) grepl(pkg_name, x)) |>
 	purrr::map(\(x){
 		list(path = x, title = { stringi::stri_replace_all_regex(x, c("pkg/R/", "[.]R$", "[_]"), c("", "", " "), vectorise_all = FALSE) |>
@@ -52,7 +55,7 @@ pkg_doc_header <- { paste(
 	, "#' @description"
 	, "#' `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing."
 	, "#'"
-	, glue::glue("#' The following functional chapters are covered in \\code{{pkg_name}}:\\cr")
+	, glue::glue("#' The following functional chapters are covered in \\code{{{pkg_name}}}:\\cr")
 	, sep = "\n"
 	)}
 
@@ -60,7 +63,7 @@ pkg_doc_header <- { paste(
 toc_header <- { paste(
 	glue::glue("# ![book](book_small.png) {pkg_title}\n\n")
 	, glue::glue("*`{pkg_name}`* seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.")
-	, glue::glue("The following functional families are covered in {pkg_name}:")
+	, glue::glue("The following functional families are covered in `{pkg_name}`:")
 	, sep = "\n"
 	)}
 

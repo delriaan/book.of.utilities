@@ -3,7 +3,7 @@
 #' @description
 #' `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
 #'
-#' The following functional chapters are covered in \code{pkg_name}:\cr
+#' The following functional chapters are covered in \code{book.of.utilities}:\cr
 #'
 #' @section Chapter 1 - Calculators: 
 #' \itemize{
