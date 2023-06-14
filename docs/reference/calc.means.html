@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
       </span>
     </div>
 
@@ -25,7 +25,13 @@
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
 </li>
-      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
+      </ul><ul class="nav navbar-nav navbar-right"><li>
+  <a href="https://github.com/delriaan/book.of.utilities/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -35,7 +41,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate Means</h1>
-    
+    <small class="dont-index">Source: <a href="https://github.com/delriaan/book.of.utilities/blob/HEAD/R/calculators.R" class="external-link"><code>R/calculators.R</code></a></small>
     <div class="hidden name"><code>calc.means.Rd</code></div>
     </div>
 
@@ -88,8 +94,8 @@
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>If `mean.type` contains multiple values, a list object is returned containing one member for each output; otherwise, a single value is returned with a class dependent on the value of `mean.type`.
-Valid `mean.type` values are as follows:</p><ol><li><p>"am" (Arithmetic-Mean <a href="https://en.wikipedia.org/wiki/Arithmetic_mean" class="external-link">https://en.wikipedia.org/wiki/Arithmetic_mean</a>): Return the sum of vector values divided by the magnitude of the vector</p></li>
+    <p>If <code>mean.type</code> contains multiple values, a list object is returned containing one member for each output; otherwise, a single value is returned with a class dependent on the value of <code>mean.type</code>.
+Valid <code>mean.type</code> values are as follows:</p><ol><li><p>"am" (Arithmetic-Mean <a href="https://en.wikipedia.org/wiki/Arithmetic_mean" class="external-link">https://en.wikipedia.org/wiki/Arithmetic_mean</a>): Return the sum of vector values divided by the magnitude of the vector</p></li>
 <li><p>"zm" (Zero-Mean): Return the vector with the mean of the vector subtracted from all values</p></li>
 <li><p>"gm" (Geometric Mean <a href="https://en.wikipedia.org/wiki/Geometric_mean" class="external-link">https://en.wikipedia.org/wiki/Geometric_mean</a>): Return the <em>n-th</em> root of the product of an <em>n</em>-element input vector.  Negative input values are allowed, resulting in a complex result</p></li>
 <li><p>"hm" (Harmonic Mean <a href="https://en.wikipedia.org/wiki/Harmonic_mean" class="external-link">https://en.wikipedia.org/wiki/Harmonic_mean</a>): Return the reciprocal of the arithmetic mean of the reciprocal of the elements of the input vector</p></li>
