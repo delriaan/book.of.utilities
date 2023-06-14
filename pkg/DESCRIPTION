@@ -23,3 +23,7 @@ Imports: rlang
 	, jsonlite 
 	, glue
 	, keyring
+Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
+URL: https://github.com/delriaan/book.of.utilities/, https://delriaan.github.io/book.of.utilities/
+

@@ -11,9 +11,9 @@ test_between(a, z, temporal = FALSE, as.text = FALSE)
 
 \item{z}{Preferably a data table or data frame, but any object that can be coerced into such}
 
-\item{temporal}{(logical) Should relative temporal output (e.g., `before`, `during`, `after`) be returned as integers -1 0 1 rather than logical values?}
+\item{temporal}{(logical) Should relative temporal output (e.g., \code{before}, \code{during}, \code{after}) be returned as integers -1 0 1 rather than logical values?}
 
-\item{as.text}{(logical) Should relative temporal output (e.g., `before`, `during`, `after`) be returned as words rather than logical values?}
+\item{as.text}{(logical) Should relative temporal output (e.g., \code{before}, \code{during}, \code{after}) be returned as words rather than logical values?}
 }
 \value{
 An Boolean object comprised of the results of testing for "between-ness"
