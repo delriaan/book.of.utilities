@@ -4,12 +4,12 @@
 \alias{book.of.utilities}
 \title{Book of Utilities: utilities for working with data}
 \description{
-`book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
+\code{book.of.utilities} seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
 
 The following functional chapters are covered in \code{book.of.utilities}:\cr
 }
 \section{Chapter 1 - Calculators}{
- 
+
 \itemize{
 \item{\code{\link{calc.geo_mean}}}
 \item{\code{\link{calc.harmonic_mean}}}
@@ -23,7 +23,7 @@ The following functional chapters are covered in \code{book.of.utilities}:\cr
 }
 
 \section{Chapter 2 - Counters}{
- 
+
 \itemize{
 \item{\code{\link{count.cycles}}}
 \item{\code{\link{factor.int}}}
@@ -31,7 +31,7 @@ The following functional chapters are covered in \code{book.of.utilities}:\cr
 }
 
 \section{Chapter 3 - Custom Operators}{
- 
+
 \itemize{
 \item{\code{\link{\%?\%}}}
 \item{\code{\link{\%??\%}}}
@@ -43,7 +43,7 @@ The following functional chapters are covered in \code{book.of.utilities}:\cr
 }
 
 \section{Chapter 4 - Object Management}{
- 
+
 \itemize{
 \item{\code{\link{distinct.list}}}
 \item{\code{\link{enlist}}}
@@ -53,7 +53,7 @@ The following functional chapters are covered in \code{book.of.utilities}:\cr
 }
 
 \section{Chapter 5 - Miscellaneous}{
- 
+
 \itemize{
 \item{\code{\link{as.regex}}}
 \item{\code{\link{call.recursion}}}

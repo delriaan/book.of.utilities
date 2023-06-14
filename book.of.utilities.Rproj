@@ -20,4 +20,3 @@ BuildType: Package
 PackageUseDevtools: Yes
 PackagePath: pkg
 PackageRoxygenize: rd,collate,namespace
-DisableExecuteRprofile: Yes

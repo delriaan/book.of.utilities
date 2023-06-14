@@ -33,8 +33,8 @@ Arguments \code{data}, \code{mean.type}, and \code{post.op} determine the return
 \code{calc.means} calculates various types of central-tendency measures for the vector passed to argument \code{a}
 }
 \details{
-If `mean.type` contains multiple values, a list object is returned containing one member for each output; otherwise, a single value is returned with a class dependent on the value of `mean.type`.
-Valid `mean.type` values are as follows:
+If \code{mean.type} contains multiple values, a list object is returned containing one member for each output; otherwise, a single value is returned with a class dependent on the value of \code{mean.type}.
+Valid \code{mean.type} values are as follows:
 \enumerate{
 \item "am" (Arithmetic-Mean \url{https://en.wikipedia.org/wiki/Arithmetic_mean}): Return the sum of vector values divided by the magnitude of the vector
 \item "zm" (Zero-Mean): Return the vector with the mean of the vector subtracted from all values

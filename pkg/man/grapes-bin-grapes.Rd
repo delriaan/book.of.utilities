@@ -12,7 +12,7 @@ x \%bin\% b
 \item{b}{(integer) A bin size to use}
 }
 \value{
-The input after subtracting Modulo(b): x - (x %% b)
+The input after subtracting Modulo(b): x - (x \%\% b)
 }
 \description{
 \code{\%bin\%} creates a vector of values in \code{a} represented as multiples of \code{b}

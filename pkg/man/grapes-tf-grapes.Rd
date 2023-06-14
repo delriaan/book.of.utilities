@@ -12,7 +12,7 @@ true \%tf\% false
 \item{false}{(logical) : Scalar or vector value to return as the FALSE value}
 }
 \value{
-a \code{\link[data.table]{data.table}} of resultant values options for `true` and `false`
+a \code{\link[data.table]{data.table}} of resultant values options for \code{true} and \code{false}
 }
 \description{
 Use \code{\%tf\%} where binary choice vectors can be useful

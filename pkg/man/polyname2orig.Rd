@@ -13,7 +13,7 @@ polyname2orig(poly.names, orig.names, degree, ...)
 
 \item{degree}{(int) The degree used in polynomial conversion}
 
-\item{...}{Arguments to send to \code{\link[base]{paste}}, namely \code{sep} (default "_") and \code{collapse} (default ("_x_"))}
+\item{...}{Arguments to send to \code{\link[base]{paste}}, namely \code{sep} (default "_") and \code{collapse} (default ("\emph{x}"))}
 }
 \value{
 The polynomial names vector with positions replaced with original name elements
