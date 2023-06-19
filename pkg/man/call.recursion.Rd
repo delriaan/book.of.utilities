@@ -13,7 +13,7 @@ call.recursion(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simplify = TRUE)
 
 \item{test}{A single-argument function returning a single Boolean: \code{FALSE} stops iteration}
 
-\item{nxt}{A function that operates on the current output of \code{fun9x)} to send to the \emph{next} iterative call to \code{fun()}}
+\item{nxt}{A function that operates on the current output of \code{fun(x)} to send to the \emph{next} iterative call to \code{fun()}}
 
 \item{max.iter}{(integer) The maximum number of iterations}
 
@@ -25,7 +25,7 @@ call.recursion(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simplify = TRUE)
 \code{call.recursion} Executes a recursive calls to \code{fun} based on the output of \code{test} up to \code{max.iter} times
 }
 \examples{
-output <- book.of.utilities::call.recursion(
+book.of.utilities::call.recursion(
 x = sample(1000, size = 100)
 , fun = \(x){ abs(x - mean(x, na.rm = TRUE)) }
 , test = \(x){

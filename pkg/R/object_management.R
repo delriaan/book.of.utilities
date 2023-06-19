@@ -62,7 +62,7 @@ scrub.data <- function(input, condFn = is.na, replacement, ...) {
   has.dimensions <-  any(class(input) %ilike% "matrix|data|array|tibb|tabl");
   class(replacement) <- class(input);
 
-  .index = which(condFn(input), arr.ind = has.dimensions);
+  .index <- which(condFn(input), arr.ind = has.dimensions);
 
   input[.index] <- replacement[ifelse(length(replacement) == 1, 1, .index)];
   input;
@@ -97,9 +97,15 @@ get.object_sizes <- function(i = .GlobalEnv, nm = as.character(substitute(i)), d
     purrr::reduce(rbind) |>
     data.table::setattr("timestamp", Sys.time())
   } else {
-    .out <- list(obj_path = stringi::stri_replace_first_regex(nm, "[.]GlobalEnv[$]", "")
-                 , depth = depth, size = object.size(i));
-    units <- which(c(b = 0, Kb = 1, Mb = 2, Gb = 3) <= log(.out$size, base = 1024)) |> names() |> data.table::last()
+    .out <- list(
+    	obj_path = stringi::stri_replace_first_regex(nm, "[.]GlobalEnv[$]", "")
+      , depth = depth
+    	, size = object.size(i)
+    	);
+    units <- which(
+    					c(b = 0, Kb = 1, Mb = 2, Gb = 3) <=
+    					log(.out$size, base = 1024)
+    					) |> names() |>  data.table::last()
     .out$size_desc <- format(.out$size, units = units);
     .out;
   }
