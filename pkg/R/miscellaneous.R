@@ -21,14 +21,14 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 			, tstamp
 			, purrr::map_chr(
 					unname(rlang::exprs(...))
-					, ~ if (!is.character(.x)){ capture.output(eval(.x)) |> paste(collapse = "\n") } else { .x }
-				) %>% paste(collapse = "\n")
+					, \(x) if (!is.character(x)){ capture.output(eval(x)) |> paste(collapse = "\n") } else { x }
+				) |> paste(collapse = "\n")
 		);
 
 		cat(paste0(out.txt, "\n"), file = file, append = append & !(file == ""));
 	}
 
-	if (show & (!file == "")){ readtext::readtext(file)$text %>% message() }
+	if (show & (!file == "")){ readtext::readtext(file)$text |> message() }
 }
 #
 vlogical <- function(vector, vpattern, test, simplify_with = NULL, ...){
@@ -48,15 +48,24 @@ vlogical <- function(vector, vpattern, test, simplify_with = NULL, ...){
 
 	if (missing(test)){ test <- data.table::like }
 	if (is.character(test)){ test <- eval(as.symbol(test), envir = globalenv()) }
-	if (!is.function(test)){ message("Argument 'test' is not a function: using default (data.table::like)"); test <- data.table::like; }
+	if (!is.function(test)){
+		message("Argument 'test' is not a function: using default (data.table::like)");
+		test <- data.table::like;
+	}
 
 	sub_fn = function(v, ...){ sapply(vpattern, purrr::as_mapper(~test(v, .x, ...))) }
 
 	if (class(vector) == "list"){ vector <- unlist(vector); }
 
-	.out = if (any(c("matrix", "array", "data.table", "data.frame", "tibble") %in% class(vector))){ t(apply(vector, 1, sub_fn, ...)) } else { sub_fn(vector, ...)}
+	.out = if (any(c("matrix", "array", "data.table", "data.frame", "tibble") %in% class(vector))){
+		t(apply(vector, 1, sub_fn, ...))
+	} else { sub_fn(vector, ...)}
 
-	if (!rlang::is_empty(simplify_with)){ apply(.out, 1, simplify_with) } else { provideDimnames(.out, base = list(NULL, c(vpattern))) }
+	if (!rlang::is_empty(simplify_with)){
+		apply(.out, 1, simplify_with)
+	} else {
+		provideDimnames(.out, base = list(NULL, c(vpattern)))
+	}
 }
 #
 as.regex <- function(...){
@@ -169,7 +178,7 @@ call.recursion <- function(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simpli
 #' @param x The input object
 #' @param fun A function that operates on \code{x} and produces output
 #' @param test A single-argument function returning a single Boolean: \code{FALSE} stops iteration
-#' @param nxt A function that operates on the current output of \code{fun9x)} to send to the \emph{next} iterative call to \code{fun()}
+#' @param nxt A function that operates on the current output of \code{fun(x)} to send to the \emph{next} iterative call to \code{fun()}
 #' @param max.iter (integer) The maximum number of iterations
 #' @param cur.iter (integer) The current iteration index
 #' @param simplify (logical) Should only the last value be returned (\code{TRUE}) or intermediate values as well (\code{FALSE})?
@@ -177,7 +186,7 @@ call.recursion <- function(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simpli
 #' @importFrom magrittr %<>% %>%
 #'
 #' @examples
-#' output <- book.of.utilities::call.recursion(
+#' book.of.utilities::call.recursion(
 #'	x = sample(1000, size = 100)
 #'	, fun = \(x){ abs(x - mean(x, na.rm = TRUE)) }
 #'	, test = \(x){
