@@ -31,6 +31,27 @@ enlist <- function(x, ...){
 #'
 #' @family Chapter 2 - Object Management
 #'
+#' @examples
+#' # :: Test Objects
+#' test_x = list(
+#' 	test_1 = c(1:5)
+#' 	, test_2 = list(c(1:5), 3, 4, c(letters[1:5]))
+#' );
+#' nms = c("up", "down", "left", "right", "center");
+#'
+#' # :: Unnamed Vector -> Elements become names
+#' enlist(test_x$test_1);
+#' enlist(test_x$test_2);
+#'
+#' # :: Unnamed Vector & Provided Names (Full) -> All elements have names in 'nms'
+#' enlist(test_x$test_1, nms);
+#' enlist(test_x$test_2, !!!nms);
+#' enlist(test_x$test_2, up, down, left, right, center);
+#'
+#' # %>% Unnamed Vector & Provided Names (Partial) -> First two names are 'nms[1:2]' with the balance as default
+#' enlist(test_x$test_1, !!!nms[1:2]);
+#' enlist(test_x$test_2, !!!nms[1:2])
+#'
 #' @export
 #'
 
