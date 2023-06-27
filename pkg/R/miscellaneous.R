@@ -450,16 +450,22 @@ keyring_import <- function(data, kr_name = rlang::as_label(rlang::enexpr(data)),
 #' The \code{kr_key} class
 #'
 #' @slot service,usernane,keyribng See \code{\link[keyring]{key_get}}
-# @slot username See \code{\link[keyring]{key_get}}
-# @slot keyring See \code{\link[keyring]{key_get}}
 #' @slot get A function to retrieve the encrypted \code{keyring} key
 #'
+#' @rdname kr_key
+#' @name kr_key
+#'
+#' @examples
+#' \dontrun{
+#' x <- kr_key(service = "service", keyring = "this_keyring")
+#' }
+#'
 #' @export
-kr_key <- setClass(Class = "kr_key", slots = c(service = "character", username = "character", keyring = "character", get = "ANY", update = "ANY"));
+kr_key <- setClass(Class = "kr_key", slots = c(service = "character", username = "character", keyring = "character", get = "ANY"));
 
 #' @export
 setMethod("initialize", "kr_key",
-	function(.Object, service, username, keyring, get,...){
+	function(.Object, service, username = character(), keyring, get){
 		.Object <- callNextMethod();
 
 		.passkey <- book.of.utilities::gen.pass(glyphs = "$%^&*", length = 30, raw = TRUE) |> sodium::sha256();
