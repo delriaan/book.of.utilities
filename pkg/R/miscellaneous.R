@@ -461,11 +461,11 @@ keyring_import <- function(data, kr_name = rlang::as_label(rlang::enexpr(data)),
 #' }
 #'
 #' @export
-kr_key <- setClass(Class = "kr_key", slots = c(service = "character", username = "character", keyring = "character", get = "ANY"));
+kr_key <- setClass(Class = "kr_key", slots = c(service = "character", username = "ANY", keyring = "character", get = "ANY"));
 
 #' @export
 setMethod("initialize", "kr_key",
-	function(.Object, service, username = character(), keyring, get){
+	function(.Object, service, username = NULL, keyring, get){
 		.Object <- callNextMethod();
 
 		.passkey <- book.of.utilities::gen.pass(glyphs = "$%^&*", length = 30, raw = TRUE) |> sodium::sha256();
