@@ -23,6 +23,16 @@ A logical matrix, with rows of the same length as \code{vector} and columns the 
 \description{
 \code{vlike} is a vectorized version of \code{\link[data.table]{like}} allowing a pattern vector to be supplied
 }
+\examples{
+vlogical(
+	vector = data.table::data.table(t(sapply(1:20, function(i){ c(a = sample(LETTERS, 1), b = sample(letters, 1)) })))
+	, c(sample(LETTERS, 5), sample(letters, 5))
+	, test = function(vector, q, ...){ any(unique(vector) \%in\% unique(q))}
+	, simplify_with = mean
+	, ignore.case = TRUE
+)
+
+}
 \seealso{
 Other Chapter 5 - Miscellaneous Functions: 
 \code{\link{as.regex}()},

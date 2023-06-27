@@ -1,6 +1,6 @@
 dir("pkg/R", full.names = TRUE) |> sapply(source)
 library(magrittr, include.only = c("%<>%", "%>%"));
-
+#
 # calc.means() ====
 calc.means(sample(30, 10) |> print());
 calc.means(sample(30, 10) |> print(), "hm");
@@ -111,12 +111,12 @@ unregex(i = c(as.regex("mp|[cye]+"), "hp", "hq"), x = colnames(mtcars)) #  "mpg"
 unregex(i = c(as.regex("mp|[cye]+"), "hp", "hq"), x = mtcars) #  "mpg"  "cyl"  "qsec" "gear" "carb" "hp
 
 # custom operators ----
-x <- data.table::data.table(i = sample(100, 10), j = sample(100, 10), key = c("i", "j")) |> unique()
-y <- data.table::data.table(i = sample(200, 10, TRUE), j = sample(200, 10, TRUE), key = c("i", "j")) |> unique()
+x <- data.frame(i = sample(100, 10), j = sample(100, 10), key = c("i", "j")) |> unique()
+y <- data.frame(i = sample(200, 10, TRUE), j = sample(200, 10, TRUE), key = c("i", "j")) |> unique()
 (z <- x %><% y) |> str()
 (q <- x %tf% y) |> str()
 
-debug(`%??%`)
+# debug(`%??%`)
 (v <- data.table::data.table(y$i > mean(y$i), y$j <= mean(y$j)) %??% q) |> str()
 v
 purrr::reduce(v$result, rbind)

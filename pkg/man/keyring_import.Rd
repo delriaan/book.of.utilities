@@ -4,21 +4,24 @@
 \alias{keyring_import}
 \title{Import keyring Entries}
 \usage{
-keyring_import(data, ...)
+keyring_import(
+  data,
+  kr_name = rlang::as_label(rlang::enexpr(data)),
+  dry.run = FALSE
+)
 }
 \arguments{
 \item{data}{The named list of exported keyring data}
 
-\item{...}{Additional named keyring entries}
+\item{kr_name}{(string) The name of the target keyring to populate: defaults to the deparsed value of argument \code{data}}
+
+\item{dry.run}{(logical|FALSE) When \code{TRUE}, the expression that would be evaluated is returned (passwords are redacted)}
 }
 \value{
-Keyring entries as JSON or raw-encoded JSON
+A logical scalar for each imported key
 }
 \description{
 \code{keyring_import} registers exported \code{\link[keyring]{keyring}}s (see \code{\link{keyring_export}})
-}
-\note{
-Unnamed inputs will not be imported but indicated via console message
 }
 \seealso{
 Other keyring Utilities: 

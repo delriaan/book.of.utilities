@@ -43,29 +43,48 @@ vlogical <- function(vector, vpattern, test, simplify_with = NULL, ...){
 #' @param ... Additional arguments to be sent to the function held by argument \code{test}
 #'
 #' @return A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} TRUE for items that match pattern. If vector is dimensional, multiple \code{TRUE} values may be found for each row.
+#'
 #' @family Chapter 5 - Miscellaneous Functions
+#'
+#' @examples
+#' vlogical(
+#' 	vector = data.table::data.table(t(sapply(1:20, function(i){ c(a = sample(LETTERS, 1), b = sample(letters, 1)) })))
+#' 	, c(sample(LETTERS, 5), sample(letters, 5))
+#' 	, test = function(vector, q, ...){ any(unique(vector) %in% unique(q))}
+#' 	, simplify_with = mean
+#' 	, ignore.case = TRUE
+#' )
+#'
 #' @export
 
-	if (missing(test)){ test <- data.table::like }
-	if (is.character(test)){ test <- eval(as.symbol(test), envir = globalenv()) }
+	if (missing(test)){
+		test <- data.table::like
+	}
+
+	if (is.character(test)){
+		test <- eval(as.symbol(test), envir = globalenv())
+	}
+
 	if (!is.function(test)){
 		message("Argument 'test' is not a function: using default (data.table::like)");
 		test <- data.table::like;
 	}
 
-	sub_fn = function(v, ...){ sapply(vpattern, purrr::as_mapper(~test(v, .x, ...))) }
+	sub_fn = function(v, ...){ sapply(vpattern, purrr::as_mapper(\(x) test(v, x, ...))) }
 
-	if (class(vector) == "list"){ vector <- unlist(vector); }
+	if ("list" %in% class(vector)){
+		vector <- unlist(vector);
+	}
 
 	.out = if (any(c("matrix", "array", "data.table", "data.frame", "tibble") %in% class(vector))){
-		t(apply(vector, 1, sub_fn, ...))
-	} else { sub_fn(vector, ...)}
+			t(apply(vector, 1, sub_fn, ...))
+		} else { sub_fn(vector, ...)}
 
 	if (!rlang::is_empty(simplify_with)){
-		apply(.out, 1, simplify_with)
-	} else {
-		provideDimnames(.out, base = list(NULL, c(vpattern)))
-	}
+			apply(.out, 1, simplify_with)
+		} else {
+			provideDimnames(.out, base = list(NULL, c(vpattern)))
+		}
 }
 #
 as.regex <- function(...){
@@ -343,21 +362,23 @@ gen.pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
 }
 #
 keyring_export <- function(keyring = NULL, as.raw = FALSE){
-	#' Export keyring Entries
-	#'
-	#' \code{keyring_export} creates JSON output for available \code{\link[keyring]{keyring}}s
-	#'
-	#' @param keyring (string[]) The name(s) of keyrings to export (defaults to all named keyrings when calling \code{\link[keyring]{keyring_list}})
-	#' @param as.raw (logical | FALSE) Should each entry be cast as a raw vector?
-	#'
-	#' @return Keyring entries as JSON or raw-encoded JSON
-	#' @family keyring Utilities
-	#' @export
+#' Export keyring Entries
+#'
+#' \code{keyring_export} creates JSON output for available \code{\link[keyring]{keyring}}s
+#'
+#' @param keyring (string[]) The name(s) of keyrings to export (defaults to all named keyrings when calling \code{\link[keyring]{keyring_list}})
+#' @param as.raw (logical | FALSE) Should each entry be cast as a raw vector?
+#'
+#' @return Keyring entries as JSON or raw-encoded JSON
+#' @family keyring Utilities
+#' @export
+
 	kr_idx <- if (rlang::is_empty(keyring)){
-		which(keyring::keyring_list()$keyring != "")
-	} else {
-		which(keyring::keyring_list()$keyring %in% keyring) %||% which(keyring::keyring_list()$keyring != "")
-	}
+			which(keyring::keyring_list()$keyring != "")
+		} else {
+			which(keyring::keyring_list()$keyring %in% keyring) %||%
+				which(keyring::keyring_list()$keyring != "")
+		}
 
 	keyring::keyring_list()[kr_idx, ] |>
 		purrr::modify_at(3, as.logical) |>
@@ -367,60 +388,96 @@ keyring_export <- function(keyring = NULL, as.raw = FALSE){
 
 			if (..3){ keyring::keyring_unlock(keyring = ..1) }
 
-			f <- purrr::as_mapper(~{
-				rlang::inject(
-					c(!!!.x
-						, value = keyring::key_get(!!!purrr::discard(.x, ~.x == ""), keyring = kr)
-					)
-				)
-			})
+			f <- \(x){
+					rlang::inject(
+						c(!!!x, value = keyring::key_get(!!!purrr::discard(x, \(i) i == ""), keyring = kr))
+					)}
 
-			.out <- rlang::list2(!!kr := keyring::key_list(keyring = kr) |>
-													 	apply(1, f, simplify = TRUE) |> t() |>
-													 	as.data.frame() |>
-													 	jsonlite::toJSON("columns"))
+			.out <- rlang::list2(
+					!!kr := keyring::key_list(keyring = kr) |>
+					 	apply(1, f, simplify = TRUE) |> t() |>
+					 	as.data.frame() |>
+					 	jsonlite::toJSON("columns")
+					)
+
 			if (as.raw){ purrr::modify_at(.out, kr, charToRaw) } else { .out }
 		}) |>
 		purrr::flatten()
 }
 #
-keyring_import <- function(data, ...){
-	#' Import keyring Entries
-	#'
-	#' \code{keyring_import} registers exported \code{\link[keyring]{keyring}}s (see \code{\link{keyring_export}})
-	#'
-	#' @param data The named list of exported keyring data
-	#' @param ... Additional named keyring entries
-	#'
-	#' @note Unnamed inputs will not be imported but indicated via console message
-	#'
-	#' @return Keyring entries as JSON or raw-encoded JSON
-	#' @family keyring Utilities
-	#' @export
+keyring_import <- function(data, kr_name = rlang::as_label(rlang::enexpr(data)), dry.run = FALSE){
+#' Import keyring Entries
+#'
+#' \code{keyring_import} registers exported \code{\link[keyring]{keyring}}s (see \code{\link{keyring_export}})
+#'
+#' @param data The named list of exported keyring data
+#' @param kr_name (string) The name of the target keyring to populate: defaults to the deparsed value of argument \code{data}
+#' @param dry.run (logical|FALSE) When \code{TRUE}, the expression that would be evaluated is returned (passwords are redacted)
+#'
+#' @return A logical scalar for each imported key
+#' @family keyring Utilities
+#' @export
 
-	data <- append(data, rlang::list2(...));
-	no.names <- which(names(data) == "")
-	if (!identical(integer(), no.names)){
-		message(sprintf("Entries at the following positions will not be imported: %s", paste(no.names, collapse = ", ")))
-	}
+	if (missing(data)){ stop("No keyring data provided") }
 
-	data <- data[-no.names];
+	if (is.raw(data)){ data <- rawToChar(data) }
 
-	if (rlang::is_empty(data)){
-		message("No action taken (all entries are unnamed): exiting ..."); return()
-	}
+	kr_args <- jsonlite::fromJSON(data)
 
-	purrr::iwalk(data, ~{
-		keyring <- .y
-		kr_data <- if (is.raw(.x)){ rawToChar(.x) } else { .x }
-		jsonlite::fromJSON(kr_data) |>
-			purrr::pwalk(~{
-				keyring::key_set_with_value(
-					service 		= ..1
-					, username	= ..2
-					, password	= ..3
-					, keyring 	= keyring
-				)
-			})
+	purrr::pmap_lgl(kr_args, \(...){
+		.action <- { rlang::expr(
+			keyring::key_set_with_value(
+				!!!rlang::list2(keyring = kr_name, ...) |>
+					purrr::map(\(x) if (x == ""){ NULL } else { x }) |>
+					rlang::set_names(c("keyring", "service", "username", "password"))
+			)
+		)}
+
+		if (dry.run){
+			.action$password <- "..."
+
+			rlang::expr_print(.action)
+
+			TRUE
+		} else {
+			tryCatch({ eval(.action); TRUE }, error = \(e) FALSE)
+		}
 	})
 }
+#
+#' Store an encrypted \code{keyring} key
+#'
+#' The \code{kr_key} class
+#'
+#' @slot service,usernane,keyribng See \code{\link[keyring]{key_get}}
+#' @slot get A function to retrieve the encrypted \code{keyring} key
+#'
+#' @rdname kr_key
+#' @name kr_key
+#'
+#' @examples
+#' \dontrun{
+#' x <- kr_key(service = "service", keyring = "this_keyring")
+#' }
+#'
+#' @export
+kr_key <- setClass(Class = "kr_key", slots = c(service = "character", username = "character", keyring = "character", get = "ANY"));
+
+#' @export
+setMethod("initialize", "kr_key",
+	function(.Object, service, username = character(), keyring, get){
+		.Object <- callNextMethod();
+
+		.passkey <- book.of.utilities::gen.pass(glyphs = "$%^&*", length = 30, raw = TRUE) |> sodium::sha256();
+
+		.password <- keyring::key_get(service = service, keyring = keyring, username = username) |>
+			charToRaw() |>
+			sodium::data_encrypt(key = .passkey);
+
+		.Object@get <- rlang::expr(\() sodium::data_decrypt(bin = !!.password, key = !!.passkey) |> rawToChar() |> invisible()) |> eval();
+
+		.Object
+	})
+
+#' @export
+setMethod(f = "show", signature = "kr_key", function(object){ cat("<keyring password>", sep = "\n") })

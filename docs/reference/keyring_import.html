@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.0010</span>
       </span>
     </div>
 
@@ -50,7 +50,11 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">keyring_import</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">keyring_import</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  kr_name <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/as_label.html" class="external-link">as_label</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">enexpr</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  dry.run <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -59,19 +63,19 @@
 <dd><p>The named list of exported keyring data</p></dd>
 
 
-<dt>...</dt>
-<dd><p>Additional named keyring entries</p></dd>
+<dt>kr_name</dt>
+<dd><p>(string) The name of the target keyring to populate: defaults to the deparsed value of argument <code>data</code></p></dd>
+
+
+<dt>dry.run</dt>
+<dd><p>(logical|FALSE) When <code>TRUE</code>, the expression that would be evaluated is returned (passwords are redacted)</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>Keyring entries as JSON or raw-encoded JSON</p>
-    </div>
-    <div id="note">
-    <h2>Note</h2>
-    <p>Unnamed inputs will not be imported but indicated via console message</p>
+<p>A logical scalar for each imported key</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

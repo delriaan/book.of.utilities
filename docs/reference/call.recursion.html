@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.0010</span>
       </span>
     </div>
 
@@ -68,7 +68,7 @@
 
 
 <dt>nxt</dt>
-<dd><p>A function that operates on the current output of <code>fun9x)</code> to send to the <em>next</em> iterative call to <code>fun()</code></p></dd>
+<dd><p>A function that operates on the current output of <code>fun(x)</code> to send to the <em>next</em> iterative call to <code>fun()</code></p></dd>
 
 
 <dt>max.iter</dt>
@@ -86,7 +86,7 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">book.of.utilities</span><span class="fu">::</span><span class="fu">call.recursion</span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">book.of.utilities</span><span class="fu">::</span><span class="fu">call.recursion</span><span class="op">(</span></span></span>
 <span class="r-in"><span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1000</span>, size <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span>, fun <span class="op">=</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span></span></span>
 <span class="r-in"><span>, test <span class="op">=</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span></span>
@@ -101,6 +101,9 @@
 <span class="r-in"><span>, max.iter <span class="op">=</span> <span class="fl">1000</span></span></span>
 <span class="r-in"><span>, simplify <span class="op">=</span> <span class="op">!</span><span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.198539e-09 1.198539e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
