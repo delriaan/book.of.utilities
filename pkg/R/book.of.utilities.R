@@ -5,7 +5,7 @@
 #'
 #' The following functional chapters are covered in \code{book.of.utilities}:\cr
 #'
-#' @section Chapter 1 - Calculators: 
+#' @section Chapter 1 - Calculators:
 #' \itemize{
 #' \item{\code{\link{calc.geo_mean}}}
 #' \item{\code{\link{calc.harmonic_mean}}}
@@ -17,13 +17,13 @@
 #' \item{\code{\link{ratio}}}
 #' }
 #'
-#' @section Chapter 2 - Counters: 
+#' @section Chapter 2 - Counters:
 #' \itemize{
 #' \item{\code{\link{count.cycles}}}
 #' \item{\code{\link{factor.int}}}
 #' }
 #'
-#' @section Chapter 3 - Custom Operators: 
+#' @section Chapter 3 - Custom Operators:
 #' \itemize{
 #' \item{\code{\link{\%?\%}}}
 #' \item{\code{\link{\%??\%}}}
@@ -33,7 +33,7 @@
 #' \item{\code{\link{test_between}}}
 #' }
 #'
-#' @section Chapter 4 - Object Management: 
+#' @section Chapter 4 - Object Management:
 #' \itemize{
 #' \item{\code{\link{distinct.list}}}
 #' \item{\code{\link{enlist}}}
@@ -41,7 +41,7 @@
 #' \item{\code{\link{scrub.data}}}
 #' }
 #'
-#' @section Chapter 5 - Miscellaneous: 
+#' @section Chapter 5 - Miscellaneous:
 #' \itemize{
 #' \item{\code{\link{as.regex}}}
 #' \item{\code{\link{call.recursion}}}
@@ -53,6 +53,7 @@
 #' \item{\code{\link{keyring_import}}}
 #' \item{\code{\link{log_note}}}
 #' \item{\code{\link{polyname2orig}}}
+#' \item{\code{\link{radix}}}
 #' \item{\code{\link{unregex}}}
 #' \item{\code{\link{vlogical}}}
 #' }

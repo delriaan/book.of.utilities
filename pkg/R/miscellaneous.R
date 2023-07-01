@@ -361,6 +361,79 @@ gen.pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
 	if (raw){ charToRaw(.out) } else { .out }
 }
 #
+radix <- function(x, ...){
+#' Radix Conversion
+#'
+#' @param x (integer[]) A vector of integers.  Coercion for non-integer input will result in loss of precision.
+#' @param ... (string,symbol,integer) The target radix to which the values in \code{x} will be converted.\cr
+#' \itemize{
+#'   \item{Length: If two values are provided, the output is the conversion from the first radix to the second}
+#'   \item{String/symbol: If given as a strings or symbols, the following are supported (partial matching supported):\cr
+#'   \itemize{
+#'    \item{\code{binary}}
+#'    \item{\code{octal}}
+#'    \item{\code{decimal}}
+#'    \item{\code{duodecimal}}
+#'    \item{\code{hexadecimal}}
+#'    \item{\code{vigesimal}}
+#'    \item{\code{sexagesimal}}
+#'    }
+#'   }
+#' }
+#'
+#' @export
+#'
+#' @examples
+#' # As binary
+#' radix(c(12, 20), bin)
+#'
+#' # To hexadecimal
+#' radix(c(12, 20), hex)
+#'
+#' # As hex to decimal
+#' radix(c(18, 32), hex, dec)
+#'
+#' # Hex to binary vs. as hex to binary (equivalent outcomes)
+#' radix(c(18, 32), hex, bin)
+#' radix(c(12, 20), hex) |> radix(hex, bin)
+
+	r <- rlang::enexprs(...);
+
+	.named <- { book.of.utilities::enlist(
+		c(2, 8, 10, 12, 16, 20, 60)
+		, "binary",  "octal",  "decimal",  "duodecimal"
+		,  "hexadecimal",  "vigesimal",  "sexagesimal"
+		)
+	}
+
+	if (!rlang::has_length(r, 1)){
+		r <- as.character(r) |> purrr::map_int(\(i){
+			ifelse(
+				suppressWarnings(rlang::is_empty(as.integer(i) |> na.omit()))
+				, .named[[which(grepl(paste0("^", i), names(.named)))]]
+				, as.integer(i)
+			)
+		});
+
+		.mod <- x %% r[[1]];
+
+		radix(10 * (x - .mod)/r[[1]] + .mod, !!r[[2]]);
+	} else {
+		r <- r[[1]];
+
+		if (!is.integer(r)){
+			r <- .named[[which(grepl(paste0("^", r), names(.named)))]];
+		}
+
+		x <- stringi::stri_extract_all_regex(x, "\\d") |> as.list()
+
+		purrr::map_int(x, \(i){
+			n <- seq(stringi::stri_length(i)) |> rev()
+			sum(as.integer(i) * r^(n-1))
+		})
+	}
+}
+#
 keyring_export <- function(keyring = NULL, as.raw = FALSE){
 #' Export keyring Entries
 #'
