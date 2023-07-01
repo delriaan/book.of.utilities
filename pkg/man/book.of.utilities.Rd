@@ -65,6 +65,7 @@ The following functional chapters are covered in \code{book.of.utilities}:\cr
 \item{\code{\link{keyring_import}}}
 \item{\code{\link{log_note}}}
 \item{\code{\link{polyname2orig}}}
+\item{\code{\link{radix}}}
 \item{\code{\link{unregex}}}
 \item{\code{\link{vlogical}}}
 }
