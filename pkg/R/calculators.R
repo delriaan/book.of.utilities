@@ -282,7 +282,7 @@ radix <- function(x, ...){
 #'
 #' \code{radix} converts the \emph{representation} of the input(s) using a radix basis.  This is not to be confused with a conversion between \emph{scales}.
 #'
-#' @param x (integer[]) A vector of integers.  Coercion for non-integer input will result in loss of precision.
+#' @param x (numeric[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision.
 #' @param ... (string,symbol,integer) The target radix to which the values in \code{x} will be converted.\cr
 #' \itemize{
 #'   \item{Length: If two values are provided, the output is the conversion from the first radix to the second}
@@ -328,7 +328,7 @@ radix <- function(x, ...){
 
 	r <- rlang::enexprs(...);
 	if (rlang::is_empty(r)){ stop("No radix bases provided.") }
-	if (missing(x)){ stop("No values for 'x' provided.") } else { x <- as.integer(x) }
+	if (missing(x)){ stop("No values for 'x' provided.") } else { x <- as.numeric(x) |> round() }
 
 	.named <- { rlang::set_names(
 		c(2, 8, 10, 12, 16, 20, 60)
@@ -357,9 +357,9 @@ radix <- function(x, ...){
 			)
 
 		stringi::stri_extract_all_regex(x, "\\d") |>
-			purrr::map_int(\(i){
+			purrr::map(\(i){
 				n <- seq(stringi::stri_length(i)) |> rev()
 				sum(as.integer(i) * r^(n-1))
-			})
+			}) |> unlist(use.names = FALSE)
 	}
 }
