@@ -7,7 +7,7 @@
 radix(x, ...)
 }
 \arguments{
-\item{x}{(integer[]) A vector of integers.  Coercion for non-integer input will result in loss of precision.}
+\item{x}{(numeric[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision.}
 
 \item{...}{(string,symbol,integer) The target radix to which the values in \code{x} will be converted.\cr
 \itemize{
