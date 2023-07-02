@@ -112,6 +112,9 @@
     <loc>/reference/keyring_import.html</loc>
   </url>
   <url>
+    <loc>/reference/kr_key.html</loc>
+  </url>
+  <url>
     <loc>/reference/log_note.html</loc>
   </url>
   <url>
@@ -137,6 +140,9 @@
   </url>
   <url>
     <loc>/reference/polyname2orig.html</loc>
+  </url>
+  <url>
+    <loc>/reference/radix.html</loc>
   </url>
   <url>
     <loc>/reference/range_diff.html</loc>
