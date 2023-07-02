@@ -30,6 +30,7 @@ Other Chapter 1 - Calculators:
 \code{\link{calc.means}()},
 \code{\link{calc.rms}()},
 \code{\link{calc.zero_mean}()},
+\code{\link{radix}()},
 \code{\link{range_diff}()},
 \code{\link{ranking.algorithm}()}
 }

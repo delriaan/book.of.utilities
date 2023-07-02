@@ -277,4 +277,89 @@ ranking.algorithm <- function(
   }
 }
 #
+radix <- function(x, ...){
+#' Radix Conversion
+#'
+#' \code{radix} converts the \emph{representation} of the input(s) using a radix basis.  This is not to be confused with a conversion between \emph{scales}.
+#'
+#' @param x (integer[]) A vector of integers.  Coercion for non-integer input will result in loss of precision.
+#' @param ... (string,symbol,integer) The target radix to which the values in \code{x} will be converted.\cr
+#' \itemize{
+#'   \item{Length: If two values are provided, the output is the conversion from the first radix to the second}
+#'   \item{String/symbol: If given as a strings or symbols, the following are supported (partial matching supported):\cr
+#'   \itemize{
+#'    \item{\code{binary}}
+#'    \item{\code{octal}}
+#'    \item{\code{decimal}}
+#'    \item{\code{duodecimal}}
+#'    \item{\code{hexadecimal}}
+#'    \item{\code{vigesimal}}
+#'    \item{\code{sexagesimal}}
+#'    }
+#'   }
+#' }
+#'
+#' @return The decimal representation of the input(s) using the supplied radix basis.
+#' @family Chapter 1 - Calculators
+#' @export
+#'
+#' @examples
+#' # As binary
+#' radix(c(12, 20), bin)
+#'
+#' # To hexadecimal
+#' radix(c(12, 20), hex)
+#'
+#' # As hex to decimal
+#' radix(c(18, 32), hex, dec)
+#'
+#' # Hex to binary vs. as hex to binary (equivalent outcomes)
+#' radix(c(18, 32), hex, bin)
+#' radix(c(12, 20), hex) |> radix(hex, bin)
+#'
+#' # Arbitrary radix
+#' radix(c(10, 26), 3)
+#'
+#' # Arbitrary radix to hex
+#' radix(c(10, 26), 3, h)
+#'
+#' # Mixed input types to binary
+#' radix(c(100, "0110"), b)
 
+	r <- rlang::enexprs(...);
+	if (rlang::is_empty(r)){ stop("No radix bases provided.") }
+	if (missing(x)){ stop("No values for 'x' provided.") } else { x <- as.integer(x) }
+
+	.named <- { rlang::set_names(
+		c(2, 8, 10, 12, 16, 20, 60)
+		, "binary",  "octal",  "decimal",  "duodecimal"
+		,  "hexadecimal",  "vigesimal",  "sexagesimal"
+		) |> as.list()
+	}
+
+	if (!rlang::has_length(r, 1)){
+		r <- purrr::map_int(r, \(i){
+			ifelse(
+				typeof(i) %in% c("character", "symbol", "call")
+				, .named[[which(grepl(paste0("^", as.character(i)), names(.named)))]]
+				, as.integer(i)
+				)
+		});
+
+		.mod <- x %% r[[1]];
+
+		radix(10 * (x - .mod)/r[[1]] + .mod, !!r[[2]]);
+	} else {
+		r <- ifelse(
+			typeof(r[[1]]) %in% c("character", "symbol", "call")
+			, .named[[which(grepl(paste0("^", as.character(r[[1]])), names(.named)))]]
+			, as.integer(r[[1]])
+			)
+
+		stringi::stri_extract_all_regex(x, "\\d") |>
+			purrr::map_int(\(i){
+				n <- seq(stringi::stri_length(i)) |> rev()
+				sum(as.integer(i) * r^(n-1))
+			})
+	}
+}
