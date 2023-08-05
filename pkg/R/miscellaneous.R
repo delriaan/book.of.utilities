@@ -31,60 +31,42 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 	if (show & (!file == "")){ readtext::readtext(file)$text |> message() }
 }
 #
-vlogical <- function(vector, vpattern, test, simplify_with = NULL, ...){
+vlogical <- function(vector, vpattern, test = stringi::stri_detect_regex, simplify_with = NULL, ...){
 #' Vectorized Logical Tests
 #'
 #' \code{vlike} is a vectorized version of \code{\link[data.table]{like}} allowing a pattern vector to be supplied
 #'
 #' @param vector A vector or dimensional object to be processed (e.g., matrix, data.frame, etc.)
-#' @param vpattern A vector of patterns to be matched
-#' @param test (function) The function to use for logical testing: the function should be appropriate for the values of \code{vpattern} and have a named argument of \code{vector}, an additional argument to accept the pattern fed atomically, and '...' (even if not used).
-#' @param simplify_with (function) When provided, the function operates over rows, thereby simplifying the result
+#' @param vpattern A named vector of patterns to be matched
+#' @param test (function) The function to use for logical testing: the function should be appropriate for the values of \code{vpattern} accepting \code{vector} as the first argument, the pattern as the second, and '...' as the third (even if not used).
+#' @param simplify_with (function) A function to column-wise simplify the logical matrix when not empty
 #' @param ... Additional arguments to be sent to the function held by argument \code{test}
 #'
-#' @return A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} TRUE for items that match pattern. If vector is dimensional, multiple \code{TRUE} values may be found for each row.
+#' @return A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} when \code{simplify_with} is not provided.  Otherwise, the result of applying \code{simplify_with} on each column.
 #'
 #' @family Chapter 5 - Miscellaneous Functions
 #'
 #' @examples
 #' vlogical(
-#' 	vector = data.table::data.table(t(sapply(1:20, function(i){ c(a = sample(LETTERS, 1), b = sample(letters, 1)) })))
-#' 	, c(sample(LETTERS, 5), sample(letters, 5))
-#' 	, test = function(vector, q, ...){ any(unique(vector) %in% unique(q))}
+#' 	vector = letters
+#' 	, vpattern = c(sample(LETTERS, 5), sample(letters, 5))
 #' 	, simplify_with = mean
 #' 	, ignore.case = TRUE
-#' )
+#' 	)
 #'
 #' @export
 
-	if (missing(test)){
-		test <- data.table::like
-	}
+	.default_test <- stringi::stri_detect_regex
 
-	if (is.character(test)){
-		test <- eval(as.symbol(test), envir = globalenv())
-	}
+	if (!is.function(test)){ test <- .default_test }
 
-	if (!is.function(test)){
-		message("Argument 'test' is not a function: using default (data.table::like)");
-		test <- data.table::like;
-	}
+	.nms <- which(rlang::names2(vpattern) == "")
 
-	sub_fn = function(v, ...){ sapply(vpattern, purrr::as_mapper(\(x) test(v, x, ...))) }
+	if (!rlang::is_empty(.nms)){ names(vpattern)[.nms] <- paste0("x_", .nms) }
 
-	if ("list" %in% class(vector)){
-		vector <- unlist(vector);
-	}
+	.out <- outer(vector, vpattern, test)
 
-	.out = if (any(c("matrix", "array", "data.table", "data.frame", "tibble") %in% class(vector))){
-			t(apply(vector, 1, sub_fn, ...))
-		} else { sub_fn(vector, ...)}
-
-	if (!rlang::is_empty(simplify_with)){
-			apply(.out, 1, simplify_with)
-		} else {
-			provideDimnames(.out, base = list(NULL, c(vpattern)))
-		}
+	if (!rlang::is_empty(simplify_with)){ apply(.out, 2, simplify_with) |> rlang::set_names(names(vpattern)) } else { .out }
 }
 #
 as.regex <- function(...){
