@@ -1,4 +1,4 @@
-#' @title Book of Utilities Overview
+#' @title Book of Utilities: utilities for working with data
 #
 #' @description
 #' `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
@@ -25,15 +25,23 @@
 #'
 #' @section Chapter 3 - Custom Operators:
 #' \itemize{
-#' \item{\code{\link{%?%}}}
-#' \item{\code{\link{%??%}}}
-#' \item{\code{\link{%><%}}}
-#' \item{\code{\link{%bin%}}}
-#' \item{\code{\link{%tf%}}}
+#' \item{\code{\link{\%?\%}}}
+#' \item{\code{\link{\%??\%}}}
+#' \item{\code{\link{\%><\%}}}
+#' \item{\code{\link{\%bin\%}}}
+#' \item{\code{\link{\%tf\%}}}
 #' \item{\code{\link{test_between}}}
 #' }
 #'
-#' @section Chapter 4 - Miscellaneous:
+#' @section Chapter 4 - Object Management:
+#' \itemize{
+#' \item{\code{\link{distinct.list}}}
+#' \item{\code{\link{enlist}}}
+#' \item{\code{\link{get.object_sizes}}}
+#' \item{\code{\link{scrub.data}}}
+#' }
+#'
+#' @section Chapter 5 - Miscellaneous:
 #' \itemize{
 #' \item{\code{\link{as.regex}}}
 #' \item{\code{\link{call.recursion}}}
@@ -45,16 +53,19 @@
 #' \item{\code{\link{keyring_import}}}
 #' \item{\code{\link{log_note}}}
 #' \item{\code{\link{polyname2orig}}}
+#' \item{\code{\link{radix}}}
 #' \item{\code{\link{unregex}}}
 #' \item{\code{\link{vlogical}}}
 #' }
 #'
-#' @section Chapter 5 - Object Management:
-#' \itemize{
-#' \item{\code{\link{distinct.list}}}
-#' \item{\code{\link{enlist}}}
-#' \item{\code{\link{get.object_sizes}}}
-#' \item{\code{\link{scrub.data}}}
-#' }
 #'
+#' @importFrom magrittr %>% %T>% or %<>%
+#' @importFrom purrr map map_lgl map_chr reduce modify modify_if modify_at
+#' @importFrom rlang is_empty %||%
+#' @importFrom data.table %ilike% %like% like := .N .SD
+#' @importFrom foreach %do% %dopar%
+#' @importFrom methods new
+#' @importFrom stats sd
+#' @importFrom utils object.size
+#' @name book.of.utilities
 NULL
