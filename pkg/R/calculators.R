@@ -174,12 +174,12 @@ calc.geo_mean <- function(a, post.op = eval) {
   calc.means(a, mean.type = "gm", post.op = post.op) |> unlist()
 }
 #
-ratio <- function(i, j = i, type = NULL, decimals = 2){
+ratio <- function(i, j = i, type = NULL, decimals = 2, as_density = FALSE){
 #' Ratio Calculator
 #'
 #' \code{ratio} calculates one of the following ratio types:\cr
 #' \enumerate{
-#' \item{\code{"pareto"} (cumulative total vs. total)}
+#' \item{\code{"cumulative"} (cumulative total vs. total)}
 #' \item{\code{"of.max|of.min"} (relative to maximum/minimum value)}
 #' \item{\code{NULL} (relative to total)}
 #' }.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{j}.
@@ -188,17 +188,20 @@ ratio <- function(i, j = i, type = NULL, decimals = 2){
 #' @param j (vector) The number of numeric scores in the denominator
 #' @param type (string[]) The types of ratio algorithms to use (see Details): a vector of values is supported
 #' @param decimals (integer | 2) The number of decimal places to which the output should be rounded
-#'
+#' @param as_density (logical) \code{TRUE} returns sqrt[x * (1 - x)]
+#' 
 #' @family Chapter 1 - Calculators
 #'
 #' @export
+
+if (type == "pareto"){ type <- "cumulative" }
 
 	action = function(ii, jj){
 		sub.fn = function(k, .i, .j, .d){
 			if (!is.list(.j)){
 				switch(
 					k
-					, "pareto" = cumsum(.i)/sum(.j, na.rm = TRUE)
+					, "cumulative" = cumsum(.i)/sum(.j, na.rm = TRUE)
 					, "of.max" = .i/max(.j, na.rm = TRUE)
 					, "of.min" = .i/min(.j, na.rm = TRUE)
 					, .i/sum(.j)
@@ -211,11 +214,14 @@ ratio <- function(i, j = i, type = NULL, decimals = 2){
 			sub.fn(type, ii, jj, decimals)
 		}
 	}
-	if (any(purrr::map_lgl(i, ~length(.x) > 1))){
-		purrr::map2(i, j, action)
-	} else {
-		action(i, j)
-	}
+#	if (any(purrr::map_lgl(i, ~length(.x) > 1))){
+#		.out <- purrr::map2(i, j, action)
+#	} else {
+		.out <- action(i, j)
+	#}
+
+ if (as_density){ .out <- sqrt(.out * (1 - .out)) }
+ return (.out)
 }
 #
 ranking.algorithm <- function(
