@@ -174,56 +174,54 @@ calc.geo_mean <- function(a, post.op = eval) {
   calc.means(a, mean.type = "gm", post.op = post.op) |> unlist()
 }
 #
-ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
+ratio <- function(i, j = i, type = NULL, decimals = 2, as_density = FALSE){
 #' Ratio Calculator
 #'
 #' \code{ratio} calculates one of the following ratio types:\cr
 #' \enumerate{
-#' \item{\code{"of.sum"} (relative to the sum of \code{i})}
-#' \item{\code{"of.max"} (relative to maximum value)}
 #' \item{\code{"cumulative"} (cumulative total vs. total)}
-#' }.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{i}.
+#' \item{\code{"of.max|of.min"} (relative to maximum/minimum value)}
+#' \item{\code{NULL} (relative to total)}
+#' }.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{j}.
 #'
-#' @param i (vector) numeric vector
-#' @param type (string[]) The types of ratio algorithms to use (see Details): a vector of supported values is supported
+#' @param i (vector) The vector of numeric scores in the numerator
+#' @param j (vector) The number of numeric scores in the denominator
+#' @param type (string[]) The types of ratio algorithms to use (see Details): a vector of values is supported
 #' @param decimals (integer | 2) The number of decimal places to which the output should be rounded
-#' @param as_density (logical) \code{TRUE} returns \code{x * p(1 - p)}, where \code{p} is a vector of cumulative proportions of \code{x}
-#'
-#' @note Because this function produces values on a \emph{ratio} scale, all values are shifted such that all values are >= 0.
-#'
+#' @param as_density (logical) \code{TRUE} returns sqrt[x * (1 - x)]
+#' 
 #' @family Chapter 1 - Calculators
 #'
 #' @export
 
-	# Handle legacy code ...
-	if (type == "pareto"){ type <- "cumulative" }
+if (type == "pareto"){ type <- "cumulative" }
 
-	ord.i <- base::rank(i, ties.method = "last", na.last = TRUE);
-	i <- sort(i);
-
-	if (any(i < 0)){ i <- i + abs(min(i)) }
-
-	# Functions selected by 'type'
-	cumulative <- \(.i) cumsum(.i)/sum(.i, na.rm = TRUE);
-	of.max <- \(.i) .i/max(.i, na.rm = TRUE);
-	of.sum <- \(.i) .i/sum(.i, na.rm = TRUE);
-
-	.out <- if (rlang::has_length(type, 1)){
-			do.call(type, args = list(.i = i)) |> round(decimals)
-		} else {
-			purrr::set_names(type) %>% purrr::map(\(k) do.call(k, args = list(.i = i)) |> round(decimals))
+	action = function(ii, jj){
+		sub.fn = function(k, .i, .j, .d){
+			if (!is.list(.j)){
+				switch(
+					k
+					, "cumulative" = cumsum(.i)/sum(.j, na.rm = TRUE)
+					, "of.max" = .i/max(.j, na.rm = TRUE)
+					, "of.min" = .i/min(.j, na.rm = TRUE)
+					, .i/sum(.j)
+					) |> round(.d)
+			} else { purrr::map(.j, ~sub.fn(k = k, .i = .i, .j = .x)) }
 		}
+		if (!rlang::has_length(type, 1)){
+			purrr::set_names(type) %>% purrr::map(sub.fn, ii, jj, decimals)
+		} else {
+			sub.fn(type, ii, jj, decimals)
+		}
+	}
+#	if (any(purrr::map_lgl(i, ~length(.x) > 1))){
+#		.out <- purrr::map2(i, j, action)
+#	} else {
+		.out <- action(i, j)
+	#}
 
- if (as_density){
- 	if (type == "cumulative"){
-	 	.out <- .out * (1 - .out)
- 	} else {
- 		.prop <- cumulative(.out)
- 		.out <- .out * .prop * (1 - .prop)
- 	}
- }
-
- return (.out[ord.i])
+ if (as_density){ .out <- sqrt(.out * (1 - .out)) }
+ return (.out)
 }
 #
 ranking.algorithm <- function(

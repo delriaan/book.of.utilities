@@ -101,6 +101,17 @@ vlogical(
 
 # miscellaneous ----
 get.object_sizes() |> View()
+# ratio ----
+x <- sample(-100:100, 30)
+ratio(x)
+ratio(x, type = "of.max")
+ratio(x, type = "cumulative")
+ratio(x, type = "pareto")
+ratio(x, type = "pareto", as_density = FALSE)
+ratio(x, type = "pareto", as_density = FALSE) %>% { plot(x = x, y = ., col = "blue", main = "cumulative") }
+ratio(x, type = "pareto", as_density = TRUE) %>% { plot(x = x, y = ., col = "red", main = "cumulative w/ density") }
+ratio(x, type = "of.max", as_density = FALSE) %>% { plot(x = x, y = ., col = "green", main = "of.max") }
+ratio(x, type = "of.max", as_density = TRUE) %>% { plot(x = x, y = ., col = "orange", main = "of.max w/density") }
 #
 # *regex ====
 as.regex("test") |> is.regex() # TRUE

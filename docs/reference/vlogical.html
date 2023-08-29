@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.0010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.3</span>
       </span>
     </div>
 
@@ -50,7 +50,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vlogical</span><span class="op">(</span><span class="va">vector</span>, <span class="va">vpattern</span>, <span class="va">test</span>, simplify_with <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vlogical</span><span class="op">(</span></span>
+<span>  <span class="va">vector</span>,</span>
+<span>  <span class="va">vpattern</span>,</span>
+<span>  test <span class="op">=</span> <span class="fu">stringi</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/stringi/man/stri_detect.html" class="external-link">stri_detect_regex</a></span>,</span>
+<span>  simplify_with <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -60,15 +66,15 @@
 
 
 <dt>vpattern</dt>
-<dd><p>A vector of patterns to be matched</p></dd>
+<dd><p>A named vector of patterns to be matched</p></dd>
 
 
 <dt>test</dt>
-<dd><p>(function) The function to use for logical testing: the function should be appropriate for the values of <code>vpattern</code> and have a named argument of <code>vector</code>, an additional argument to accept the pattern fed atomically, and '...' (even if not used).</p></dd>
+<dd><p>(function) The function to use for logical testing: the function should be appropriate for the values of <code>vpattern</code> accepting <code>vector</code> as the first argument, the pattern as the second, and '...' as the third (even if not used).</p></dd>
 
 
 <dt>simplify_with</dt>
-<dd><p>(function) When provided, the function operates over rows, thereby simplifying the result</p></dd>
+<dd><p>(function) A function to column-wise simplify the logical matrix when not empty</p></dd>
 
 
 <dt>...</dt>
@@ -79,7 +85,7 @@
     <h2>Value</h2>
     
 
-<p>A logical matrix, with rows of the same length as <code>vector</code> and columns the length of <code>vpattern</code> TRUE for items that match pattern. If vector is dimensional, multiple <code>TRUE</code> values may be found for each row.</p>
+<p>A logical matrix, with rows of the same length as <code>vector</code> and columns the length of <code>vpattern</code> when <code>simplify_with</code> is not provided.  Otherwise, the result of applying <code>simplify_with</code> on each column.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -97,14 +103,15 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">vlogical</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  vector <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">LETTERS</span>, <span class="fl">1</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  , <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">LETTERS</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  , test <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">vector</span>, <span class="va">q</span>, <span class="va">...</span><span class="op">)</span><span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">vector</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">q</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span></span>
+<span class="r-in"><span>  vector <span class="op">=</span> <span class="va">letters</span></span></span>
+<span class="r-in"><span>  , vpattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">LETTERS</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  , simplify_with <span class="op">=</span> <span class="va">mean</span></span></span>
 <span class="r-in"><span>  , ignore.case <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.1 0.0 0.1 0.1 0.1 0.1 0.0 0.2 0.1 0.0 0.0 0.0 0.0 0.0 0.1 0.0 0.1 0.1 0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20] 0.0</span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        x_1        x_2        x_3        x_4        x_5        x_6        x_7 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.03846154 0.03846154 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        x_8        x_9       x_10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.03846154 0.03846154 0.03846154 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
