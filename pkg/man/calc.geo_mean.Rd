@@ -15,7 +15,7 @@ calc.geo_mean(a, post.op = eval)
 This is an alias that calls \code{\link{calc.means}(a, "gm")}
 }
 \seealso{
-Other Chapter 1 - Calculators: 
+Other Calculators: 
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},
 \code{\link{calc.rms}()},
@@ -25,4 +25,4 @@ Other Chapter 1 - Calculators:
 \code{\link{ranking.algorithm}()},
 \code{\link{ratio}()}
 }
-\concept{Chapter 1 - Calculators}
+\concept{Calculators}

@@ -146,3 +146,8 @@ fun <- as.recursive(
 # counters
 sample(c(TRUE, FALSE), 50, TRUE) %>% print() %>% count.cycles(reset = cumsum(.) %% 5 == 0)
 factor.int(100, 90)
+
+# kr_key ====
+ez_pass <- kr_key(username = "imperial_agent", keyring = "local", service = "SQLServer")
+ez_pass
+ez_pass@key()

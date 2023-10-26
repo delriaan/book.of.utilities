@@ -6,7 +6,7 @@ range_diff <- function(...){
 #' @param ... (\code{\link[rlang]{dots_list}}): A numeric vector for which the range and corresponding difference is calculated. If a list is provided, the calculation is executed over each element of the list.
 #'
 #' @return A scalar value of the inclusive difference of upper and lower boundaries of the range of the input vector
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -41,7 +41,7 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 #'
 #' @return Arguments \code{data}, \code{mean.type}, and \code{post.op} determine the return type.
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @importFrom magrittr %>% %<>%
 #'
@@ -117,7 +117,7 @@ calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population 
 #' @param as.zscore (logical | \code{FALSE}) Should the output be transformed to Z-scores?
 #' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation.
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -137,7 +137,7 @@ calc.rms <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -152,7 +152,7 @@ calc.harmonic_mean <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -167,7 +167,7 @@ calc.geo_mean <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -191,7 +191,7 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 #'
 #' @note Because this function produces values on a \emph{ratio} scale, all values are shifted such that all values are >= 0.
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -246,7 +246,7 @@ ranking.algorithm <- function(
 #' @param dflt.fn (function) The default function to use when replacing \code{NA} values in ranks
 #' @param map.fn (function) The function to iterate the scores when computing the output
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -308,7 +308,7 @@ radix <- function(x, ...){
 #' }
 #'
 #' @return The decimal representation of the input(s) using the supplied radix basis.
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #' @export
 #'
 #' @examples

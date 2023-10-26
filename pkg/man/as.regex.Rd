@@ -16,9 +16,8 @@ The string appended with attribute "regex" set to \code{TRUE}
 \code{as.regex()} adds class "regex" to a strings passed to \code{...}
 }
 \seealso{
-Other Chapter 5 - Miscellaneous Functions: 
+Other Miscellaneous Functions: 
 \code{\link{checksum}()},
-\code{\link{gen.pass}()},
 \code{\link{gen.primes}()},
 \code{\link{is.regex}()},
 \code{\link{log_note}()},
@@ -26,4 +25,4 @@ Other Chapter 5 - Miscellaneous Functions:
 \code{\link{unregex}()},
 \code{\link{vlogical}()}
 }
-\concept{Chapter 5 - Miscellaneous Functions}
+\concept{Miscellaneous Functions}

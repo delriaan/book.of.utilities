@@ -18,14 +18,13 @@ Matching values in \code{x} based on values of \code{i}
 Convert REGEX Pattern to Object Names
 }
 \seealso{
-Other Chapter 5 - Miscellaneous Functions: 
+Other Miscellaneous Functions: 
 \code{\link{as.regex}()},
 \code{\link{checksum}()},
-\code{\link{gen.pass}()},
 \code{\link{gen.primes}()},
 \code{\link{is.regex}()},
 \code{\link{log_note}()},
 \code{\link{polyname2orig}()},
 \code{\link{vlogical}()}
 }
-\concept{Chapter 5 - Miscellaneous Functions}
+\concept{Miscellaneous Functions}

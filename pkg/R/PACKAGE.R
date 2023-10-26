@@ -69,3 +69,7 @@
 #' @importFrom utils object.size
 #' @name book.of.utilities
 NULL
+
+.onLoad <- function(...) {
+	S7::methods_register()
+}

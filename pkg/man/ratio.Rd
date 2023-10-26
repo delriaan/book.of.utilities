@@ -27,7 +27,7 @@ ratio(i, type = "of.sum", decimals = 2, as_density = FALSE)
 Because this function produces values on a \emph{ratio} scale, all values are shifted such that all values are >= 0.
 }
 \seealso{
-Other Chapter 1 - Calculators: 
+Other Calculators: 
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},
@@ -37,4 +37,4 @@ Other Chapter 1 - Calculators:
 \code{\link{range_diff}()},
 \code{\link{ranking.algorithm}()}
 }
-\concept{Chapter 1 - Calculators}
+\concept{Calculators}

@@ -16,14 +16,13 @@ Returns \code{TRUE} when the value of \code{i} contains class "regex"
 Test for Class 'regex'
 }
 \seealso{
-Other Chapter 5 - Miscellaneous Functions: 
+Other Miscellaneous Functions: 
 \code{\link{as.regex}()},
 \code{\link{checksum}()},
-\code{\link{gen.pass}()},
 \code{\link{gen.primes}()},
 \code{\link{log_note}()},
 \code{\link{polyname2orig}()},
 \code{\link{unregex}()},
 \code{\link{vlogical}()}
 }
-\concept{Chapter 5 - Miscellaneous Functions}
+\concept{Miscellaneous Functions}

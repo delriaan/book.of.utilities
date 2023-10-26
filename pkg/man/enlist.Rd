@@ -40,9 +40,9 @@ enlist(test_x$test_2, !!!nms[1:2])
 
 }
 \seealso{
-Other Chapter 2 - Object Management: 
+Other Object Management: 
 \code{\link{distinct.list}()},
 \code{\link{get.object_sizes}()},
 \code{\link{scrub.data}()}
 }
-\concept{Chapter 2 - Object Management}
+\concept{Object Management}

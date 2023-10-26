@@ -15,7 +15,7 @@ calc.harmonic_mean(a, post.op = eval)
 This is an alias that calls \code{\link{calc.means}(a, "hm")}
 }
 \seealso{
-Other Chapter 1 - Calculators: 
+Other Calculators: 
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.means}()},
 \code{\link{calc.rms}()},
@@ -25,4 +25,4 @@ Other Chapter 1 - Calculators:
 \code{\link{ranking.algorithm}()},
 \code{\link{ratio}()}
 }
-\concept{Chapter 1 - Calculators}
+\concept{Calculators}

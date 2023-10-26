@@ -55,7 +55,7 @@ radix(c(10, 26), 3, h)
 radix(c(100, "0110"), b)
 }
 \seealso{
-Other Chapter 1 - Calculators: 
+Other Calculators: 
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},
@@ -65,4 +65,4 @@ Other Chapter 1 - Calculators:
 \code{\link{ranking.algorithm}()},
 \code{\link{ratio}()}
 }
-\concept{Chapter 1 - Calculators}
+\concept{Calculators}

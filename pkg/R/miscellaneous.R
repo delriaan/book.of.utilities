@@ -10,7 +10,7 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 #'
 #' @return See parameter \code{show}
 #'
-#' @family Chapter 5 - Miscellaneous Functions
+#' @family Miscellaneous Functions
 #' @export
 
 	tstamp = sprintf("[%s]\n", Sys.time());
@@ -44,7 +44,7 @@ vlogical <- function(vector, vpattern, test = stringi::stri_detect_regex, simpli
 #'
 #' @return A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} when \code{simplify_with} is not provided.  Otherwise, the result of applying \code{simplify_with} on each column.
 #'
-#' @family Chapter 5 - Miscellaneous Functions
+#' @family Miscellaneous Functions
 #'
 #' @examples
 #' vlogical(
@@ -77,7 +77,7 @@ as.regex <- function(...){
 #' @param ... (\code{\link[rlang]{dots_list}}): The string to set "as regex"
 #'
 #' @return The string appended with attribute "regex" set to \code{TRUE}
-#' @family Chapter 5 - Miscellaneous Functions
+#' @family Miscellaneous Functions
 #' @export
 
 	purrr::map(rlang::exprs(...), ~data.table::setattr(eval(.x), name = "regex", value = TRUE));
@@ -89,7 +89,7 @@ is.regex <- function(i){
 #' @param i (string[]) A string or string vector
 #'
 #' @return Returns \code{TRUE} when the value of \code{i} contains class "regex"
-#' @family Chapter 5 - Miscellaneous Functions
+#' @family Miscellaneous Functions
 #' @export
 
 	purrr::map(i, ~ifelse(is.null(attr(.x, "regex")), FALSE, attr(.x, "regex"))) |> unlist();
@@ -102,7 +102,7 @@ unregex <- function(i, x){
 #' @param x (object) The names to search OR an object with column names
 #'
 #' @return Matching values in \code{x} based on values of \code{i}
-#' @family Chapter 5 - Miscellaneous Functions
+#' @family Miscellaneous Functions
 #' @export
 	x = if (any(class(x) %in% c("data.table", "data.frame", "tibble"))){ names(x) } else { x }
 
@@ -128,7 +128,7 @@ polyname2orig <- function(poly.names, orig.names, degree, ...){
 #' @param ... Arguments to send to \code{\link[base]{paste}}, namely \code{sep} (default "_") and \code{collapse} (default ("_x_"))
 #'
 #' @return The polynomial names vector with positions replaced with original name elements
-#' @family Chapter 5 - Miscellaneous Functions
+#' @family Miscellaneous Functions
 #' @export
 
 	.paste.args = list(
@@ -154,7 +154,7 @@ gen.primes <- function(n = 1, domain = 2:n, random = FALSE, distinct = TRUE, cha
 #' @param chatty (logical) When \code{TRUE}, various output is printed to console, mainly for debugging purposes
 #'
 #' @return A vector of prime numbers
-#' @family Chapter 5 - Miscellaneous Functions
+#' @family Miscellaneous Functions
 #' @export
 
 	# Initialize
@@ -233,16 +233,16 @@ call.recursion <- function(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simpli
 }
 #
 checksum <- function(object, hash, ...){
-#' Checksum Validation
-#'
-#' \code{checksum} provides a wrapper to \code{\link[digest]{digest}} providing the hash to use for comparison
-#'
-#' @param object,... See \code{\link[digest]{digest}}
-#' @param hash (string) The hash to compare
-#'
-#' @return A logical scalar
-#' @family Chapter 5 - Miscellaneous Functions
-#' @export
+	#' Checksum Validation
+	#'
+	#' \code{checksum} provides a wrapper to \code{\link[digest]{digest}} providing the hash to use for comparison
+	#'
+	#' @param object,... See \code{\link[digest]{digest}}
+	#' @param hash (string) The hash to compare
+	#'
+	#' @return A logical scalar
+	#' @family Miscellaneous Functions
+	#' @export
 	msg_list <- list(object = "Enter the path of the file to check: ", hash = "Enter the hash to compare");
 
 	if (missing(object)){
@@ -253,213 +253,16 @@ checksum <- function(object, hash, ...){
 		hash <- if (interactive()){ tcltk::tk_choose.files(msg_list$hash) } else { readline(msg_list$hash) }
 	}
 
-  arg_list <- rlang::list2(...)
+	arg_list <- rlang::list2(...)
 
-  if (is.character(object)){
-    arg_list$file <- object
-  } else {
-    arg_list$object <- object
-  }
-
-  check_result <- do.call(digest::digest, args = arg_list)
-
-  identical(check_result, hash)
-}
-#
-gen.pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
-#' Generate a Password
-#'
-#' \code{gen.pass} creates a password consisting of alphanumeric glyphs and symbols
-#'
-#' @param glyphs Character-coercibles to use in the creation of the password: this is combined with the output of \code{\link[sodium]{keygen}}
-#' @param length (int) The length of the password in character format
-#' @param raw (logical) Should the output be returned as raw?
-#' @param chatty (logical) Should diagnostic information be provided?
-#'
-#' @note The generated string \emph{always} begins with a letter before being returned as-is or as a raw vector
-#' @family Chapter 5 - Miscellaneous Functions
-#' @export
-
-	set.seed(Sys.time());
-
-	force(glyphs);
-
-	glyphs <- { c(sodium::keygen(), LETTERS, glyphs) |>
-			stringi::stri_extract_all_regex(".", simplify = TRUE) |>
-			as.vector() |>
-			purrr::keep(~.x != "") |>
-			table()
+	if (is.character(object)){
+		arg_list$file <- object
+	} else {
+		arg_list$object <- object
 	}
 
-	.sample_wgt <- c(.75, 1, .5);
+	check_result <- do.call(digest::digest, args = arg_list)
 
-	sample_glyphs <- purrr::as_mapper(~{
-		.this <- { ifelse(
-			grepl("[0-9A-Z]", names(.x))
-			, .x * .sample_wgt[1]
-			, ifelse(
-				grepl("[a-z]", names(.x))
-				, .x * .sample_wgt[2]
-				, .x * .sample_wgt[3]
-			)) * (3/.x)
-		} |>
-			ceiling() |>
-			purrr::imap(~rep.int(.y, .x)) |>
-			unlist(use.names = FALSE);
-
-		sample(
-			x = .this
-			, size = ifelse(rlang::is_empty(length), length(.this), length)
-			, replace = TRUE
-			, prob = c(table(.this))[.this]
-		) |>
-			paste(collapse = "") |>
-			stringi::stri_extract_all_regex(pattern = ".", simplify = TRUE) |>
-			as.vector();
-	});
-
-	.out <- sample_glyphs(glyphs);
-	.alpha_r <- sum(.out %in% letters) / length(.out);
-	.ALPHA_r <- sum(.out %in% LETTERS) / length(.out);
-	.alpha_ratio <- abs(.alpha_r - .ALPHA_r);
-
-	.iter <- 0;
-
-	while((.alpha_ratio > .10) & (.iter < 1000L)){
-		set.seed(sample(.Random.seed, 1));
-
-		.out <- sample_glyphs(glyphs);
-		.alpha_r <- sum(.out %in% letters) / length(.out);
-		.ALPHA_r <- sum(.out %in% LETTERS) / length(.out);
-		.ALPHA_r <- sum(.out %in% LETTERS) / length(.out);
-		.alpha_ratio <- abs(.alpha_r - .ALPHA_r);
-		.iter <- .iter + 1
-	}
-
-	if (chatty){ message(glue::glue("\nPassword generated with replication \ntries: {.iter}\nalpha_ratio:{.alpha_ratio}")) }
-
-	.out <- paste(c(sample(c(letters,LETTERS), 1), .out), collapse = "");
-
-	if (raw){ charToRaw(.out) } else { .out }
+	identical(check_result, hash)
 }
 #
-keyring_export <- function(keyring = NULL, as.raw = FALSE){
-#' Export keyring Entries
-#'
-#' \code{keyring_export} creates JSON output for available \code{\link[keyring]{keyring}}s
-#'
-#' @param keyring (string[]) The name(s) of keyrings to export (defaults to all named keyrings when calling \code{\link[keyring]{keyring_list}})
-#' @param as.raw (logical | FALSE) Should each entry be cast as a raw vector?
-#'
-#' @return Keyring entries as JSON or raw-encoded JSON
-#' @family keyring Utilities
-#' @export
-
-	kr_idx <- if (rlang::is_empty(keyring)){
-			which(keyring::keyring_list()$keyring != "")
-		} else {
-			which(keyring::keyring_list()$keyring %in% keyring) %||%
-				which(keyring::keyring_list()$keyring != "")
-		}
-
-	keyring::keyring_list()[kr_idx, ] |>
-		purrr::modify_at(3, as.logical) |>
-		purrr::modify_at(2, as.integer) |>
-		purrr::pmap(~{
-			kr <- ..1;
-
-			if (..3){ keyring::keyring_unlock(keyring = ..1) }
-
-			f <- \(x){
-					rlang::inject(
-						c(!!!x, value = keyring::key_get(!!!purrr::discard(x, \(i) i == ""), keyring = kr))
-					)}
-
-			.out <- rlang::list2(
-					!!kr := keyring::key_list(keyring = kr) |>
-					 	apply(1, f, simplify = TRUE) |> t() |>
-					 	as.data.frame() |>
-					 	jsonlite::toJSON("columns")
-					)
-
-			if (as.raw){ purrr::modify_at(.out, kr, charToRaw) } else { .out }
-		}) |>
-		purrr::flatten()
-}
-#
-keyring_import <- function(data, kr_name = rlang::as_label(rlang::enexpr(data)), dry.run = FALSE){
-#' Import keyring Entries
-#'
-#' \code{keyring_import} registers exported \code{\link[keyring]{keyring}}s (see \code{\link{keyring_export}})
-#'
-#' @param data The named list of exported keyring data
-#' @param kr_name (string) The name of the target keyring to populate: defaults to the deparsed value of argument \code{data}
-#' @param dry.run (logical|FALSE) When \code{TRUE}, the expression that would be evaluated is returned (passwords are redacted)
-#'
-#' @return A logical scalar for each imported key
-#' @family keyring Utilities
-#' @export
-
-	if (missing(data)){ stop("No keyring data provided") }
-
-	if (is.raw(data)){ data <- rawToChar(data) }
-
-	kr_args <- jsonlite::fromJSON(data)
-
-	purrr::pmap_lgl(kr_args, \(...){
-		.action <- { rlang::expr(
-			keyring::key_set_with_value(
-				!!!rlang::list2(keyring = kr_name, ...) |>
-					purrr::map(\(x) if (x == ""){ NULL } else { x }) |>
-					rlang::set_names(c("keyring", "service", "username", "password"))
-			)
-		)}
-
-		if (dry.run){
-			.action$password <- "..."
-
-			rlang::expr_print(.action)
-
-			TRUE
-		} else {
-			tryCatch({ eval(.action); TRUE }, error = \(e) FALSE)
-		}
-	})
-}
-#
-#' Store an encrypted \code{keyring} key
-#'
-#' The \code{kr_key} class
-#'
-#' @slot service,usernane,keyribng See \code{\link[keyring]{key_get}}
-#' @slot get A function to retrieve the encrypted \code{keyring} key
-#'
-#' @rdname kr_key
-#' @name kr_key
-#'
-#' @examples
-#' \dontrun{
-#' x <- kr_key(service = "service", keyring = "this_keyring")
-#' }
-#'
-#' @export
-kr_key <- setClass(Class = "kr_key", slots = c(service = "character", username = "ANY", keyring = "character", get = "ANY"));
-
-#' @export
-setMethod("initialize", "kr_key",
-	function(.Object, service, username = NULL, keyring, get){
-		.Object <- callNextMethod();
-
-		.passkey <- book.of.utilities::gen.pass(glyphs = "$%^&*", length = 30, raw = TRUE) |> sodium::sha256();
-
-		.password <- keyring::key_get(service = service, keyring = keyring, username = username) |>
-			charToRaw() |>
-			sodium::data_encrypt(key = .passkey);
-
-		.Object@get <- rlang::expr(\() sodium::data_decrypt(bin = !!.password, key = !!.passkey) |> rawToChar() |> invisible()) |> eval();
-
-		.Object
-	})
-
-#' @export
-setMethod(f = "show", signature = "kr_key", function(object){ cat("<keyring password>", sep = "\n") })

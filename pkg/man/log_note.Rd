@@ -23,14 +23,13 @@ See parameter \code{show}
 Even though the original use-case is the real-time capturing of developer notes, it can be used for incremental writing to a file when needed.
 }
 \seealso{
-Other Chapter 5 - Miscellaneous Functions: 
+Other Miscellaneous Functions: 
 \code{\link{as.regex}()},
 \code{\link{checksum}()},
-\code{\link{gen.pass}()},
 \code{\link{gen.primes}()},
 \code{\link{is.regex}()},
 \code{\link{polyname2orig}()},
 \code{\link{unregex}()},
 \code{\link{vlogical}()}
 }
-\concept{Chapter 5 - Miscellaneous Functions}
+\concept{Miscellaneous Functions}

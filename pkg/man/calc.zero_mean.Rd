@@ -22,7 +22,7 @@ calc.zero_mean(a, post.op = eval, as.zscore = FALSE, use.population = FALSE)
 This is an alias that calls \code{\link{calc.means}(a, "hm")}
 }
 \seealso{
-Other Chapter 1 - Calculators: 
+Other Calculators: 
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},
@@ -32,4 +32,4 @@ Other Chapter 1 - Calculators:
 \code{\link{ranking.algorithm}()},
 \code{\link{ratio}()}
 }
-\concept{Chapter 1 - Calculators}
+\concept{Calculators}

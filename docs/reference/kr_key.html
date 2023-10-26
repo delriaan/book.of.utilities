@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.0100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.3004</span>
       </span>
     </div>
 
@@ -41,7 +41,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Store an encrypted <code>keyring</code> key</h1>
-    <small class="dont-index">Source: <a href="https://github.com/delriaan/book.of.utilities/blob/HEAD/R/miscellaneous.R" class="external-link"><code>R/miscellaneous.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/delriaan/book.of.utilities/blob/HEAD/R/authentication.R" class="external-link"><code>R/authentication.R</code></a></small>
     <div class="hidden name"><code>kr_key.Rd</code></div>
     </div>
 
@@ -49,17 +49,24 @@
     <p>The <code>kr_key</code> class</p>
     </div>
 
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">kr_key</span><span class="op">(</span></span>
+<span>  service <span class="op">=</span> <span class="va">class_missing</span>,</span>
+<span>  username <span class="op">=</span> <span class="va">class_missing</span>,</span>
+<span>  keyring <span class="op">=</span> <span class="va">class_missing</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="slots">
     <h2>Slots</h2>
     
 
-<dl><dt><code>service,usernane,keyribng</code></dt>
+<dl><dt><code>service,usernane,keyring</code></dt>
 <dd><p>See <code><a href="https://rdrr.io/pkg/keyring/man/key_get.html" class="external-link">key_get</a></code></p></dd>
 
 
-<dt><code>get</code></dt>
-<dd><p>A function to retrieve the encrypted <code>keyring</code> key</p></dd>
+<dt><code>key</code></dt>
+<dd><p>A function to retrieve the <code>keyring</code> key</p></dd>
 
 
 </dl></div>
