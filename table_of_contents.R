@@ -93,4 +93,41 @@ cat(toc_header, toc_content, sep = "\n\n", file = toc_file, append = FALSE)
 #
 # Build Site ----
 # usethis::use_pkgdown()
+dir("../resources/R", pattern = "list", full.names = TRUE) |> source();
+
+dir("pkg/R", pattern = "^[a-z].+R$") %>%
+	rlang::set_names(
+		stringi::stri_split_fixed(., "_") |>
+			sapply(\(i) stringi::stri_trans_totitle(i) |> paste(collapse = " ")) |>
+			stringi::stri_replace_all_fixed(c(".r", "Z "), "", vectorize_all = FALSE) |>
+			sprintf(fmt = "Chapter %2$s - %1$s", seq_along(.))
+	) |>
+	purrr::map(\(i){
+		readLines(paste0("pkg/R/", i)) |>
+			stringi::stri_extract_all_regex(pattern = "(^[[:punct:]a-z_`%].+ (?=(<-)))", omit_no_match = TRUE) |>
+			sapply(\(k){
+				stringi::stri_split_fixed(k, "@family ", simplify = TRUE, omit_empty = TRUE) |> as.vector()
+			}) |>
+			purrr::compact() |>
+			unlist() |>
+			trimws() |>
+			sort() %>%
+			slider::slide(
+				.after = 2
+				, .step = 3
+				, .f = \(k) sapply(k, \(i) htmltools::HTML(i) |> as.character())
+				, .complete = length(.) > 2
+			) |>
+			purrr::compact() %>%
+			rlang::set_names(rep.int("", length(.)))
+	}) |>
+	list2html(.ordered = FALSE) |>
+	as.character() |>
+	cat(file = "pkg/toc.html", sep = "\n")
+
+rmarkdown::render("pkg/README.rmd", knit_root_dir = getwd(), intermediates_dir = getwd());
+
+# Manually replace `%&gt;&lt;%` with `%><%`
+rstudioapi::navigateToFile("pkg/README.md");
+
 pkgdown::build_site(pkg = "pkg", lazy = TRUE, override = list(destination = "../docs"))

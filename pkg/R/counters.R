@@ -1,17 +1,17 @@
 count.cycles <- function(cond, offset = 1, reset){
-#' Cycle Counter
-#'
-#' \code{count.cycles} detects and maps conditional occurrence frequency
-#'
-#' @param cond (logical[]) A logical vector
-#' @param offset (integer|1) An integer defining the series origin
-#' @param reset (logical[]) A logical vector of the same length as \code{cond} such that when \code{TRUE}, the cycle counter resets to the offset
-#'
-#' @return A one-based (default), conditionally-incremented series
-#'
-#' @family Counters
-#'
-#' @export
+	#' Cycle Counter
+	#'
+	#' \code{count.cycles} detects and maps conditional occurrence frequency
+	#'
+	#' @param cond (logical[]) A logical vector
+	#' @param offset (integer|1) An integer defining the series origin
+	#' @param reset (logical[]) A logical vector of the same length as \code{cond} such that when \code{TRUE}, the cycle counter resets to the offset
+	#'
+	#' @return A one-based (default), conditionally-incremented series
+	#'
+	#' @family Counters
+	#'
+	#' @export
 
 	# :: cycle_idx MUST be initialized before session() (see below) is called iteratively
 	offset = as.integer(offset)[1];
@@ -41,18 +41,19 @@ count.cycles <- function(cond, offset = 1, reset){
   # :: Call the counter function
   sapply(cond, counter);
 }
-#
+
+
 factor.int <- function(i, ...){
-#' Factorization of Integers
-#'
-#' @param i (integer[]) One or more integers to factor
-#' @param ... \code{\link[rlang]{dots_list}}: Additional integers to factor (can be used in conjunction with \code{i})
-#'
-#' @return The factors of the input given as a vector or list of vectors
-#'
-#' @family Counters
-#'
-#' @export
+	#' Factorization of Integers
+	#'
+	#' @param i (integer[]) One or more integers to factor
+	#' @param ... \code{\link[rlang]{dots_list}}: Additional integers to factor (can be used in conjunction with \code{i})
+	#'
+	#' @return The factors of the input given as a vector or list of vectors
+	#'
+	#' @family Counters
+	#'
+	#' @export
 
 	if (missing(i) & ...length() == 0){ message("[ERROR] Please supply integer values to either 'i' or '...'"); return(0); }
 	if (missing(i) & ...length() != 0){ i <- 0 }

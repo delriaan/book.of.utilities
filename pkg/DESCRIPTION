@@ -1,7 +1,7 @@
 Package: book.of.utilities
 Title: Book of Utilities: utilities for working with data
 Description: `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
-Version: 0.1.6.3005
+Version: 0.1.6.3006
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true

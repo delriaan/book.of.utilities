@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.3006</span>
       </span>
     </div>
 
@@ -51,7 +51,7 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get.object_sizes</span><span class="op">(</span></span>
-<span>  i <span class="op">=</span> <span class="va">.GlobalEnv</span>,</span>
+<span>  i <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  depth <span class="op">=</span> <span class="fl">0L</span>,</span>
 <span>  max.depth <span class="op">=</span> <span class="fl">2L</span>,</span>
@@ -94,7 +94,7 @@
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p>Other Chapter 2 - Object Management: 
+    <div class="dont-index"><p>Other Object Management: 
 <code><a href="distinct.list.html">distinct.list</a>()</code>,
 <code><a href="enlist.html">enlist</a>()</code>,
 <code><a href="scrub.data.html">scrub.data</a>()</code></p></div>

@@ -74,7 +74,7 @@ gen.pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
 
 	if (raw){ charToRaw(.out) } else { .out }
 }
-#
+
 keyring_export <- function(keyring = NULL, as.raw = FALSE){
 	#' Export keyring Entries
 	#'
@@ -118,7 +118,7 @@ keyring_export <- function(keyring = NULL, as.raw = FALSE){
 		}) |>
 		purrr::flatten()
 }
-#
+
 keyring_import <- function(data, kr_name = rlang::as_label(rlang::enexpr(data)), dry.run = FALSE){
 	#' Import keyring Entries
 	#'
@@ -158,25 +158,24 @@ keyring_import <- function(data, kr_name = rlang::as_label(rlang::enexpr(data)),
 		}
 	})
 }
-#
-#' Store an encrypted \code{keyring} key
-#'
-#' The \code{kr_key} class
-#'
-#' @slot service,usernane,keyring See \code{\link[keyring]{key_get}}
-#' @slot key A function to retrieve the \code{keyring} key
-#'
-# @rdname kr_key
-# @name kr_key
-#'
-#' @examples
-#' \dontrun{
-#' x <- kr_key(service = "service", keyring = "this_keyring")
-#' }
-#'
-#' @family Authentication Functions
-#'
-#' @export
+	#' Store an encrypted \code{keyring} key
+	#'
+	#' The \code{kr_key} class
+	#'
+	#' @slot service,usernane,keyring See \code{\link[keyring]{key_get}}
+	#' @slot key A function to retrieve the \code{keyring} key
+	#'
+	# @rdname kr_key
+	# @name kr_key
+	#'
+	#' @examples
+	#' \dontrun{
+	#' x <- kr_key(service = "service", keyring = "this_keyring")
+	#' }
+	#'
+	#' @family Authentication Functions
+	#'
+	#' @export
 kr_key <- {
 	# Set the structure for the class properties in a separte, unexported list
 	s7_properties <- { list(
