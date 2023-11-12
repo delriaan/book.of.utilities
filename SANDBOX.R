@@ -29,3 +29,16 @@ dir("pkg/R", pattern = "^[a-z].+R$") %>%
 	list2html(.ordered = FALSE) |>
 	htmltools::html_print(viewer = NULL) |>
 	file.copy(to = paste0("pkg/toc.html"))
+
+git_repo <- git2r::repository(getwd())
+git_repo |> plot()
+
+git2r::commits() |>
+	unlist() |>
+	stringi::stri_extract_all_regex("[#].+", omit_no_match = TRUE, simplify = TRUE) |>
+	as.vector() |>
+	unique() |>
+	purrr::discard(~.x == "") |>
+	sort()
+
+git2r::last_commit()

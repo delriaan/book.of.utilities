@@ -179,20 +179,9 @@ keyring_import <- function(data, kr_name = rlang::as_label(rlang::enexpr(data)),
 kr_key <- {
 	# Set the structure for the class properties in a separte, unexported list
 	s7_properties <- { list(
-		service = S7::new_property(
-				class = S7::class_character
-				, name = "service"
-				, default = NULL
-				)
-		, username = S7::new_property(
-				class = S7::class_character
-				, name = "username"
-				, default = NULL
-				)
-		, keyring = S7::new_property(
-				class = S7::class_character
-				, name = "keyring"
-				)
+		service = S7::new_property(class = S7::class_character, name = "service", default = NULL)
+		, username = S7::new_property(class = S7::class_character, name = "username", default = NULL)
+		, keyring = S7::new_property(class = S7::class_character, name = "keyring")
 		, key = S7::new_property(
 				class = S7::class_function
 				, name = "key"
