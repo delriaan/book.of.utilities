@@ -49,6 +49,7 @@ Other Calculators:
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.rms}()},
 \code{\link{calc.zero_mean}()},
+\code{\link{odds2probs}()},
 \code{\link{radix}()},
 \code{\link{range_diff}()},
 \code{\link{ranking.algorithm}()},

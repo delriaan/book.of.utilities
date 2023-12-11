@@ -1,22 +1,3 @@
-range_diff <- function(...){
-#' Magnitude of a Range of Values
-#'
-#' \code{range_diff} calculates the difference in the range of values given by \code{input}
-#'
-#' @param ... (\code{\link[rlang]{dots_list}}): A numeric vector for which the range and corresponding difference is calculated. If a list is provided, the calculation is executed over each element of the list.
-#'
-#' @return A scalar value of the inclusive difference of upper and lower boundaries of the range of the input vector
-#' @family Calculators
-#'
-#' @export
-
-	action = function(i){ i = as.numeric(unlist(i)); max(i, na.rm = TRUE) - min(i, na.rm = TRUE); }
-
-	i = rlang::list2(...);
-
-	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
-}
-#
 calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE, use.population = FALSE, ...){
 #' Calculate Means
 #'
@@ -370,4 +351,75 @@ radix <- function(x, ...){
 				sum(as.integer(i) * r^(n-1))
 			}) |> unlist(use.names = FALSE)
 	}
+}
+#
+range_diff <- function(...){
+#' Magnitude of a Range of Values
+#'
+#' \code{range_diff} calculates the difference in the range of values given by \code{input}
+#'
+#' @param ... (\code{\link[rlang]{dots_list}}): A numeric vector for which the range and corresponding difference is calculated. If a list is provided, the calculation is executed over each element of the list.
+#'
+#' @return A scalar value of the inclusive difference of upper and lower boundaries of the range of the input vector
+#'
+#' @family Calculators
+#'
+#' @export
+
+	action = function(i){ i = as.numeric(unlist(i)); max(i, na.rm = TRUE) - min(i, na.rm = TRUE); }
+
+	i = rlang::list2(...);
+
+	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
+}
+#
+odds2probs <- function(...){
+	#' Calculate percentages from odds ratios
+	#'
+	#' \code{odds2probs} converts odds ratios to percentages.
+	#'
+	#' @param ... (\code{\link[rlang]{dots_list}}): Numeric vectors or "odds" strings (e.g., "x:y"). For vectors or string representations, the number of operands can be of any length but must represent positive real values.
+	#'
+	#' @note Length-1 arguments are assumed to be odds ratios and are converted to percentages via sigmoid function.
+	#'
+	#' @return A numeric list length as the input(s) representing the percentage of the odds ratio(s): values that cannot be converted will return \code{NULL}.
+	#'
+	#' @family Calculators
+	#'
+	#' @examples
+	#' odds2probs(c(3, 4), c(3L, 4L), "3:4", c("3", "4"), c(4,5,6), "6:3:1", c(3,-1), "1:1", 1, 2/5, "2:3", 2)
+	#'
+	#' @export
+  fun <- (\(i, j){
+    res <- if (i$type == "character" && i$len == 1) {
+      if (grepl(":", arg_list[[j]])) {
+        strsplit(arg_list[[j]], ":") |> unlist() |> as.numeric()
+      } else {
+        as.numeric(arg_list[[j]])
+      }
+    } else if (i$type == "character" && i$len > 1) {
+      arg_list[[j]] |> unlist() |> as.numeric()
+    } else if (i$type %in% c("integer", "numeric", "double")) {
+      if (i$len > 1){
+        arg_list[[j]]
+      } else {
+        as.numeric(arg_list[[j]])
+      }
+    } else {
+      numeric()
+    }
+    # browser()
+    if (rlang::is_empty(res) || (any(res <= 0) & !all(res <= 0))){
+      NULL
+    } else if (length(unique(res)) == 1 || all(res <= 0)){
+      res <- unique(res)
+      # warning("Assuming input as odds ratio ...")
+      exp(res)/(1 + exp(res))
+    } else{
+      res/sum(res)
+    }
+  });
+  arg_list <- rlang::list2(...);
+  arg_types <- purrr::map(arg_list, \(i) data.frame(type = typeof(i), len = length(i)));
+  arg_types |> purrr::imap(purrr::possibly(fun, otherwise = NULL));
 }

@@ -151,3 +151,7 @@ factor.int(100, 90)
 ez_pass <- kr_key(username = "imperial_agent", keyring = "local", service = "SQLServer")
 ez_pass
 ez_pass@key()
+
+# odds2probs ====
+odds2probs(c(3, 4), c(3L, 4L), "3:4", c("3", "4"), c(4,5,6), "6:3:1", c(3,-1), "1:1", 1, 2/5, "2:3", 2)
+

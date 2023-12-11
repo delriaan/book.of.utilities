@@ -22,6 +22,7 @@ Other Calculators:
 \code{\link{calc.means}()},
 \code{\link{calc.rms}()},
 \code{\link{calc.zero_mean}()},
+\code{\link{odds2probs}()},
 \code{\link{radix}()},
 \code{\link{ranking.algorithm}()},
 \code{\link{ratio}()}

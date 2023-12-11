@@ -17,7 +17,11 @@ functional families are covered in `book.of.utilities`:
       </ul>
     </p>
     <p>
-      <li style="font-weight:bold" level="1">Chapter 2 - Calculators</li>
+      <li style="font-weight:bold" level="1">Chapter 2 - Book.of.utilities</li>
+      <ul></ul>
+    </p>
+    <p>
+      <li style="font-weight:bold" level="1">Chapter 3 - Calculators</li>
       <ul>
         <li level="2">
           <b></b>
@@ -25,16 +29,16 @@ functional families are covered in `book.of.utilities`:
         </li>
         <li level="2">
           <b></b>
-          <span>: calc.rms, calc.zero_mean, radix</span>
+          <span>: calc.rms, calc.zero_mean, odds2probs</span>
         </li>
         <li level="2">
           <b></b>
-          <span>: range_diff, ranking.algorithm, ratio</span>
+          <span>: radix, range_diff, ranking.algorithm</span>
         </li>
       </ul>
     </p>
     <p>
-      <li style="font-weight:bold" level="1">Chapter 3 - Counters</li>
+      <li style="font-weight:bold" level="1">Chapter 4 - Counters</li>
       <ul>
         <li level="2">
           <b></b>
@@ -43,11 +47,11 @@ functional families are covered in `book.of.utilities`:
       </ul>
     </p>
     <p>
-      <li style="font-weight:bold" level="1">Chapter 4 - Custom Operators</li>
+      <li style="font-weight:bold" level="1">Chapter 5 - Custom Operators</li>
       <ul>
         <li level="2">
           <b></b>
-          <span>: `%?%`, `%??%`, `%><%`</span>
+          <span>: `%?%`, `%??%`, `%&gt;&lt;%`</span>
         </li>
         <li level="2">
           <b></b>
@@ -56,7 +60,7 @@ functional families are covered in `book.of.utilities`:
       </ul>
     </p>
     <p>
-      <li style="font-weight:bold" level="1">Chapter 5 - Object Management</li>
+      <li style="font-weight:bold" level="1">Chapter 6 - Object Management</li>
       <ul>
         <li level="2">
           <b></b>
@@ -65,7 +69,7 @@ functional families are covered in `book.of.utilities`:
       </ul>
     </p>
     <p>
-      <li style="font-weight:bold" level="1">Chapter 6 - Miscellaneous</li>
+      <li style="font-weight:bold" level="1">Chapter 7 - Miscellaneous</li>
       <ul>
         <li level="2">
           <b></b>
