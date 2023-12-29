@@ -20,6 +20,7 @@ Keyring entries as JSON or raw-encoded JSON
 \seealso{
 Other Authentication Functions: 
 \code{\link{gen.pass}()},
+\code{\link{keyring_import}()},
 \code{\link{kr_key}()}
 }
 \concept{Authentication Functions}

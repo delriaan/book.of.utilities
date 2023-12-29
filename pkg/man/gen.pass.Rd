@@ -24,6 +24,7 @@ The generated string \emph{always} begins with a letter before being returned as
 \seealso{
 Other Authentication Functions: 
 \code{\link{keyring_export}()},
+\code{\link{keyring_import}()},
 \code{\link{kr_key}()}
 }
 \concept{Authentication Functions}

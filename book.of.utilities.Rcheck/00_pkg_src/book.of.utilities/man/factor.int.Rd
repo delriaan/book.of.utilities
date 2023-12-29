@@ -18,7 +18,7 @@ The factors of the input given as a vector or list of vectors
 Factorization of Integers
 }
 \seealso{
-Other Chapter 3 - Counters: 
+Other Counters: 
 \code{\link{count.cycles}()}
 }
-\concept{Chapter 3 - Counters}
+\concept{Counters}

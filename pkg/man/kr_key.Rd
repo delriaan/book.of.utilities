@@ -30,6 +30,7 @@ x <- kr_key(service = "service", keyring = "this_keyring")
 \seealso{
 Other Authentication Functions: 
 \code{\link{gen.pass}()},
-\code{\link{keyring_export}()}
+\code{\link{keyring_export}()},
+\code{\link{keyring_import}()}
 }
 \concept{Authentication Functions}

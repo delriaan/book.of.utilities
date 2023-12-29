@@ -19,9 +19,9 @@ scrub.data(input, condFn = is.na, replacement, ...)
 \code{scrub.data} replaces values that meet the condition given by the function passed to \code{condFn}
 }
 \seealso{
-Other Chapter 2 - Object Management: 
+Other Object Management: 
 \code{\link{distinct.list}()},
 \code{\link{enlist}()},
 \code{\link{get.object_sizes}()}
 }
-\concept{Chapter 2 - Object Management}
+\concept{Object Management}

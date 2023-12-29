@@ -52,12 +52,7 @@
 #' \item{\code{\link{scrub.data}}}
 #' }
 #'
-#' @section Chapter 6 - Package: 
-#' \itemize{
-
-#' }
-#'
-#' @section Chapter 7 - Z Miscellaneous: 
+#' @section Chapter 6 - Miscellaneous: 
 #' \itemize{
 #' \item{\code{\link{as.regex}}}
 #' \item{\code{\link{call.recursion}}}
@@ -79,5 +74,7 @@
 #' @importFrom methods new
 #' @importFrom stats sd
 #' @importFrom utils object.size
+#' @importFrom magrittr %>% %<>%
 #' @name book.of.utilities
 NULL
+

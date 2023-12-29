@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.5</span>
       </span>
     </div>
 
@@ -51,20 +51,28 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">keyring_import</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  kr_name <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/as_label.html" class="external-link">as_label</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">enexpr</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="va">kr_data</span>,</span>
+<span>  kr_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">kr_data</span><span class="op">)</span>,</span>
+<span>  kr_pass <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dry.run <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
-<dd><p>The named list of exported keyring data</p></dd>
+    <dl><dt>kr_data</dt>
+<dd><p>The named list of exported keyring data: each name should be the name of an existing keyring.</p></dd>
 
 
 <dt>kr_name</dt>
-<dd><p>(string) The name of the target keyring to populate: defaults to the deparsed value of argument <code>data</code></p></dd>
+<dd><p>(string) The names of the target keyring(s) to populate: defaults to the names of <code>kr_data</code></p></dd>
+
+
+<dt>kr_pass</dt>
+<dd><p>(string) The password to unlock existing keyrings:<br></p><ul><li><p>A named list indicating the per-keyring mapping</p></li>
+<li><p>A single password (used for all supplied keyrings)</p></li>
+<li><p>An unnamed list the same length as <code>kr_name</code></p></li>
+</ul></dd>
 
 
 <dt>dry.run</dt>
@@ -75,7 +83,14 @@
     <h2>Value</h2>
     
 
-<p>A logical scalar for each imported key</p>
+<p>A list of logical vectors indicating success or failure of import for each keyring entry</p>
+    </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p>Other Authentication Functions: 
+<code><a href="gen.pass.html">gen.pass</a>()</code>,
+<code><a href="keyring_export.html">keyring_export</a>()</code>,
+<code><a href="kr_key.html">kr_key</a>()</code></p></div>
     </div>
 
   </div>

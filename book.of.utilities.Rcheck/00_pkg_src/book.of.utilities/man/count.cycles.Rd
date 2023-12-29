@@ -20,7 +20,7 @@ A one-based (default), conditionally-incremented series
 \code{count.cycles} detects and maps conditional occurrence frequency
 }
 \seealso{
-Other Chapter 3 - Counters: 
+Other Counters: 
 \code{\link{factor.int}()}
 }
-\concept{Chapter 3 - Counters}
+\concept{Counters}

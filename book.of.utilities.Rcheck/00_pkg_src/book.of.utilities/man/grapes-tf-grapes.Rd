@@ -18,11 +18,11 @@ a \code{\link[data.table]{data.table}} of resultant values options for \code{tru
 Use \code{\%tf\%} where binary choice vectors can be useful
 }
 \seealso{
-Other Chapter 4 - Custom Operators: 
+Other Custom Operators: 
 \code{\link{\%><\%}()},
 \code{\link{\%??\%}()},
 \code{\link{\%?\%}()},
 \code{\link{\%bin\%}()},
 \code{\link{test_between}()}
 }
-\concept{Chapter 4 - Custom Operators}
+\concept{Custom Operators}

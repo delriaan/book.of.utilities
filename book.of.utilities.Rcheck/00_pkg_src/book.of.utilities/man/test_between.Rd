@@ -27,11 +27,11 @@ An Boolean object comprised of the results of testing for "between-ness"
 \code{as.text TRUE}: the return matrix is comprised of \code{"before" "during" "after"}
 }
 \seealso{
-Other Chapter 4 - Custom Operators: 
+Other Custom Operators: 
 \code{\link{\%><\%}()},
 \code{\link{\%??\%}()},
 \code{\link{\%?\%}()},
 \code{\link{\%bin\%}()},
 \code{\link{\%tf\%}()}
 }
-\concept{Chapter 4 - Custom Operators}
+\concept{Custom Operators}

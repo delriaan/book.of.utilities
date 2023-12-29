@@ -5,7 +5,7 @@
 \title{Recursive Object Size Retrieval}
 \usage{
 get.object_sizes(
-  i = .GlobalEnv,
+  i = rlang::caller_env(),
   nm = as.character(substitute(i)),
   depth = 0L,
   max.depth = 2L,
@@ -33,9 +33,9 @@ A vector of object sizes
 \code{get.object_sizes} recursively steps into child environments, retrieving object sizes along the way
 }
 \seealso{
-Other Chapter 2 - Object Management: 
+Other Object Management: 
 \code{\link{distinct.list}()},
 \code{\link{enlist}()},
 \code{\link{scrub.data}()}
 }
-\concept{Chapter 2 - Object Management}
+\concept{Object Management}

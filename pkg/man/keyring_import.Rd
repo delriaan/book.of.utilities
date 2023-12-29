@@ -5,22 +5,36 @@
 \title{Import keyring Entries}
 \usage{
 keyring_import(
-  data,
-  kr_name = rlang::as_label(rlang::enexpr(data)),
+  kr_data,
+  kr_name = names(kr_data),
+  kr_pass = NULL,
   dry.run = FALSE
 )
 }
 \arguments{
-\item{data}{The named list of exported keyring data}
+\item{kr_data}{The named list of exported keyring data: each name should be the name of an existing keyring.}
 
-\item{kr_name}{(string) The name of the target keyring to populate: defaults to the deparsed value of argument \code{data}}
+\item{kr_name}{(string) The names of the target keyring(s) to populate: defaults to the names of \code{kr_data}}
+
+\item{kr_pass}{(string) The password to unlock existing keyrings:\cr
+\itemize{
+\item{A named list indicating the per-keyring mapping}
+\item{A single password (used for all supplied keyrings)}
+\item{An unnamed list the same length as \code{kr_name}}
+}}
 
 \item{dry.run}{(logical|FALSE) When \code{TRUE}, the expression that would be evaluated is returned (passwords are redacted)}
 }
 \value{
-A logical scalar for each imported key
+A list of logical vectors indicating success or failure of import for each keyring entry
 }
 \description{
 \code{keyring_import} registers exported \code{\link[keyring]{keyring}}s (see \code{\link{keyring_export}})
 }
-\concept{keyring Utilities}
+\seealso{
+Other Authentication Functions: 
+\code{\link{gen.pass}()},
+\code{\link{keyring_export}()},
+\code{\link{kr_key}()}
+}
+\concept{Authentication Functions}

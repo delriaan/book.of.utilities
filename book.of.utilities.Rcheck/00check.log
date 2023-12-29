@@ -1,14 +1,14 @@
-* using log directory 'C:/Users/sapie/GitHub/book.of.utilities/book.of.utilities.Rcheck'
-* using R version 4.3.0 (2023-04-21 ucrt)
+* using log directory 'D:/Imperial Git Repos/book.of.utilities/book.of.utilities.Rcheck'
+* using R version 4.3.2 (2023-10-31 ucrt)
 * using platform: x86_64-w64-mingw32 (64-bit)
 * R was compiled by
-    gcc.exe (GCC) 12.2.0
-    GNU Fortran (GCC) 12.2.0
+    gcc.exe (GCC) 12.3.0
+    GNU Fortran (GCC) 12.3.0
 * running under: Windows 11 x64 (build 22621)
 * using session charset: UTF-8
 * using options '--no-manual --as-cran'
 * checking for file 'book.of.utilities/DESCRIPTION' ... OK
-* this is package 'book.of.utilities' version '0.1.6.3'
+* this is package 'book.of.utilities' version '0.1.6.5'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR

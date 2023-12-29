@@ -1,13 +1,17 @@
----
-output: 
-  md_document: 
-    includes: 
-     after_body: pkg/toc.html
----
+# ![book](book_small.png) Book of Utilities
 
-# ![book](book_small.png) Book of Utilities: utilities for working with data
+*`book.of.utilities`* seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing. 
 
-*`book.of.utilities`* seeks to facilitate execution of those repetitive, ad-hoc tasks often
-encountered during data processing. The following functional families are covered in
-`book.of.utilities`:
+## Installation
 
+Use `remotes::install_github("delriaan/book.of.utilities", subdir = "pkg")` to install the latest version from GitHub.
+
+## Functions
+
+The following functional families are covered in `book.of.utilities`:
+
+`r toc_html`
+
+## Dependencies
+
+`r dep_html`

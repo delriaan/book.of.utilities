@@ -4,36 +4,38 @@
 \alias{ratio}
 \title{Ratio Calculator}
 \usage{
-ratio(i, j = i, type = NULL, decimals = 2, as_density = FALSE)
+ratio(i, type = "of.sum", decimals = 2, as_density = FALSE)
 }
 \arguments{
-\item{i}{(vector) The vector of numeric scores in the numerator}
+\item{i}{(vector) numeric vector}
 
-\item{j}{(vector) The number of numeric scores in the denominator}
-
-\item{type}{(string[]) The types of ratio algorithms to use (see Details): a vector of values is supported}
+\item{type}{(string[]) The types of ratio algorithms to use (see Details): a vector of supported values is supported}
 
 \item{decimals}{(integer | 2) The number of decimal places to which the output should be rounded}
 
-\item{as_density}{(logical) \code{TRUE} returns sqrt\link{x * (1 - x)}}
+\item{as_density}{(logical) \code{TRUE} returns \code{x * p(1 - p)}, where \code{p} is a vector of cumulative proportions of \code{x}}
 }
 \description{
 \code{ratio} calculates one of the following ratio types:\cr
 \enumerate{
+\item{\code{"of.sum"} (relative to the sum of \code{i})}
+\item{\code{"of.max"} (relative to maximum value)}
 \item{\code{"cumulative"} (cumulative total vs. total)}
-\item{\code{"of.max|of.min"} (relative to maximum/minimum value)}
-\item{\code{NULL} (relative to total)}
-}.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{j}.
+}.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{i}.
+}
+\note{
+Because this function produces values on a \emph{ratio} scale, all values are shifted such that all values are >= 0.
 }
 \seealso{
-Other Chapter 1 - Calculators: 
+Other Calculators: 
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},
 \code{\link{calc.rms}()},
 \code{\link{calc.zero_mean}()},
+\code{\link{odds2probs}()},
 \code{\link{radix}()},
 \code{\link{range_diff}()},
 \code{\link{ranking.algorithm}()}
 }
-\concept{Chapter 1 - Calculators}
+\concept{Calculators}

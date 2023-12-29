@@ -1,19 +1,19 @@
 Package: book.of.utilities
 Title: Book of Utilities: utilities for working with data
 Description: `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
-Version: 0.1.6.3
+Version: 0.1.6.5
 License: file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 Author: Chionesu George <sapienti.Dei@outlook.com> [aut, cre]
 Maintainer: Chionesu George <sapienti.Dei@outlook.com>
 Depends: R (>= 4.1.0), purrr(>= 1.0.0)
-Imports: rlang , methods , data.table , foreach , iterators , stringi ,
-        magrittr , readtext , sodium , digest , slider , jsonlite ,
-        glue , keyring
+Imports: rlang , purrr (>= 1.0.0) , methods , data.table , foreach ,
+        iterators , stringi , readtext , sodium , digest , slider ,
+        magrittr , jsonlite , keyring , glue
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 URL: https://github.com/delriaan/book.of.utilities/,
         https://delriaan.github.io/book.of.utilities/
 NeedsCompilation: no
-Packaged: 2023-08-29 13:05:35 UTC; sapie
+Packaged: 2023-12-29 20:08:37 UTC; Chionesu

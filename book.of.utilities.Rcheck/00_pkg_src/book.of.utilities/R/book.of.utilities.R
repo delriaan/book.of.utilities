@@ -5,25 +5,36 @@
 #'
 #' The following functional chapters are covered in \code{book.of.utilities}:\cr
 #'
-#' @section Chapter 1 - Calculators:
+#' @section Chapter 1 - Authentication: 
+#' \itemize{
+#' \item{\code{\link{gen.pass}}}
+#' \item{\code{\link{keyring_export}}}
+#' \item{\code{\link{keyring_import}}}
+#' \item{\code{\link{kr_key}}}
+#' \item{\code{\link{s7_properties}}}
+#' }
+#'
+#' @section Chapter 2 - Calculators: 
 #' \itemize{
 #' \item{\code{\link{calc.geo_mean}}}
 #' \item{\code{\link{calc.harmonic_mean}}}
 #' \item{\code{\link{calc.means}}}
 #' \item{\code{\link{calc.rms}}}
 #' \item{\code{\link{calc.zero_mean}}}
+#' \item{\code{\link{odds2probs}}}
+#' \item{\code{\link{radix}}}
 #' \item{\code{\link{range_diff}}}
 #' \item{\code{\link{ranking.algorithm}}}
 #' \item{\code{\link{ratio}}}
 #' }
 #'
-#' @section Chapter 2 - Counters:
+#' @section Chapter 3 - Counters: 
 #' \itemize{
 #' \item{\code{\link{count.cycles}}}
 #' \item{\code{\link{factor.int}}}
 #' }
 #'
-#' @section Chapter 3 - Custom Operators:
+#' @section Chapter 4 - Custom Operators: 
 #' \itemize{
 #' \item{\code{\link{\%?\%}}}
 #' \item{\code{\link{\%??\%}}}
@@ -33,7 +44,7 @@
 #' \item{\code{\link{test_between}}}
 #' }
 #'
-#' @section Chapter 4 - Object Management:
+#' @section Chapter 5 - Object Management: 
 #' \itemize{
 #' \item{\code{\link{distinct.list}}}
 #' \item{\code{\link{enlist}}}
@@ -41,19 +52,20 @@
 #' \item{\code{\link{scrub.data}}}
 #' }
 #'
-#' @section Chapter 5 - Miscellaneous:
+#' @section Chapter 6 - Package: 
+#' \itemize{
+
+#' }
+#'
+#' @section Chapter 7 - Z Miscellaneous: 
 #' \itemize{
 #' \item{\code{\link{as.regex}}}
 #' \item{\code{\link{call.recursion}}}
 #' \item{\code{\link{checksum}}}
-#' \item{\code{\link{gen.pass}}}
 #' \item{\code{\link{gen.primes}}}
 #' \item{\code{\link{is.regex}}}
-#' \item{\code{\link{keyring_export}}}
-#' \item{\code{\link{keyring_import}}}
 #' \item{\code{\link{log_note}}}
 #' \item{\code{\link{polyname2orig}}}
-#' \item{\code{\link{radix}}}
 #' \item{\code{\link{unregex}}}
 #' \item{\code{\link{vlogical}}}
 #' }

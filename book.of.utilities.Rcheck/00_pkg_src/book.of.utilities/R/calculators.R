@@ -1,22 +1,3 @@
-range_diff <- function(...){
-#' Magnitude of a Range of Values
-#'
-#' \code{range_diff} calculates the difference in the range of values given by \code{input}
-#'
-#' @param ... (\code{\link[rlang]{dots_list}}): A numeric vector for which the range and corresponding difference is calculated. If a list is provided, the calculation is executed over each element of the list.
-#'
-#' @return A scalar value of the inclusive difference of upper and lower boundaries of the range of the input vector
-#' @family Chapter 1 - Calculators
-#'
-#' @export
-
-	action = function(i){ i = as.numeric(unlist(i)); max(i, na.rm = TRUE) - min(i, na.rm = TRUE); }
-
-	i = rlang::list2(...);
-
-	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
-}
-#
 calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE, use.population = FALSE, ...){
 #' Calculate Means
 #'
@@ -41,7 +22,7 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 #'
 #' @return Arguments \code{data}, \code{mean.type}, and \code{post.op} determine the return type.
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @importFrom magrittr %>% %<>%
 #'
@@ -117,7 +98,7 @@ calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population 
 #' @param as.zscore (logical | \code{FALSE}) Should the output be transformed to Z-scores?
 #' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation.
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -137,7 +118,7 @@ calc.rms <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -152,7 +133,7 @@ calc.harmonic_mean <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -167,61 +148,63 @@ calc.geo_mean <- function(a, post.op = eval) {
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
   calc.means(a, mean.type = "gm", post.op = post.op) |> unlist()
 }
 #
-ratio <- function(i, j = i, type = NULL, decimals = 2, as_density = FALSE){
+ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 #' Ratio Calculator
 #'
 #' \code{ratio} calculates one of the following ratio types:\cr
 #' \enumerate{
+#' \item{\code{"of.sum"} (relative to the sum of \code{i})}
+#' \item{\code{"of.max"} (relative to maximum value)}
 #' \item{\code{"cumulative"} (cumulative total vs. total)}
-#' \item{\code{"of.max|of.min"} (relative to maximum/minimum value)}
-#' \item{\code{NULL} (relative to total)}
-#' }.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{j}.
+#' }.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{i}.
 #'
-#' @param i (vector) The vector of numeric scores in the numerator
-#' @param j (vector) The number of numeric scores in the denominator
-#' @param type (string[]) The types of ratio algorithms to use (see Details): a vector of values is supported
+#' @param i (vector) numeric vector
+#' @param type (string[]) The types of ratio algorithms to use (see Details): a vector of supported values is supported
 #' @param decimals (integer | 2) The number of decimal places to which the output should be rounded
-#' @param as_density (logical) \code{TRUE} returns sqrt[x * (1 - x)]
-#' 
-#' @family Chapter 1 - Calculators
+#' @param as_density (logical) \code{TRUE} returns \code{x * p(1 - p)}, where \code{p} is a vector of cumulative proportions of \code{x}
+#'
+#' @note Because this function produces values on a \emph{ratio} scale, all values are shifted such that all values are >= 0.
+#'
+#' @family Calculators
 #'
 #' @export
 
-if (type == "pareto"){ type <- "cumulative" }
+	# Handle legacy code ...
+	if (type == "pareto"){ type <- "cumulative" }
 
-	action = function(ii, jj){
-		sub.fn = function(k, .i, .j, .d){
-			if (!is.list(.j)){
-				switch(
-					k
-					, "cumulative" = cumsum(.i)/sum(.j, na.rm = TRUE)
-					, "of.max" = .i/max(.j, na.rm = TRUE)
-					, "of.min" = .i/min(.j, na.rm = TRUE)
-					, .i/sum(.j)
-					) |> round(.d)
-			} else { purrr::map(.j, ~sub.fn(k = k, .i = .i, .j = .x)) }
-		}
-		if (!rlang::has_length(type, 1)){
-			purrr::set_names(type) %>% purrr::map(sub.fn, ii, jj, decimals)
+	ord.i <- base::rank(i, ties.method = "last", na.last = TRUE);
+	i <- sort(i);
+
+	if (any(i < 0)){ i <- i + abs(min(i)) }
+
+	# Functions selected by 'type'
+	cumulative <- \(.i) cumsum(.i)/sum(.i, na.rm = TRUE);
+	of.max <- \(.i) .i/max(.i, na.rm = TRUE);
+	of.sum <- \(.i) .i/sum(.i, na.rm = TRUE);
+
+	.out <- if (rlang::has_length(type, 1)){
+			do.call(type, args = list(.i = i)) |> round(decimals)
 		} else {
-			sub.fn(type, ii, jj, decimals)
+			purrr::set_names(type) %>% purrr::map(\(k) do.call(k, args = list(.i = i)) |> round(decimals))
 		}
-	}
-#	if (any(purrr::map_lgl(i, ~length(.x) > 1))){
-#		.out <- purrr::map2(i, j, action)
-#	} else {
-		.out <- action(i, j)
-	#}
 
- if (as_density){ .out <- sqrt(.out * (1 - .out)) }
- return (.out)
+ if (as_density){
+ 	if (type == "cumulative"){
+	 	.out <- .out * (1 - .out)
+ 	} else {
+ 		.prop <- cumulative(.out)
+ 		.out <- .out * .prop * (1 - .prop)
+ 	}
+ }
+
+ return (.out[ord.i])
 }
 #
 ranking.algorithm <- function(
@@ -244,7 +227,7 @@ ranking.algorithm <- function(
 #' @param dflt.fn (function) The default function to use when replacing \code{NA} values in ranks
 #' @param map.fn (function) The function to iterate the scores when computing the output
 #'
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #'
 #' @export
 
@@ -306,7 +289,7 @@ radix <- function(x, ...){
 #' }
 #'
 #' @return The decimal representation of the input(s) using the supplied radix basis.
-#' @family Chapter 1 - Calculators
+#' @family Calculators
 #' @export
 #'
 #' @examples
@@ -368,4 +351,75 @@ radix <- function(x, ...){
 				sum(as.integer(i) * r^(n-1))
 			}) |> unlist(use.names = FALSE)
 	}
+}
+#
+range_diff <- function(...){
+#' Magnitude of a Range of Values
+#'
+#' \code{range_diff} calculates the difference in the range of values given by \code{input}
+#'
+#' @param ... (\code{\link[rlang]{dots_list}}): A numeric vector for which the range and corresponding difference is calculated. If a list is provided, the calculation is executed over each element of the list.
+#'
+#' @return A scalar value of the inclusive difference of upper and lower boundaries of the range of the input vector
+#'
+#' @family Calculators
+#'
+#' @export
+
+	action = function(i){ i = as.numeric(unlist(i)); max(i, na.rm = TRUE) - min(i, na.rm = TRUE); }
+
+	i = rlang::list2(...);
+
+	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
+}
+#
+odds2probs <- function(...){
+	#' Calculate percentages from odds ratios
+	#'
+	#' \code{odds2probs} converts odds ratios to percentages.
+	#'
+	#' @param ... (\code{\link[rlang]{dots_list}}): Numeric vectors or "odds" strings (e.g., "x:y"). For vectors or string representations, the number of operands can be of any length but must represent positive real values.
+	#'
+	#' @note Length-1 arguments are assumed to be odds ratios and are converted to percentages via sigmoid function.
+	#'
+	#' @return A numeric list length as the input(s) representing the percentage of the odds ratio(s): values that cannot be converted will return \code{NULL}.
+	#'
+	#' @family Calculators
+	#'
+	#' @examples
+	#' odds2probs(c(3, 4), c(3L, 4L), "3:4", c("3", "4"), c(4,5,6), "6:3:1", c(3,-1), "1:1", 1, 2/5, "2:3", 2)
+	#'
+	#' @export
+  fun <- (\(i, j){
+    res <- if (i$type == "character" && i$len == 1) {
+      if (grepl(":", arg_list[[j]])) {
+        strsplit(arg_list[[j]], ":") |> unlist() |> as.numeric()
+      } else {
+        as.numeric(arg_list[[j]])
+      }
+    } else if (i$type == "character" && i$len > 1) {
+      arg_list[[j]] |> unlist() |> as.numeric()
+    } else if (i$type %in% c("integer", "numeric", "double")) {
+      if (i$len > 1){
+        arg_list[[j]]
+      } else {
+        as.numeric(arg_list[[j]])
+      }
+    } else {
+      numeric()
+    }
+    # browser()
+    if (rlang::is_empty(res) || (any(res <= 0) & !all(res <= 0))){
+      NULL
+    } else if (length(unique(res)) == 1 || all(res <= 0)){
+      res <- unique(res)
+      # warning("Assuming input as odds ratio ...")
+      exp(res)/(1 + exp(res))
+    } else{
+      res/sum(res)
+    }
+  });
+  arg_list <- rlang::list2(...);
+  arg_types <- purrr::map(arg_list, \(i) data.frame(type = typeof(i), len = length(i)));
+  arg_types |> purrr::imap(purrr::possibly(fun, otherwise = NULL));
 }

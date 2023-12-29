@@ -55,14 +55,15 @@ radix(c(10, 26), 3, h)
 radix(c(100, "0110"), b)
 }
 \seealso{
-Other Chapter 1 - Calculators: 
+Other Calculators: 
 \code{\link{calc.geo_mean}()},
 \code{\link{calc.harmonic_mean}()},
 \code{\link{calc.means}()},
 \code{\link{calc.rms}()},
 \code{\link{calc.zero_mean}()},
+\code{\link{odds2probs}()},
 \code{\link{range_diff}()},
 \code{\link{ranking.algorithm}()},
 \code{\link{ratio}()}
 }
-\concept{Chapter 1 - Calculators}
+\concept{Calculators}
