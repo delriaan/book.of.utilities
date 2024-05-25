@@ -11,6 +11,11 @@ count.cycles <- function(cond, offset = 1, reset){
 	#'
 	#' @family Counters
 	#'
+	#' @examples
+	#' sample(c(TRUE, FALSE), 50, TRUE) |>
+	#' print() %>%
+	#' count.cycles(reset = cumsum(.) %% 5 == 0)
+	#'
 	#' @export
 
 	# :: cycle_idx MUST be initialized before session() (see below) is called iteratively
@@ -52,6 +57,9 @@ factor.int <- function(i, ...){
 	#' @return The factors of the input given as a vector or list of vectors
 	#'
 	#' @family Counters
+	#'
+	#' @examples
+	#' factor.int(100, 90)
 	#'
 	#' @export
 

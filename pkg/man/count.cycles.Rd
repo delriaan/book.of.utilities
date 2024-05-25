@@ -19,6 +19,12 @@ A one-based (default), conditionally-incremented series
 \description{
 \code{count.cycles} detects and maps conditional occurrence frequency
 }
+\examples{
+sample(c(TRUE, FALSE), 50, TRUE) |>
+print() \%>\%
+count.cycles(reset = cumsum(.) \%\% 5 == 0)
+
+}
 \seealso{
 Other Counters: 
 \code{\link{factor.int}()}

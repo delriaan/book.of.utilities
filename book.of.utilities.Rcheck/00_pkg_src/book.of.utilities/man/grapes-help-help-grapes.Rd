@@ -7,13 +7,15 @@
 cond \%??\% result
 }
 \arguments{
-\item{cond}{(logical) A \emph{vector} or \emph{tensor} that evaluates to \code{TRUE} or \code{FALSE}}
+\item{cond}{(logical) A rank-n object for which each row contains \code{TRUE} or \code{FALSE}}
 
-\item{result}{(vector) Resultant values for TRUE and FALSE conditionals, ideally stored in a dimension-ed object (e.g, \code{\link[base]{data.frame}}, \code{\link[data.table]{data.table}})}
+\item{result}{(vector) A rank-n object for which each row contains resultant values for each element of \code{cond[m, n]} containing values for \code{TRUE} and \code{FALSE}. The result can be of a different structure than the input as is the case when each result is of heterogeneous lengths.}
+}
+\value{
+A list of values, one element per row of input.
 }
 \description{
-For each element \code{E} in \code{cond}, when \code{E} is \code{TRUE}, the corresponding index of \code{result$true} is returned: the same for \code{cond == FALSE}.
-For \code{result}, the easiest way to set the available choices is to use \code{\link{\%tf\%}}; otherwise, a environment(-like) object with members named \code{true} and \code{false}
+For each element \code{E} in \code{cond}, when \code{E} is \code{TRUE}, the corresponding index of \code{result$true} is returned: the same for \code{cond == FALSE}. The important thing to remember is that the function returns a value for \code{TRUE} \emph{\bold{and}} \code{FALSE} per row.\cr For \code{result}, the easiest way to set the available choices is to use \code{\link{\%tf\%}}; otherwise, a environment(-like) object with members named \code{true} and \code{false}.
 }
 \seealso{
 Other Custom Operators: 

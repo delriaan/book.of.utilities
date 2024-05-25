@@ -17,6 +17,10 @@ The factors of the input given as a vector or list of vectors
 \description{
 Factorization of Integers
 }
+\examples{
+factor.int(100, 90)
+
+}
 \seealso{
 Other Counters: 
 \code{\link{count.cycles}()}

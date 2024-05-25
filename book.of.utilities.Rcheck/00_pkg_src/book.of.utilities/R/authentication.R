@@ -9,7 +9,9 @@ gen.pass <- function(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE){
 	#' @param chatty (logical) Should diagnostic information be provided?
 	#'
 	#' @note The generated string \emph{always} begins with a letter before being returned as-is or as a raw vector
+	#'
 	#' @family Authentication Functions
+	#'
 	#' @export
 
 	set.seed(Sys.time());
@@ -84,7 +86,9 @@ keyring_export <- function(keyring = NULL, as.raw = FALSE){
 	#' @param as.raw (logical | FALSE) Should each entry be cast as a raw vector?
 	#'
 	#' @return Keyring entries as JSON or raw-encoded JSON
+	#'
 	#' @family Authentication Functions
+	#'
 	#' @export
 
 	kr_idx <- if (rlang::is_empty(keyring)){
@@ -136,7 +140,9 @@ keyring_import <- function(kr_data, kr_name = names(kr_data), kr_pass = NULL, dr
 	#' @param dry.run (logical|FALSE) When \code{TRUE}, the expression that would be evaluated is returned (passwords are redacted)
 	#'
 	#' @return A list of logical vectors indicating success or failure of import for each keyring entry
+	#'
 	#' @family Authentication Functions
+	#'
 	#' @export
 
 	if (missing(kr_data)){ stop("No keyring data provided") }
@@ -214,7 +220,6 @@ keyring_import <- function(kr_data, kr_name = names(kr_data), kr_pass = NULL, dr
 					TRUE
 				}, error = \(e) FALSE);
 			}
-
 		});
 	})
 }
@@ -228,11 +233,6 @@ keyring_import <- function(kr_data, kr_name = names(kr_data), kr_pass = NULL, dr
 #'
 # @rdname kr_key
 # @name kr_key
-#'
-#' @examples
-#' \dontrun{
-#' x <- kr_key(service = "service", keyring = "this_keyring")
-#' }
 #'
 #' @family Authentication Functions
 #'
@@ -255,17 +255,17 @@ kr_key <- {
 						}
 					}
 				, setter = function(self, value){
-					self@password <- value;
+						self@password <- value;
 
-					keyring::key_set_with_value(
-						service = self@service
-						, username = self@username
-						, keyring = self@keyring
-						, password = value
-					);
+						keyring::key_set_with_value(
+							service = self@service
+							, username = self@username
+							, keyring = self@keyring
+							, password = value
+							);
 
-					self
-				}
+						self
+					}
 				)
 		)
 	}

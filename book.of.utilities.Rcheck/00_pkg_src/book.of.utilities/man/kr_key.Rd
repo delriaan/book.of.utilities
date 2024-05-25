@@ -21,12 +21,6 @@ The \code{kr_key} class
 \item{\code{key}}{A function to retrieve the \code{keyring} key}
 }}
 
-\examples{
-\dontrun{
-x <- kr_key(service = "service", keyring = "this_keyring")
-}
-
-}
 \seealso{
 Other Authentication Functions: 
 \code{\link{gen.pass}()},

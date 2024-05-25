@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.6</span>
       </span>
     </div>
 
@@ -56,7 +56,7 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>(numeric[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision.</p></dd>
+<dd><p>(numeric[],symbol[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision. For hexadecimal values, be sure to use the <b><code>"0x"</code></b> prefix.</p></dd>
 
 
 <dt>...</dt>
@@ -76,7 +76,7 @@
     <h2>Value</h2>
     
 
-<p>The decimal representation of the input(s) using the supplied radix basis.</p>
+<p>The <em>decimal</em> representation of the input(s) using the supplied radix.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -95,6 +95,8 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># As binary</span></span></span>
+<span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fl">12</span>, <span class="va">bin</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">20</span><span class="op">)</span>, <span class="va">bin</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4 4</span>
 <span class="r-in"><span></span></span>
@@ -104,13 +106,13 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># As hex to decimal</span></span></span>
 <span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">32</span><span class="op">)</span>, <span class="va">hex</span>, <span class="va">dec</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 20</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Hex to binary vs. as hex to binary (equivalent outcomes)</span></span></span>
 <span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">32</span><span class="op">)</span>, <span class="va">hex</span>, <span class="va">bin</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4 4</span>
-<span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">20</span><span class="op">)</span>, <span class="va">hex</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">radix</span><span class="op">(</span><span class="va">hex</span>, <span class="va">bin</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">20</span><span class="op">)</span>, <span class="va">hex</span><span class="op">)</span>, <span class="va">hex</span>, <span class="va">bin</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Arbitrary radix</span></span></span>
 <span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">26</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span></span>
@@ -118,11 +120,14 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Arbitrary radix to hex</span></span></span>
 <span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">26</span><span class="op">)</span>, <span class="fl">3</span>, <span class="va">h</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  49 130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 130</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Mixed input types to binary</span></span></span>
 <span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="st">"0110"</span><span class="op">)</span>, <span class="va">b</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4 6</span>
+<span class="r-in"><span><span class="fu">radix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="st">"1001"</span>, <span class="fl">0x1D</span><span class="op">)</span>, <span class="va">b</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  4  9 13</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

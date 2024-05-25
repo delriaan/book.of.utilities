@@ -55,6 +55,7 @@ pkg_doc_header <- { paste(
 	, "#' @description"
 	, "#' `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing."
 	, "#'"
+	, "#'"
 	, glue::glue("#' The following functional chapters are covered in \\code{{{pkg_name}}}:\\cr")
 	, sep = "\n"
 	)}
@@ -93,9 +94,11 @@ cat(toc_header, toc_content, sep = "\n\n", file = toc_file, append = FALSE)
 #
 # Build Site ----
 # usethis::use_pkgdown()
+library(magrittr)
 dir("../resources/R", pattern = "list", full.names = TRUE) |> source();
 
-dir("pkg/R", pattern = "^[a-z].+R$") %>%
+toc_html <- dir("pkg/R", pattern = "^[a-z].+R$") %>%
+	purrr::discard(\(x) grepl("book", x)) %>%
 	rlang::set_names(
 		stringi::stri_split_fixed(., "_") |>
 			sapply(\(i) stringi::stri_trans_totitle(i) |> paste(collapse = " ")) |>
@@ -122,12 +125,21 @@ dir("pkg/R", pattern = "^[a-z].+R$") %>%
 			rlang::set_names(rep.int("", length(.)))
 	}) |>
 	list2html(.ordered = FALSE) |>
-	as.character() |>
-	cat(file = "pkg/toc.html", sep = "\n")
+	as.character();
+	# cat(file = "pkg/toc.html", sep = "\n")
 
-rmarkdown::render("pkg/README.rmd", knit_root_dir = getwd(), intermediates_dir = getwd());
+rmarkdown::render(
+	input = "pkg/README.rmd"
+	, knit_root_dir = getwd()
+	, intermediates_dir = getwd()
+	, envir = globalenv()
+	);
 
 # Manually replace `%&gt;&lt;%` with `%><%`
-rstudioapi::navigateToFile("pkg/README.md");
+# rstudioapi::navigateToFile("pkg/README.md");
 
-pkgdown::build_site(pkg = "pkg", lazy = TRUE, override = list(destination = "../docs"))
+pkgdown::build_site(
+	pkg = "pkg"
+	, lazy = TRUE
+	, override = list(destination = "../docs")
+	)

@@ -3,6 +3,7 @@
 #' @description
 #' `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
 #'
+#'
 #' The following functional chapters are covered in \code{book.of.utilities}:\cr
 #'
 #' @section Chapter 1 - Authentication: 
@@ -52,12 +53,7 @@
 #' \item{\code{\link{scrub.data}}}
 #' }
 #'
-#' @section Chapter 6 - Package: 
-#' \itemize{
-
-#' }
-#'
-#' @section Chapter 7 - Z Miscellaneous: 
+#' @section Chapter 6 - Miscellaneous: 
 #' \itemize{
 #' \item{\code{\link{as.regex}}}
 #' \item{\code{\link{call.recursion}}}

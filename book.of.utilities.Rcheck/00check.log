@@ -8,7 +8,7 @@
 * using session charset: UTF-8
 * using options '--no-manual --as-cran'
 * checking for file 'book.of.utilities/DESCRIPTION' ... OK
-* this is package 'book.of.utilities' version '0.1.6.5'
+* this is package 'book.of.utilities' version '0.1.6.6'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR

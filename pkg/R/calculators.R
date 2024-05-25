@@ -20,11 +20,11 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 #' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE})?
 #' @param ... Additional arguments passed to other functions
 #'
+#' @importFrom magrittr %>% %<>%
+#'
 #' @return Arguments \code{data}, \code{mean.type}, and \code{post.op} determine the return type.
 #'
 #' @family Calculators
-#'
-#' @importFrom magrittr %>% %<>%
 #'
 #' @export
 
@@ -172,6 +172,8 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 #'
 #' @note Because this function produces values on a \emph{ratio} scale, all values are shifted such that all values are >= 0.
 #'
+#' @return A numeric vector
+#'
 #' @family Calculators
 #'
 #' @export
@@ -180,6 +182,7 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 	if (type == "pareto"){ type <- "cumulative" }
 
 	ord.i <- base::rank(i, ties.method = "last", na.last = TRUE);
+	names.i <- names(i);
 	i <- sort(i);
 
 	if (any(i < 0)){ i <- i + abs(min(i)) }
@@ -204,8 +207,13 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
  	}
  }
 
- return (.out[ord.i])
+ if (rlang::is_empty(names.i)){
+ 	.out[ord.i]
+ } else {
+ 	rlang::set_names(.out[ord.i], names.i[ord.i])
+ }
 }
+
 #
 ranking.algorithm <- function(
 	scores, rank.size, poss.scores, test = `>=`, rescale = 1
@@ -271,7 +279,7 @@ radix <- function(x, ...){
 #'
 #' \code{radix} converts the \emph{representation} of the input(s) using a radix basis.  This is not to be confused with a conversion between \emph{scales}.
 #'
-#' @param x (numeric[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision.
+#' @param x (numeric[],symbol[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision. For hexadecimal values, be sure to use the \bold{\code{"0x"}} prefix.
 #' @param ... (string,symbol,integer) The target radix to which the values in \code{x} will be converted.\cr
 #' \itemize{
 #'   \item{Length: If two values are provided, the output is the conversion from the first radix to the second}
@@ -288,12 +296,9 @@ radix <- function(x, ...){
 #'   }
 #' }
 #'
-#' @return The decimal representation of the input(s) using the supplied radix basis.
-#' @family Calculators
-#' @export
-#'
 #' @examples
 #' # As binary
+#' radix(12, bin)
 #' radix(c(12, 20), bin)
 #'
 #' # To hexadecimal
@@ -304,7 +309,7 @@ radix <- function(x, ...){
 #'
 #' # Hex to binary vs. as hex to binary (equivalent outcomes)
 #' radix(c(18, 32), hex, bin)
-#' radix(c(12, 20), hex) |> radix(hex, bin)
+#' radix(!!radix(c(12, 20), hex), hex, bin)
 #'
 #' # Arbitrary radix
 #' radix(c(10, 26), 3)
@@ -314,20 +319,43 @@ radix <- function(x, ...){
 #'
 #' # Mixed input types to binary
 #' radix(c(100, "0110"), b)
-
+#' radix(c(100, "1001", 0x1D), b)
+#'
+#' @return The \emph{decimal} representation of the input(s) using the supplied radix.
+#'
+#' @family Calculators
+#'
+#' @export
 	r <- rlang::enexprs(...);
 	if (rlang::is_empty(r)){ stop("No radix bases provided.") }
-	if (missing(x)){ stop("No values for 'x' provided.") } else { x <- as.numeric(x) |> round() }
 
-	.named <- { rlang::set_names(
-		c(2, 8, 10, 12, 16, 20, 60)
-		, "binary",  "octal",  "decimal",  "duodecimal"
-		,  "hexadecimal",  "vigesimal",  "sexagesimal"
-		) |> as.list()
+	if (missing(x)){
+		stop("No values for 'x' provided.")
+	} else {
+		x <- rlang::enexpr(x) |> as.list();
+
+		if (length(x) == 1){
+			x <- as.character(x)
+		} else {
+			# A call was passed (e.g., x = c(...)).
+			# Remove the first element as this is the call symbol (the rest are arguments):
+			x <- sapply(x[-1], as.character);
+		}
+
+		x <- as.numeric(x) |> round();
 	}
 
+	# :: `.named` is a look-up list mapping names to bases:
+	.named <- { rlang::set_names(
+			c(2, 8, 10, 12, 16, 20, 60)
+			, "binary",  "octal",  "decimal",  "duodecimal"
+			,  "hexadecimal",  "vigesimal",  "sexagesimal"
+			) |> as.list();
+	}
+
+	# :: Vector of values:
 	if (!rlang::has_length(r, 1)){
-		r <- purrr::map_int(r, \(i){
+		k <- purrr::map_int(r, \(i){
 			ifelse(
 				typeof(i) %in% c("character", "symbol", "call")
 				, .named[[which(grepl(paste0("^", as.character(i)), names(.named)))]]
@@ -335,15 +363,17 @@ radix <- function(x, ...){
 				)
 		});
 
-		.mod <- x %% r[[1]];
+		# Recursive call to the function:
+		.mod <- x %% k[[1]];
 
-		radix(10 * (x - .mod)/r[[1]] + .mod, !!r[[2]]);
+		radix(x = !!(10 * (x - .mod)/k[[1]] + .mod), !!r[[2]]);
 	} else {
+	# :: Single value:
 		r <- ifelse(
-			typeof(r[[1]]) %in% c("character", "symbol", "call")
-			, .named[[which(grepl(paste0("^", as.character(r[[1]])), names(.named)))]]
-			, as.integer(r[[1]])
-			)
+				typeof(r[[1]]) %in% c("character", "symbol", "call")
+				, .named[[which(grepl(paste0("^", as.character(r[[1]])), names(.named)))]]
+				, as.integer(r[[1]])
+				)
 
 		stringi::stri_extract_all_regex(x, "\\d") |>
 			purrr::map(\(i){

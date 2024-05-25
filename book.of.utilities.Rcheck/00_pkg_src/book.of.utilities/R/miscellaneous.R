@@ -47,10 +47,29 @@ vlogical <- function(vector, vpattern, test = stringi::stri_detect_regex, simpli
 	#' @family Miscellaneous Functions
 	#'
 	#' @examples
+	#' 	# Test 1:
 	#' vlogical(
 	#' 	vector = letters
 	#' 	, vpattern = c(sample(LETTERS, 5), sample(letters, 5))
 	#' 	, simplify_with = mean
+	#' 	, ignore.case = TRUE
+	#' 	)
+	#'
+	#' 	# Test 2:
+	#' 	vl_data <- sapply(1:100000, function(i){
+	#' 				c(a = sample(LETTERS, 1), b = sample(letters, 1))
+	#' 			}) |>
+	#' 		data.table::as.data.table() |>
+	#' 	t();
+	#'
+	#' head(vl_data, 10);
+	#' dim(vl_data);
+	#'
+	#' vlogical(
+	#' 	vector = vl_data
+	#' 	, vpattern = c(sample(LETTERS, 5), sample(letters, 5)) |> rlang::set_names()
+	#' 	, test = \(vector, pattern, ...){ paste(unique(pattern), collapse = "|") |> grepl(vector)}
+	#' 	, simplify_with = NULL
 	#' 	, ignore.case = TRUE
 	#' 	)
 	#'
@@ -98,11 +117,13 @@ is.regex <- function(i){
 unregex <- function(i, x){
 	#' Convert REGEX Pattern to Object Names
 	#'
-	#' @param i (string[]) A string or string vector.  Pattern matching is executed if the string is of class regex" (see \code{as.regex}, \code{is.regex})
+	#' @param i (string[]) A string or string vector.  Pattern matching is executed if the string is of class regex" (see \code{\link{as.regex}}, \code{\link{is.regex}})
 	#' @param x (object) The names to search OR an object with column names
 	#'
 	#' @return Matching values in \code{x} based on values of \code{i}
+	#'
 	#' @family Miscellaneous Functions
+	#'
 	#' @export
 	x = if (any(class(x) %in% c("data.table", "data.frame", "tibble"))){ names(x) } else { x }
 
@@ -184,27 +205,12 @@ call.recursion <- function(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simpli
 	#' @param cur.iter (integer) The current iteration index
 	#' @param simplify (logical) Should only the last value be returned (\code{TRUE}) or intermediate values as well (\code{FALSE})?
 	#'
-	#' @importFrom magrittr %<>% %>%
+	#' @importFrom magrittr %>% %<>%
 	#'
-	#' @examples
-	#' book.of.utilities::call.recursion(
-	#'	x = sample(1000, size = 100)
-	#'	, fun = \(x){ abs(x - mean(x, na.rm = TRUE)) }
-	#'	, test = \(x){
-	#'			if (length(unique(x)) == 1 || is.na(sd(x))){
-	#'				FALSE
-	#'			} else {
-	#'				i <- abs(x - mean(x, na.rm = TRUE))/sd(x);
-	#'				mean(i > 3) <= 0.7
-	#'			}
-	#'		}
-	#'	, nxt = \(x){ sample(x, size = length(x)- 1, prob = runif(n = length(x), min = 0.1, max = 0.9)) }
-	#'	, max.iter = 1000
-	#'	, simplify = !FALSE
-	#'	)
+	#' @family Miscellaneous Functions
 	#'
 	#' @export
-	#'
+
 	force(fun);
 	force(test);
 	force(nxt)

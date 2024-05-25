@@ -7,7 +7,7 @@
 radix(x, ...)
 }
 \arguments{
-\item{x}{(numeric[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision.}
+\item{x}{(numeric[],symbol[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision. For hexadecimal values, be sure to use the \bold{\code{"0x"}} prefix.}
 
 \item{...}{(string,symbol,integer) The target radix to which the values in \code{x} will be converted.\cr
 \itemize{
@@ -26,13 +26,14 @@ radix(x, ...)
 }}
 }
 \value{
-The decimal representation of the input(s) using the supplied radix basis.
+The \emph{decimal} representation of the input(s) using the supplied radix.
 }
 \description{
 \code{radix} converts the \emph{representation} of the input(s) using a radix basis.  This is not to be confused with a conversion between \emph{scales}.
 }
 \examples{
 # As binary
+radix(12, bin)
 radix(c(12, 20), bin)
 
 # To hexadecimal
@@ -43,7 +44,7 @@ radix(c(18, 32), hex, dec)
 
 # Hex to binary vs. as hex to binary (equivalent outcomes)
 radix(c(18, 32), hex, bin)
-radix(c(12, 20), hex) |> radix(hex, bin)
+radix(!!radix(c(12, 20), hex), hex, bin)
 
 # Arbitrary radix
 radix(c(10, 26), 3)
@@ -53,6 +54,8 @@ radix(c(10, 26), 3, h)
 
 # Mixed input types to binary
 radix(c(100, "0110"), b)
+radix(c(100, "1001", 0x1D), b)
+
 }
 \seealso{
 Other Calculators: 

@@ -15,6 +15,9 @@ ratio(i, type = "of.sum", decimals = 2, as_density = FALSE)
 
 \item{as_density}{(logical) \code{TRUE} returns \code{x * p(1 - p)}, where \code{p} is a vector of cumulative proportions of \code{x}}
 }
+\value{
+A numeric vector
+}
 \description{
 \code{ratio} calculates one of the following ratio types:\cr
 \enumerate{
