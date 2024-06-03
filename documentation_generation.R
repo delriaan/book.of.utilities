@@ -6,6 +6,8 @@ pkg_title <- pkg_desc$get_field("Title")
 pkg_file <- "pkg/R/book.of.utilities.R"
 toc_file <- "pkg/README.md"
 
+library(magrittr)
+
 #
 # Generation ----
 pkg_doc_prep <- dir("pkg/R", pattern = "R$", recursive = TRUE, full.names = TRUE) |>
@@ -33,7 +35,7 @@ pkg_doc_prep |> purrr::iwalk(\(x, y){
 	pkg_doc_content <<- pkg_doc_content |>
 		c(paste(
 			glue::glue("#' @section Chapter {y} - {x$title}: ")
-			, sprintf("#' \\item{\\code{\\link{%s}}}", ls(env)) |>
+			, sprintf("#' \\item{\\code{\\link{?%s}}}", ls(env)) |>
 					stringi::stri_replace_all_fixed("%", "\\%", vectorise_all = TRUE) |>
 					paste(collapse = "\n") |>
 					sprintf(fmt = pkg_template)
@@ -63,7 +65,7 @@ pkg_doc_header <- { paste(
 #
 toc_header <- { paste(
 	glue::glue("# ![book](book_small.png) {pkg_title}\n\n")
-	, glue::glue("*`{pkg_name}`* seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.")
+	, glue::glue("**{pkg_name}** seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.")
 	, glue::glue("The following functional families are covered in `{pkg_name}`:")
 	, sep = "\n"
 	)}
@@ -128,15 +130,25 @@ toc_html <- dir("pkg/R", pattern = "^[a-z].+R$") %>%
 	as.character();
 	# cat(file = "pkg/toc.html", sep = "\n")
 
-rmarkdown::render(
-	input = "pkg/README.rmd"
-	, knit_root_dir = getwd()
-	, intermediates_dir = getwd()
-	, envir = globalenv()
-	);
+c("README", "NEWS") |>
+	purrr::walk(\(doc){
+		rmarkdown::render(
+			input = glue::glue("pkg/{doc}.rmd")
+			, clean = FALSE
+			, knit_root_dir = getwd()
+			, intermediates_dir = getwd()
+			, envir = globalenv()
+			);
+		fs::file_copy(
+			glue::glue("{doc}.knit.md")
+			, glue::glue("pkg/{doc}.md")
+			, overwrite = TRUE
+			);
+		if (fs::file_exists(glue::glue("pkg/{doc}.md"))){
+			unlink(glue::glue("{doc}.knit.md"))
+		}
+	}, .progress = TRUE);
 
-# Manually replace `%&gt;&lt;%` with `%><%`
-# rstudioapi::navigateToFile("pkg/README.md");
 
 pkgdown::build_site(
 	pkg = "pkg"

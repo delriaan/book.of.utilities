@@ -1,12 +1,6 @@
----
-output:
-   html_document:
-      keep_md: yes
----
-
 # ![book](../img/book_small.png) Book of Utilities
 
-*`book.of.utilities`* seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing. 
+**book.of.utilities** seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing. 
 
 ## Installation
 
@@ -95,12 +89,3 @@ The following functional families are covered in `book.of.utilities`:
     </p>
   </ul>
 </p>
-
-## Changelog
-
-### Version *0.1.6.6*
-
-- Minor documentation updates
-- `radix()`: Added support for _hexadecimal_ input: prefix values with `0x` to use.
-- `%??%()`: Redesigned the function and updated documentation.
-- `vlogical()`: Fixed a bug that did not correctly accept values for `vpattern` as indicated.
