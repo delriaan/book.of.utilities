@@ -15,16 +15,16 @@ vlogical(
 \arguments{
 \item{vector}{A vector or dimensional object to be processed (e.g., matrix, data.frame, etc.)}
 
-\item{vpattern}{A named vector of patterns to be matched}
+\item{vpattern}{A \emph{named} vector of patterns to be matched}
 
-\item{test}{(function) The function to use for logical testing: the function should be appropriate for the values of \code{vpattern} accepting \code{vector} as the first argument, the pattern as the second, and '...' as the third (even if not used).}
+\item{test}{(function) The function to use for logical testing: the function should be appropriate for the values of \code{vpattern} accepting \code{vector} as the first argument, the pattern as the second, and \code{...} as the third (even if not used).}
 
 \item{simplify_with}{(function) A function to column-wise simplify the logical matrix when not empty}
 
 \item{...}{Additional arguments to be sent to the function held by argument \code{test}}
 }
 \value{
-A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} when \code{simplify_with} is not provided.  Otherwise, the result of applying \code{simplify_with} on each column.
+A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} when \code{simplify_with} is not provided. Otherwise, the result of applying \code{simplify_with} on each column.
 }
 \description{
 \code{vlike} is a vectorized version of \code{\link[data.table]{like}} allowing a pattern vector to be supplied

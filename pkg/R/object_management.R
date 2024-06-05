@@ -1,3 +1,4 @@
+# Active: ----
 distinct.list <- function(i, logical.only = FALSE){
 #' Unique List Selection
 #'
@@ -13,9 +14,18 @@ distinct.list <- function(i, logical.only = FALSE){
 #'
 # @export
 
-	i = if (any(class(i) %in% c("data.table", "data.frame", "tibble"))){ as.list(i) } else { i }
+	i <- if (any(class(i) %in% c("data.table", "data.frame", "tibble"))){
+				as.list(i)
+			} else { i }
 
-	x <- slider::slide(.x = i, .step = 1, .f = purrr::as_mapper(~sodium::hash(serialize(object = .x, connection = NULL), size = 24))) |> duplicated() |> magrittr::not()
+	x <- slider::slide(
+				.x = i
+				, .step = 1
+				, .f = \(x) sodium::hash(serialize(object = x, connection = NULL), size = 24)
+				) |>
+				duplicated() |>
+				magrittr::not();
+
 	if (logical.only){ x } else { i[x] }
 }
 #
@@ -66,29 +76,6 @@ enlist <- function(x, ...){
 	as.list(x)
 }
 #
-scrub.data <- function(input, condFn = is.na, replacement, ...) {
-#' Scrub and Replace Values
-#'
-#' \code{scrub.data} replaces values that meet the condition given by the function passed to \code{condFn}
-#'
-#' @param input An object that contains values to scrub
-#' @param condFn A function name or function expression that serves as the test for values to scrub
-#' @param replacement The replacement value
-#' @param ... (Not used)
-#'
-#' @family Object Management
-#'
-#' @export
-
-  has.dimensions <-  any(class(input) %ilike% "matrix|data|array|tibb|tabl");
-  class(replacement) <- class(input);
-
-  .index <- which(condFn(input), arr.ind = has.dimensions);
-
-  input[.index] <- replacement[ifelse(length(replacement) == 1, 1, .index)];
-  input;
-}
-#
 get.object_sizes <- function(i = rlang::caller_env(), nm = as.character(substitute(i)), depth = 0L, max.depth = 2L, chatty = FALSE, ...){
 #' Recursive Object Size Retrieval
 #'
@@ -130,5 +117,29 @@ get.object_sizes <- function(i = rlang::caller_env(), nm = as.character(substitu
     .out$size_desc <- format(.out$size, units = units);
     .out;
   }
+}
+#
+# Deprecated: ----
+scrub.data <- function(input, condFn = is.na, replacement, ...) {
+#' Scrub and Replace Values
+#'
+#' \code{scrub.data} replaces values that meet the condition given by the function passed to \code{condFn}
+#'
+#' @param input An object that contains values to scrub
+#' @param condFn A function name or function expression that serves as the test for values to scrub
+#' @param replacement The replacement value
+#' @param ... (Not used)
+#'
+#' @family Object Management
+#'
+# @export
+
+  has.dimensions <-  any(class(input) %ilike% "matrix|data|array|tibb|tabl");
+  class(replacement) <- class(input);
+
+  .index <- which(condFn(input), arr.ind = has.dimensions);
+
+  input[.index] <- replacement[ifelse(length(replacement) == 1, 1, .index)];
+  input;
 }
 #

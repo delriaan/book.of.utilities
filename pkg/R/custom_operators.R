@@ -12,8 +12,8 @@
 #'
 #' @export
 
-	.mod_diff = (x %% b);
-	.mod_diff_ratio = round(.mod_diff/x, 4);
+	.mod_diff = x %% b;
+	.mod_diff_ratio = round(.mod_diff/x, 10);
   .out_data = x - (x %% b);
 	attr(.out_data, "mod_diff_ratio") <- .mod_diff_ratio;
 	.out_data;
@@ -140,9 +140,8 @@ test_between <- function(a, z, temporal = FALSE, as.text = FALSE){
 #'
 #' @export
 
-	data.table::as.data.table(
-		purrr::imap_dfr(cond + 1, \(x, y) c(result = rlang::new_box(result[[x]]), cond_id = y))
-		)
+	purrr::imap_dfr(cond + 1, \(x, y) c(result = rlang::new_box(result[[x]]))) |>
+		data.table::as.data.table()
 }
 
 #

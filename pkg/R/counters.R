@@ -5,7 +5,7 @@ count.cycles <- function(cond, offset = 1, reset){
 	#'
 	#' @param cond (logical[]) A logical vector
 	#' @param offset (integer|1) An integer defining the series origin
-	#' @param reset (logical[]) A logical vector of the same length as \code{cond} such that when \code{TRUE}, the cycle counter resets to the offset
+	#' @param reset (logical[]) A logical vector of the same length as \code{cond} such that when \code{TRUE}, the cycle counter resets to the offset. Un-evaluated expressions are also accepted and should refer to \code{cond} in the definition.
 	#'
 	#' @return A one-based (default), conditionally-incremented series
 	#'
@@ -18,26 +18,27 @@ count.cycles <- function(cond, offset = 1, reset){
 	#'
 	#' @export
 
-	# :: cycle_idx MUST be initialized before session() (see below) is called iteratively
-	offset = as.integer(offset)[1];
-	cycle_idx = offset;
+	reset <- rlang::enexpr(reset);
 
-	# :: "counter()" is a function delegate and is the ESSENTIAL part of the routine
-	# Note how it is contained WITHIN this specific code block and is designed for conditional increment
-	# See http://adv-r.had.co.nz/Functional-programming.html, section "Mutable State"
+	offset <- as.integer(offset)[1];
 
-	count_idx = iterators::iter(1:length(cond));
+	cycle_idx <- offset;
+
+	count_idx <- iterators::iter(1:length(cond));
+
+	f_env <- environment();
 
 	# :: Define the counter function
-	counter = function(tf) {
+	counter = \(tf) {
 		idx = iterators::nextElem(count_idx);
-	  if (tf) {
-	  # cycle_idx only resets to the offset value when the limiter function returns 'TRUE'; otherwise, it increments
+
+		if (tf) {
+	  	# cycle_idx only resets to the offset value when the limiter function returns 'TRUE'; otherwise, it increments
 			cycle_idx <<- cycle_idx + 1
 	  }
 
 	  # cycle_idx only resets to the offset value when the limiter function returns 'TRUE'; otherwise, it increments
-		cycle_idx <<- ifelse((idx %in% which(reset))|(idx == 1), offset, cycle_idx)
+		cycle_idx <<- ifelse((idx %in% which(eval(reset, envir = f_env))) | (idx == 1), offset, cycle_idx)
 
 		# return the current value of 'cycle_idx'
 		cycle_idx
@@ -46,7 +47,6 @@ count.cycles <- function(cond, offset = 1, reset){
   # :: Call the counter function
   sapply(cond, counter);
 }
-
 
 factor.int <- function(i, ...){
 	#' Factorization of Integers
@@ -67,6 +67,7 @@ factor.int <- function(i, ...){
 	if (missing(i) & ...length() != 0){ i <- 0 }
 
 	i <- c(i, rlang::list2(...)) |> unlist() |> purrr::keep(is.numeric) |> round() |> as.integer();
+
 	i <- purrr::set_names(i);
 
 	.out <- purrr::map(i, \(x) which(x %% sequence(x) == 0))

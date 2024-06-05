@@ -4,7 +4,7 @@
 \alias{gen.pass}
 \title{Generate a Password}
 \usage{
-gen.pass(glyphs = "@$", length = NULL, raw = FALSE, chatty = FALSE)
+gen.pass(glyphs = "!@#$\%^&*()_+;", length = NULL, raw = FALSE, chatty = FALSE)
 }
 \arguments{
 \item{glyphs}{Character-coercibles to use in the creation of the password: this is combined with the output of \code{\link[sodium]{keygen}}}

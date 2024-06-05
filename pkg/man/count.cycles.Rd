@@ -11,7 +11,7 @@ count.cycles(cond, offset = 1, reset)
 
 \item{offset}{(integer|1) An integer defining the series origin}
 
-\item{reset}{(logical[]) A logical vector of the same length as \code{cond} such that when \code{TRUE}, the cycle counter resets to the offset}
+\item{reset}{(logical[]) A logical vector of the same length as \code{cond} such that when \code{TRUE}, the cycle counter resets to the offset. Un-evaluated expressions are also accepted and should refer to \code{cond} in the definition.}
 }
 \value{
 A one-based (default), conditionally-incremented series

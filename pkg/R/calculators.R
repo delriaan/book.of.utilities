@@ -28,11 +28,15 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 #'
 #' @export
 
-	check_z <- rlang::inject(purrr::as_mapper(~if (!!as.zscore & (.y == "zm")){
-		  	if (!!use.population){
-		  		.x/sqrt(mean(.x^2, na.rm = TRUE))
-		  	} else { .x/sd(.x, na.rm = TRUE) }
-		  } else { .x }));
+	check_z <- \(x, y){
+			if (as.zscore & (y == "zm")){
+		  	if (use.population){
+		  		x/sqrt(mean(x^2, na.rm = TRUE))
+		  	} else {
+		  		x/sd(x, na.rm = TRUE)
+		  	}
+		  } else { x }
+		};
 
   func.list <- list(
 	    am = function(i, ...){
@@ -46,9 +50,9 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 							(i - mean(i, na.rm = TRUE, ...));
 						}
 			, gm = function(i){
-							i <- purrr::discard(as.vector(i), ~.x == 0);
+							i <- purrr::discard(as.vector(i), \(x) x == 0);
 
-							purrr::modify_if(i, ~any(sign(.x) == -1), as.complex) |>
+							purrr::modify_if(i, \(x) any(sign(x) == -1), as.complex) |>
 								prod(na.rm = TRUE) %>%
 								magrittr::raise_to_power(1/length(i))
 						}
@@ -64,7 +68,7 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 								i <- as.vector(i)
 
 								mean(i^2, na.rm = TRUE, ...) |>
-									purrr::modify_if(~any(sign(.x) == -1), ~as.complex(.x, ...)) |>
+									purrr::modify_if(\(x) any(sign(x) == -1), \(x) as.complex(x, ...)) |>
 									sqrt()
 								}
   		);
@@ -78,9 +82,9 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 					purrr::map(data, ~f(.x) |> check_z(nm))
 				})
 		} else if (any(is.data.frame(data) || data.table::is.data.table(data) || is.matrix(data) || is.array(data))){
-			purrr::imap(func.list[mean.type], ~apply(X = data, MARGIN = 2, FUN = .x) |> check_z(.y))
+			purrr::imap(func.list[mean.type], \(x, y) apply(X = data, MARGIN = 2, FUN = x) |> check_z(y))
 		} else {
-			purrr::imap(func.list[mean.type], ~.x(data) |> check_z(.y))
+			purrr::imap(func.list[mean.type], \(x, y) x(data) |> check_z(y))
 		}
 
 	post.op(if (rlang::has_length(output, 1)){ output[[1]] } else { output });
@@ -400,7 +404,7 @@ range_diff <- function(...){
 
 	i = rlang::list2(...);
 
-	if (any(purrr::map_lgl(i, ~length(.x) > 1))){ purrr::map(i, action) } else { action(i = i) }
+	if (any(purrr::map_lgl(i, \(x) length(x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
 #
 odds2probs <- function(...){

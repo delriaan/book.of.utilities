@@ -1,3 +1,4 @@
+# Active: ----
 log_note <- function(..., file = "", show = FALSE, append = TRUE){
 	#' Create an Entry into a Development Log
 	#'
@@ -37,12 +38,12 @@ vlogical <- function(vector, vpattern, test = stringi::stri_detect_regex, simpli
 	#' \code{vlike} is a vectorized version of \code{\link[data.table]{like}} allowing a pattern vector to be supplied
 	#'
 	#' @param vector A vector or dimensional object to be processed (e.g., matrix, data.frame, etc.)
-	#' @param vpattern A named vector of patterns to be matched
-	#' @param test (function) The function to use for logical testing: the function should be appropriate for the values of \code{vpattern} accepting \code{vector} as the first argument, the pattern as the second, and '...' as the third (even if not used).
+	#' @param vpattern A \emph{named} vector of patterns to be matched
+	#' @param test (function) The function to use for logical testing: the function should be appropriate for the values of \code{vpattern} accepting \code{vector} as the first argument, the pattern as the second, and \code{...} as the third (even if not used).
 	#' @param simplify_with (function) A function to column-wise simplify the logical matrix when not empty
 	#' @param ... Additional arguments to be sent to the function held by argument \code{test}
 	#'
-	#' @return A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} when \code{simplify_with} is not provided.  Otherwise, the result of applying \code{simplify_with} on each column.
+	#' @return A logical matrix, with rows of the same length as \code{vector} and columns the length of \code{vpattern} when \code{simplify_with} is not provided. Otherwise, the result of applying \code{simplify_with} on each column.
 	#'
 	#' @family Miscellaneous Functions
 	#'
@@ -85,57 +86,10 @@ vlogical <- function(vector, vpattern, test = stringi::stri_detect_regex, simpli
 
 	.out <- outer(vector, vpattern, test)
 
-	if (!rlang::is_empty(simplify_with)){ apply(.out, 2, simplify_with) |> rlang::set_names(names(vpattern)) } else { .out }
-}
-
-as.regex <- function(...){
-	#' Tag a Regular-Expression String
-	#'
-	#' \code{as.regex()} adds class "regex" to a strings passed to \code{...}
-	#'
-	#' @param ... (\code{\link[rlang]{dots_list}}): The string to set "as regex"
-	#'
-	#' @return The string appended with attribute "regex" set to \code{TRUE}
-	#' @family Miscellaneous Functions
-	#' @export
-
-	purrr::map(rlang::exprs(...), ~data.table::setattr(eval(.x), name = "regex", value = TRUE));
-}
-
-is.regex <- function(i){
-	#' Test for Class 'regex'
-	#'
-	#' @param i (string[]) A string or string vector
-	#'
-	#' @return Returns \code{TRUE} when the value of \code{i} contains class "regex"
-	#' @family Miscellaneous Functions
-	#' @export
-
-	purrr::map(i, ~ifelse(is.null(attr(.x, "regex")), FALSE, attr(.x, "regex"))) |> unlist();
-}
-
-unregex <- function(i, x){
-	#' Convert REGEX Pattern to Object Names
-	#'
-	#' @param i (string[]) A string or string vector.  Pattern matching is executed if the string is of class regex" (see \code{\link{as.regex}}, \code{\link{is.regex}})
-	#' @param x (object) The names to search OR an object with column names
-	#'
-	#' @return Matching values in \code{x} based on values of \code{i}
-	#'
-	#' @family Miscellaneous Functions
-	#'
-	#' @export
-	x = if (any(class(x) %in% c("data.table", "data.frame", "tibble"))){ names(x) } else { x }
-
-	reg.needle = i[is.regex(i)] |> unlist();
-
-	no_reg.needle = i[!is.regex(i)] |> unlist();
-
-	reg.match = if (!rlang::is_empty(reg.needle)){ x[grepl(paste(reg.needle, collapse = "|"), x)] }
-
-	no_reg.match = if (!rlang::is_empty(no_reg.needle)){ intersect(x, no_reg.needle) }
-
-	c(if (!any(rlang::is_empty(reg.match))) reg.match, if (!any(rlang::is_empty(no_reg.match))) no_reg.match);
+	if (!rlang::is_empty(simplify_with)){
+		apply(.out, 2, simplify_with) |>
+			rlang::set_names(names(vpattern))
+	} else { .out }
 }
 
 polyname2orig <- function(poly.names, orig.names, degree, ...){
@@ -252,11 +206,15 @@ checksum <- function(object, hash, ...){
 	msg_list <- list(object = "Enter the path of the file to check: ", hash = "Enter the hash to compare");
 
 	if (missing(object)){
-		object <- if (interactive()){ tcltk::tk_choose.files(msg_list$object) } else { readline(msg_list$object) }
+		object <- if (interactive()){
+			tcltk::tk_choose.files(msg_list$object)
+		} else { readline(msg_list$object) }
 	}
 
 	if (missing(hash)){
-		hash <- if (interactive()){ tcltk::tk_choose.files(msg_list$hash) } else { readline(msg_list$hash) }
+		hash <- if (interactive()){
+			tcltk::tk_choose.files(msg_list$hash)
+		} else { readline(msg_list$hash) }
 	}
 
 	arg_list <- rlang::list2(...)
@@ -271,3 +229,52 @@ checksum <- function(object, hash, ...){
 
 	identical(check_result, hash)
 }
+
+# Deprecated: ----
+as.regex <- function(...){
+	#' Tag a Regular-Expression String
+	#'
+	#' \code{as.regex()} adds class "regex" to a strings passed to \code{...}
+	#'
+	#' @param ... (\code{\link[rlang]{dots_list}}): The string to set "as regex"
+	#'
+	#' @return The string appended with attribute "regex" set to \code{TRUE}
+	#' @family Miscellaneous Functions
+
+	purrr::map(rlang::exprs(...), \(x) magrittr::set_attr(eval(x), "regex", TRUE));
+}
+
+is.regex <- function(i){
+	#' Test for Class 'regex'
+	#'
+	#' @param i (string[]) A string or string vector
+	#'
+	#' @return Returns \code{TRUE} when the value of \code{i} contains class "regex"
+	#' @family Miscellaneous Functions
+
+	purrr::map(i, ~ifelse(is.null(attr(.x, "regex")), FALSE, attr(.x, "regex"))) |> unlist();
+}
+
+unregex <- function(i, x){
+	#' Convert REGEX Pattern to Object Names
+	#'
+	#' @param i (string[]) A string or string vector.  Pattern matching is executed if the string is of class regex" (see \code{\link{as.regex}}, \code{\link{is.regex}})
+	#' @param x (object) The names to search OR an object with column names
+	#'
+	#' @return Matching values in \code{x} based on values of \code{i}
+	#'
+	#' @family Miscellaneous Functions
+	#'
+	x = if (any(class(x) %in% c("data.table", "data.frame", "tibble"))){ names(x) } else { x }
+
+	reg.needle = i[is.regex(i)] |> unlist();
+
+	no_reg.needle = i[!is.regex(i)] |> unlist();
+
+	reg.match = if (!rlang::is_empty(reg.needle)){ x[grepl(paste(reg.needle, collapse = "|"), x)] }
+
+	no_reg.match = if (!rlang::is_empty(no_reg.needle)){ intersect(x, no_reg.needle) }
+
+	c(if (!any(rlang::is_empty(reg.match))) reg.match, if (!any(rlang::is_empty(no_reg.match))) no_reg.match);
+}
+
