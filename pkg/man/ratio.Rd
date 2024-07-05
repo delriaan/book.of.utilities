@@ -9,7 +9,7 @@ ratio(i, type = "of.sum", decimals = 2, as_density = FALSE)
 \arguments{
 \item{i}{(vector) numeric vector}
 
-\item{type}{(string[]) The types of ratio algorithms to use (see Details): a vector of supported values is supported}
+\item{type}{(string[]) One or more types of ratio methods to use (see Details): a vector of supported values is supported}
 
 \item{decimals}{(integer | 2) The number of decimal places to which the output should be rounded}
 

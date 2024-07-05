@@ -1,3 +1,22 @@
+# book.of.utilities 0.1.6.7011
+
+## Enhancements
+
+- `ratio()`: 
+   - Improved method for returning the input as density.
+   - Corrected handling of argument `decimals`
+
+
+# book.of.utilities 0.1.6.7001
+
+## Enhancements
+
+- `call.recursion()`: 
+   - Added `...` to the signature to allow for passing arguments to `fun()`
+   - Changed the order of the signature so that `...` immediately follows the last required argument.
+
+- `calc.zero_mean()`: The function accepts a numeric value for argument `use.population` allowing the population standard deviation to be provided explicitly.
+
 # book.of.utilities 0.1.6.7
 
 ## General Updates

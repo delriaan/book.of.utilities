@@ -4,7 +4,16 @@
 \alias{call.recursion}
 \title{Execute a Function as Recursively}
 \usage{
-call.recursion(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simplify = TRUE)
+call.recursion(
+  x,
+  fun,
+  test,
+  ...,
+  nxt = I,
+  max.iter = 1,
+  cur.iter = 0,
+  simplify = TRUE
+)
 }
 \arguments{
 \item{x}{The input object}
@@ -12,6 +21,8 @@ call.recursion(x, fun, test, nxt, max.iter = 1, cur.iter = 0, simplify = TRUE)
 \item{fun}{A function that operates on \code{x} and produces output}
 
 \item{test}{A single-argument function returning a single Boolean: \code{FALSE} stops iteration}
+
+\item{...}{Additional arguments passed to \code{fun}}
 
 \item{nxt}{A function that operates on the current output of \code{fun(x)} to send to the \emph{next} iterative call to \code{fun()}}
 

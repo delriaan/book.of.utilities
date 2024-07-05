@@ -13,7 +13,7 @@ calc.zero_mean(a, post.op = eval, as.zscore = FALSE, use.population = FALSE)
 
 \item{as.zscore}{(logical | \code{FALSE}) Should the output be transformed to Z-scores?}
 
-\item{use.population}{(logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation.}
+\item{use.population}{(logical,numeric| \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation. Providing a numeric value assumes \code{use.population=TRUE} and the value provided is used as the standard deviation.}
 }
 \description{
 \code{calc.zero_mean} subtracts the mean from the input

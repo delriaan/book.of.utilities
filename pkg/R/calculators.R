@@ -100,18 +100,29 @@ calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population 
 #' @param a (vector) A vector of numeric values
 #' @param post.op See \code{\link{calc.means}}
 #' @param as.zscore (logical | \code{FALSE}) Should the output be transformed to Z-scores?
-#' @param use.population (logical | \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation.
+#' @param use.population (logical,numeric| \code{FALSE}) Should the population standard deviation be used (ignored when \code{as.zscore==FALSE}): defaults to a sampling distribution standard deviation. Providing a numeric value assumes \code{use.population=TRUE} and the value provided is used as the standard deviation.
 #'
 #' @family Calculators
 #'
 #' @export
 
+	assertive::assert_any_are_true(c(is.numeric(use.population), is.logical(use.population)))
+
   .out <- calc.means(a, mean.type = "zm", post.op = post.op) |> unlist();
 
   if (as.zscore){
-		.sigma <- ifelse(use.population, sd(a, na.rm = TRUE), sd(.out, na.rm = TRUE)/sqrt(length(.out)));
-  	.out/.sigma
-  } else { .out }
+  	if (is.numeric(use.population)){ # Numeric branch
+  		.sigma <- abs(use.population)
+  	} else if (use.population){ # Logical branch
+  		.sigma <- sd(a, na.rm = TRUE)
+  	} else { # Default branch
+  		.sigma <- sd(.out, na.rm = TRUE)/sqrt(length(.out))
+  	}
+
+  	return(.out/.sigma)
+  } else {
+  	return(.out)
+  }
 }
 #
 calc.rms <- function(a, post.op = eval) {
@@ -170,7 +181,7 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 #' }.\cr Using the related operator \code{\%ratio\%} assumes simple division by the total of \code{i}.
 #'
 #' @param i (vector) numeric vector
-#' @param type (string[]) The types of ratio algorithms to use (see Details): a vector of supported values is supported
+#' @param type (string[]) One or more types of ratio methods to use (see Details): a vector of supported values is supported
 #' @param decimals (integer | 2) The number of decimal places to which the output should be rounded
 #' @param as_density (logical) \code{TRUE} returns \code{x * p(1 - p)}, where \code{p} is a vector of cumulative proportions of \code{x}
 #'
@@ -182,6 +193,11 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 #'
 #' @export
 
+	# Process argument 'type':
+	type <- rlang::enexpr(type)
+	if (is.call(type)){ type <- rlang::call_args(type) }
+	type <- as.character(type)
+
 	# Handle legacy code ...
 	if (type == "pareto"){ type <- "cumulative" }
 
@@ -192,29 +208,36 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 	if (any(i < 0)){ i <- i + abs(min(i)) }
 
 	# Functions selected by 'type'
-	cumulative <- \(.i) cumsum(.i)/sum(.i, na.rm = TRUE);
 	of.max <- \(.i) .i/max(.i, na.rm = TRUE);
 	of.sum <- \(.i) .i/sum(.i, na.rm = TRUE);
+	cumulative <- \(.i) cumsum(.i)/sum(.i, na.rm = TRUE);
+	likelihood <- \(.i){
+		res <- sapply(.i, \(k) mean(.i <= k, na.rm = TRUE)) %>% magrittr::multiply_by(1 - .)
+		# Prevent the result from being zero:
+		return(res + 0.001 * min(res, na.rm = TRUE))
+	}
 
 	.out <- if (rlang::has_length(type, 1)){
-			do.call(type, args = list(.i = i)) |> round(decimals)
+			do.call(type, args = list(.i = i))
 		} else {
-			purrr::set_names(type) %>% purrr::map(\(k) do.call(k, args = list(.i = i)) |> round(decimals))
+			purrr::set_names(type) %>% purrr::map(\(k) do.call(k, args = list(.i = i)))
 		}
 
- if (as_density){
- 	if (type == "cumulative"){
-	 	.out <- .out * (1 - .out)
- 	} else {
- 		.prop <- cumulative(.out)
- 		.out <- .out * .prop * (1 - .prop)
- 	}
+ if (grepl("cum", type)){
+ 	.prop <- cumulative(.out)
+	.dens <- 1
+
+	 if (as_density){
+		.out <- .out * likelihood(.prop)
+	 } else {
+		 .out <- .out * .prop
+	 }
  }
 
  if (rlang::is_empty(names.i)){
- 	.out[ord.i]
+ 	return(.out[ord.i] |> round(decimals))
  } else {
- 	rlang::set_names(.out[ord.i], names.i[ord.i])
+ 	return(rlang::set_names(.out[ord.i], names.i[ord.i]) |> round(decimals))
  }
 }
 
