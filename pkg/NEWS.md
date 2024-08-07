@@ -1,3 +1,10 @@
+# book.of.utilities 0.1.6.7020
+
+## Enhancements
+
+- `ratio()`: 
+   - Added argument `sort.type` to allow for specifying how the input should be sorted just *before* it is transformed.
+
 # book.of.utilities 0.1.6.7011
 
 ## Enhancements

@@ -21,13 +21,16 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6.7020</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/delriaan/book.of.utilities/" class="external-link">
@@ -57,7 +60,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ratio</span><span class="op">(</span><span class="va">i</span>, type <span class="op">=</span> <span class="st">"of.sum"</span>, decimals <span class="op">=</span> <span class="fl">2</span>, as_density <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ratio</span><span class="op">(</span></span>
+<span>  <span class="va">i</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"of.sum"</span>,</span>
+<span>  decimals <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  as_density <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sort.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"value"</span>, <span class="st">"label"</span>, <span class="st">"num_label"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -67,7 +76,7 @@
 
 
 <dt>type</dt>
-<dd><p>(string[]) The types of ratio algorithms to use (see Details): a vector of supported values is supported</p></dd>
+<dd><p>(string[]) One or more types of ratio methods to use (see Details): a vector of supported values is supported</p></dd>
 
 
 <dt>decimals</dt>
@@ -76,6 +85,14 @@
 
 <dt>as_density</dt>
 <dd><p>(logical) <code>TRUE</code> returns <code>x * p(1 - p)</code>, where <code>p</code> is a vector of cumulative proportions of <code>x</code></p></dd>
+
+
+<dt>sort.type</dt>
+<dd><p>(string,function) One of the following:<br></p><ol><li><p><code>"value"</code> to sort by value (default)</p></li>
+<li><p><code>"label"</code> to sort by name: all elements must be named</p></li>
+<li><p><code>"num_label"</code> to sort by numeral names: all elements must be named</p></li>
+</ol><p><br>
+Sorting occurs <em>before</em> the input is further processed.</p></dd>
 
 </dl></div>
     <div id="value">

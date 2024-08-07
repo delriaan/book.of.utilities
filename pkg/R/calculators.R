@@ -170,7 +170,7 @@ calc.geo_mean <- function(a, post.op = eval) {
   calc.means(a, mean.type = "gm", post.op = post.op) |> unlist()
 }
 #
-ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
+ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE, sort.type = c("value", "label", "num_label")){
 #' Ratio Calculator
 #'
 #' \code{ratio} calculates one of the following ratio types:\cr
@@ -184,7 +184,13 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 #' @param type (string[]) One or more types of ratio methods to use (see Details): a vector of supported values is supported
 #' @param decimals (integer | 2) The number of decimal places to which the output should be rounded
 #' @param as_density (logical) \code{TRUE} returns \code{x * p(1 - p)}, where \code{p} is a vector of cumulative proportions of \code{x}
-#'
+#' @param sort.type (string,function) One of the following:\cr
+#' \enumerate{
+#'	\item{\code{"value"} to sort by value (default)}
+#'	\item{\code{"label"} to sort by name: all elements must be named}
+#'	\item{\code{"num_label"} to sort by numeral names: all elements must be named}
+#'	}\cr
+#'	Sorting occurs \emph{before} the input is further processed.
 #' @note Because this function produces values on a \emph{ratio} scale, all values are shifted such that all values are >= 0.
 #'
 #' @return A numeric vector
@@ -193,28 +199,59 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE){
 #'
 #' @export
 
-	# Process argument 'type':
+	# 'type':
 	type <- rlang::enexpr(type)
+
 	if (is.call(type)){ type <- rlang::call_args(type) }
 	type <- as.character(type)
 
-	# Handle legacy code ...
+	# legacy code ...
 	if (type == "pareto"){ type <- "cumulative" }
 
-	ord.i <- base::rank(i, ties.method = "last", na.last = TRUE);
-	names.i <- names(i);
-	i <- sort(i);
+	names.i <- names(i) %||% rep.int("", length(i))
 
-	if (any(i < 0)){ i <- i + abs(min(i)) }
+	# 'sort.type':
+	sort.type <- match.arg(sort.type)
+
+	if (!any(names.i == "")){
+		if (sort.type == "label"){
+			ord.i <- base::rank(names.i, ties.method = "last", na.last = TRUE);
+			i <- i[order(names.i)]
+		} else if (sort.type == "num_label"){
+			ord.i <- base::rank(as.numeric(names.i), ties.method = "last", na.last = TRUE);
+			i <- i[order(as.numeric(names.i))]
+		} else {
+			ord.i <- base::rank(i, ties.method = "last", na.last = TRUE);
+			i <- sort(i)
+		}
+	} else {
+		ord.i <- base::rank(i, ties.method = "last", na.last = TRUE);
+		i <- sort(i)
+	}
+
+	# Set the origin of the vector to a minimum of zero.
+	# Ratio levels of measurement require an absolute zero value.
+	if (any(i < 0)){
+		i <- i + abs(min(i))
+	}
 
 	# Functions selected by 'type'
 	of.max <- \(.i) .i/max(.i, na.rm = TRUE);
+
 	of.sum <- \(.i) .i/sum(.i, na.rm = TRUE);
+
 	cumulative <- \(.i) cumsum(.i)/sum(.i, na.rm = TRUE);
+
 	likelihood <- \(.i){
 		res <- sapply(.i, \(k) mean(.i <= k, na.rm = TRUE)) %>% magrittr::multiply_by(1 - .)
+
 		# Prevent the result from being zero:
-		return(res + 0.001 * min(res, na.rm = TRUE))
+		if (any(res == 0)){
+			res[res == 0] <- mad(res[res == 0]) * 0.0001
+		}
+
+		# Return the result:
+		return(res)
 	}
 
 	.out <- if (rlang::has_length(type, 1)){

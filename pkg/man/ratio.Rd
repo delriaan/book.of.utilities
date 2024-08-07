@@ -4,7 +4,13 @@
 \alias{ratio}
 \title{Ratio Calculator}
 \usage{
-ratio(i, type = "of.sum", decimals = 2, as_density = FALSE)
+ratio(
+  i,
+  type = "of.sum",
+  decimals = 2,
+  as_density = FALSE,
+  sort.type = c("value", "label", "num_label")
+)
 }
 \arguments{
 \item{i}{(vector) numeric vector}
@@ -14,6 +20,14 @@ ratio(i, type = "of.sum", decimals = 2, as_density = FALSE)
 \item{decimals}{(integer | 2) The number of decimal places to which the output should be rounded}
 
 \item{as_density}{(logical) \code{TRUE} returns \code{x * p(1 - p)}, where \code{p} is a vector of cumulative proportions of \code{x}}
+
+\item{sort.type}{(string,function) One of the following:\cr
+\enumerate{
+\item{\code{"value"} to sort by value (default)}
+\item{\code{"label"} to sort by name: all elements must be named}
+\item{\code{"num_label"} to sort by numeral names: all elements must be named}
+}\cr
+Sorting occurs \emph{before} the input is further processed.}
 }
 \value{
 A numeric vector
