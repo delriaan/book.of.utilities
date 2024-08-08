@@ -23,6 +23,7 @@ Other Custom Operators:
 \code{\link{\%??\%}()},
 \code{\link{\%?\%}()},
 \code{\link{\%bin\%}()},
+\code{\link{\%if_na_empty\%}()},
 \code{\link{test_between}()}
 }
 \concept{Custom Operators}

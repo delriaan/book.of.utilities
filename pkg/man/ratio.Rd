@@ -9,7 +9,7 @@ ratio(
   type = "of.sum",
   decimals = 2,
   as_density = FALSE,
-  sort.type = c("value", "label", "num_label")
+  sort.type = c("none", "value", "label", "num_label")
 )
 }
 \arguments{
@@ -23,7 +23,8 @@ ratio(
 
 \item{sort.type}{(string,function) One of the following:\cr
 \enumerate{
-\item{\code{"value"} to sort by value (default)}
+\item{\code{"none"} to return along the original order (default)}
+\item{\code{"value"} to sort by value}
 \item{\code{"label"} to sort by name: all elements must be named}
 \item{\code{"num_label"} to sort by numeral names: all elements must be named}
 }\cr

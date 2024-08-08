@@ -50,6 +50,7 @@ The following functional chapters are covered in \code{book.of.utilities}:\cr
 \item{\code{\link{?\%??\%}}}
 \item{\code{\link{?\%><\%}}}
 \item{\code{\link{?\%bin\%}}}
+\item{\code{\link{?\%if_na_empty\%}}}
 \item{\code{\link{?\%tf\%}}}
 \item{\code{\link{?test_between}}}
 }
