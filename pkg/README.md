@@ -27,15 +27,15 @@ The following functional families are covered in `book.of.utilities`:
       <ul>
         <li level="2">
           <b></b>
-          <span>: calc.geo_mean, calc.harmonic_mean, calc.means</span>
+          <span>: #' (x2, calc.geo_mean, calc.harmonic_mean</span>
         </li>
         <li level="2">
           <b></b>
-          <span>: calc.rms, calc.zero_mean, odds2probs</span>
+          <span>: calc.means, calc.rms, calc.zero_mean</span>
         </li>
         <li level="2">
           <b></b>
-          <span>: radix, range_diff, ranking.algorithm</span>
+          <span>: odds2probs, radix, range_diff</span>
         </li>
       </ul>
     </p>
@@ -57,7 +57,7 @@ The following functional families are covered in `book.of.utilities`:
         </li>
         <li level="2">
           <b></b>
-          <span>: `%bin%`, `%tf%`, test_between</span>
+          <span>: `%bin%`, `%if_na_empty%`, `%tf%`</span>
         </li>
       </ul>
     </p>

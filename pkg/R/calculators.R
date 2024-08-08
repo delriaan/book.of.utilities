@@ -170,7 +170,7 @@ calc.geo_mean <- function(a, post.op = eval) {
   calc.means(a, mean.type = "gm", post.op = post.op) |> unlist()
 }
 #
-ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE, sort.type = c("value", "label", "num_label")){
+ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE, sort.type = c("none", "value", "label", "num_label")){
 #' Ratio Calculator
 #'
 #' \code{ratio} calculates one of the following ratio types:\cr
@@ -186,7 +186,8 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE, sort.typ
 #' @param as_density (logical) \code{TRUE} returns \code{x * p(1 - p)}, where \code{p} is a vector of cumulative proportions of \code{x}
 #' @param sort.type (string,function) One of the following:\cr
 #' \enumerate{
-#'	\item{\code{"value"} to sort by value (default)}
+#'	\item{\code{"none"} to return along the original order (default)}
+#'	\item{\code{"value"} to sort by value}
 #'	\item{\code{"label"} to sort by name: all elements must be named}
 #'	\item{\code{"num_label"} to sort by numeral names: all elements must be named}
 #'	}\cr
@@ -197,6 +198,32 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE, sort.typ
 #'
 #' @family Calculators
 #'
+#' @examples
+#' # Argument "sort.type" = "none" (the default):
+#' 
+# ratio(print(x), type = pareto, as_density = FALSE) %>% {
+#' 	plot(x = x, y = ., col = "blue", main = "cumulative")
+#' }
+#' ratio(x, type = pareto, as_density = TRUE) %>% {
+#' 	plot(x = x, y = ., col = "red", main = "cumulative w/ density")
+#' }
+#' ratio(x, type = of.max, as_density = FALSE) %>% {
+#' 	plot(x = x, y = ., col = "green", main = "of.max")
+#' }
+#' ratio(x, type = of.max, as_density = TRUE) %>% {
+#' 	plot(x = x, y = ., col = "orange", main = "of.max w/density")
+#' }
+#'
+#' # Argument "sort.type" (type = "of.sum", the default"):
+#' (x2 <- sample(100, 5, TRUE) %>% rlang::set_names(. + 50))
+#' list(
+#' 	orig = x2
+#' 	, none = ratio(x2, decimals = 8, sort.type = "none")
+#' 	, value = ratio(x2, decimals = 8, sort.type = "value")
+#' 	, label = ratio(x2, decimals = 8, sort.type = "label")
+#' 	, num_label = ratio(x2, decimals = 8, sort.type = "num_label")
+#' 	)
+#' 
 #' @export
 
 	# 'type':
@@ -205,35 +232,43 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE, sort.typ
 	if (is.call(type)){ type <- rlang::call_args(type) }
 	type <- as.character(type)
 
-	# legacy code ...
+	# ... legacy code ...
 	if (type == "pareto"){ type <- "cumulative" }
-
-	names.i <- names(i) %||% rep.int("", length(i))
 
 	# 'sort.type':
 	sort.type <- match.arg(sort.type)
 
-	if (!any(names.i == "")){
-		if (sort.type == "label"){
-			ord.i <- base::rank(names.i, ties.method = "last", na.last = TRUE);
-			i <- i[order(names.i)]
-		} else if (sort.type == "num_label"){
-			ord.i <- base::rank(as.numeric(names.i), ties.method = "last", na.last = TRUE);
-			i <- i[order(as.numeric(names.i))]
-		} else {
-			ord.i <- base::rank(i, ties.method = "last", na.last = TRUE);
-			i <- sort(i)
-		}
-	} else {
-		ord.i <- base::rank(i, ties.method = "last", na.last = TRUE);
-		i <- sort(i)
+	.i <- i
+	
+	# Set the origin of the vector to a minimum of zero because ratio levels of measurement require an absolute zero point. 
+	if (any(.i < 0)){
+		.i <- .i + abs(min(.i))
 	}
 
-	# Set the origin of the vector to a minimum of zero.
-	# Ratio levels of measurement require an absolute zero value.
-	if (any(i < 0)){
-		i <- i + abs(min(i))
+	# Sort `.i` if type is "cumulative":
+	if (type == "cumulative"){
+		.i %<>% sort()
 	}
+
+	# Capture the names of the original vector `i`:
+	names.i <- names(i) %||% paste("x", seq_along(i), sep = "_")
+
+	sort.actions <- rlang::exprs(
+		none = seq_along(i)
+		, value = order(i)
+		, label = order(names.i)
+		, num_label = order(as.numeric(names.i))
+		)
+
+	if (!any(names.i == "")){
+		if (sort.type == "num_label"){ 
+			if (!all(is.numeric(as.numeric(names.i)))){
+				sort.type <- "label"
+			}
+		}
+	}
+	
+	ord.i <- eval(sort.actions[[sort.type]])
 
 	# Functions selected by 'type'
 	of.max <- \(.i) .i/max(.i, na.rm = TRUE);
@@ -255,9 +290,9 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE, sort.typ
 	}
 
 	.out <- if (rlang::has_length(type, 1)){
-			do.call(type, args = list(.i = i))
+			do.call(type, args = list(.i = .i))
 		} else {
-			purrr::set_names(type) %>% purrr::map(\(k) do.call(k, args = list(.i = i)))
+			purrr::set_names(type) |> purrr::map(\(k) do.call(k, args = list(.i = .i)))
 		}
 
  if (grepl("cum", type)){
@@ -271,11 +306,8 @@ ratio <- function(i, type = "of.sum", decimals = 2, as_density = FALSE, sort.typ
 	 }
  }
 
- if (rlang::is_empty(names.i)){
- 	return(.out[ord.i] |> round(decimals))
- } else {
- 	return(rlang::set_names(.out[ord.i], names.i[ord.i]) |> round(decimals))
- }
+	# Return the result with the ordering specified by "sort.type":
+ return(rlang::set_names(.out[ord.i], names.i[ord.i]))
 }
 
 #

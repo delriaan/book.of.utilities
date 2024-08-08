@@ -1,3 +1,9 @@
+# book.of.utilities 0.2.1
+
+## Bug Fixes
+- `ratio()`:
+   - Corrected the logic for handling argument 'sort.type' to correctly sort the output.
+   
 # book.of.utilities 0.1.6.7020
 
 ## Enhancements
