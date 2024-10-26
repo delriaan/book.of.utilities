@@ -1,3 +1,14 @@
+# book.of.utilities 0.2.1110
+- `ratio()`:
+  - Names will only return if the input had names.
+  - Helper functions pulled out of the function and are now unexported library functions.
+  - Added an 'NA' check when *'type == "cumulative"'* since `cumsum()` does not have an *'na.rm'* argument.
+  
+# book.of.utilities 0.2.1100
+- `ratio()`:
+  - Removed argument `decimals` 
+  - Added argument `...`: This will allows existing code referring to `decimals` to continue to function without error, but rounding will not take place. This was implemented in version `0.2.1`; however, as an oversight, the argument `decimals` was not removed from the signature.
+
 # book.of.utilities 0.2.1
 
 ## Bug Fixes
@@ -18,7 +29,6 @@
 - `ratio()`: 
    - Improved method for returning the input as density.
    - Corrected handling of argument `decimals`
-
 
 # book.of.utilities 0.1.6.7001
 

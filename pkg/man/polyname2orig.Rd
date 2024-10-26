@@ -23,13 +23,10 @@ The polynomial names vector with positions replaced with original name elements
 }
 \seealso{
 Other Miscellaneous Functions: 
-\code{\link{as.regex}()},
 \code{\link{call.recursion}()},
 \code{\link{checksum}()},
 \code{\link{gen.primes}()},
-\code{\link{is.regex}()},
 \code{\link{log_note}()},
-\code{\link{unregex}()},
 \code{\link{vlogical}()}
 }
 \concept{Miscellaneous Functions}

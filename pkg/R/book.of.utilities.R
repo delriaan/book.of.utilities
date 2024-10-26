@@ -46,31 +46,26 @@
 #' \item{\code{\link{?test_between}}}
 #' }
 #'
-#' @section Chapter 5 - Object Management: 
+#' @section Chapter 5 - Miscellaneous: 
+#' \itemize{
+#' \item{\code{\link{?call.recursion}}}
+#' \item{\code{\link{?checksum}}}
+#' \item{\code{\link{?gen.primes}}}
+#' \item{\code{\link{?log_note}}}
+#' \item{\code{\link{?polyname2orig}}}
+#' \item{\code{\link{?vlogical}}}
+#' }
+#'
+#' @section Chapter 6 - Object Management: 
 #' \itemize{
 #' \item{\code{\link{?distinct.list}}}
 #' \item{\code{\link{?enlist}}}
 #' \item{\code{\link{?get.object_sizes}}}
-#' \item{\code{\link{?scrub.data}}}
-#' }
-#'
-#' @section Chapter 6 - Miscellaneous: 
-#' \itemize{
-#' \item{\code{\link{?as.regex}}}
-#' \item{\code{\link{?call.recursion}}}
-#' \item{\code{\link{?checksum}}}
-#' \item{\code{\link{?gen.primes}}}
-#' \item{\code{\link{?is.regex}}}
-#' \item{\code{\link{?log_note}}}
-#' \item{\code{\link{?polyname2orig}}}
-#' \item{\code{\link{?unregex}}}
-#' \item{\code{\link{?vlogical}}}
 #' }
 #'
 #'
 #' @importFrom magrittr %>% %T>% or %<>%
 #' @importFrom purrr map map_lgl map_chr reduce modify modify_if modify_at
-#' @importFrom rlang is_empty %||%
 #' @importFrom data.table %ilike% %like% like := .N .SD
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods new

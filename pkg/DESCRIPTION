@@ -1,14 +1,14 @@
 Package: book.of.utilities
 Title: Book of Utilities: utilities for working with data
 Description: `book.of.utilities` seeks to facilitate execution of those repetitive, ad-hoc tasks often encountered during data processing.
-Version: 0.2.1
+Version: 0.2.1110
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Author: Chionesu George <sapienti.Dei@outlook.com> [aut, cre]
 Maintainer: Chionesu George <sapienti.Dei@outlook.com>
-Depends: R (>= 4.4.0), purrr(>= 1.0.0)
+Depends: R (>= 4.4.1), purrr(>= 1.0.0)
 Imports: rlang
 	, purrr (>= 1.0.0)
 	, glue

@@ -27,15 +27,15 @@ The following functional families are covered in `book.of.utilities`:
       <ul>
         <li level="2">
           <b></b>
-          <span>: #' (x2, calc.geo_mean, calc.harmonic_mean</span>
+          <span>: calc.geo_mean, calc.harmonic_mean, calc.means</span>
         </li>
         <li level="2">
           <b></b>
-          <span>: calc.means, calc.rms, calc.zero_mean</span>
+          <span>: calc.rms, calc.zero_mean, odds2probs</span>
         </li>
         <li level="2">
           <b></b>
-          <span>: odds2probs, radix, range_diff</span>
+          <span>: radix, range_diff, ranking.algorithm</span>
         </li>
       </ul>
     </p>
@@ -66,15 +66,11 @@ The following functional families are covered in `book.of.utilities`:
       <ul>
         <li level="2">
           <b></b>
-          <span>: as.regex, call.recursion, checksum</span>
+          <span>: call.recursion, checksum, gen.primes</span>
         </li>
         <li level="2">
           <b></b>
-          <span>: gen.primes, is.regex, log_note</span>
-        </li>
-        <li level="2">
-          <b></b>
-          <span>: polyname2orig, unregex, vlogical</span>
+          <span>: log_note, polyname2orig, vlogical</span>
         </li>
       </ul>
     </p>

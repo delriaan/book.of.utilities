@@ -20,8 +20,7 @@ Return the distinct set of first-level list elements based on their respective b
 \seealso{
 Other Object Management: 
 \code{\link{enlist}()},
-\code{\link{get.object_sizes}()},
-\code{\link{scrub.data}()}
+\code{\link{get.object_sizes}()}
 }
 \concept{List management}
 \concept{Object Management}

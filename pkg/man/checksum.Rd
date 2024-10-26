@@ -19,13 +19,10 @@ A logical scalar
 }
 \seealso{
 Other Miscellaneous Functions: 
-\code{\link{as.regex}()},
 \code{\link{call.recursion}()},
 \code{\link{gen.primes}()},
-\code{\link{is.regex}()},
 \code{\link{log_note}()},
 \code{\link{polyname2orig}()},
-\code{\link{unregex}()},
 \code{\link{vlogical}()}
 }
 \concept{Miscellaneous Functions}

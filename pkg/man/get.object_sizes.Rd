@@ -35,7 +35,6 @@ A vector of object sizes
 \seealso{
 Other Object Management: 
 \code{\link{distinct.list}()},
-\code{\link{enlist}()},
-\code{\link{scrub.data}()}
+\code{\link{enlist}()}
 }
 \concept{Object Management}

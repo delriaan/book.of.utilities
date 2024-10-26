@@ -37,13 +37,10 @@ call.recursion(
 }
 \seealso{
 Other Miscellaneous Functions: 
-\code{\link{as.regex}()},
 \code{\link{checksum}()},
 \code{\link{gen.primes}()},
-\code{\link{is.regex}()},
 \code{\link{log_note}()},
 \code{\link{polyname2orig}()},
-\code{\link{unregex}()},
 \code{\link{vlogical}()}
 }
 \concept{Miscellaneous Functions}

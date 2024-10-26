@@ -59,13 +59,10 @@ vlogical(
 }
 \seealso{
 Other Miscellaneous Functions: 
-\code{\link{as.regex}()},
 \code{\link{call.recursion}()},
 \code{\link{checksum}()},
 \code{\link{gen.primes}()},
-\code{\link{is.regex}()},
 \code{\link{log_note}()},
-\code{\link{polyname2orig}()},
-\code{\link{unregex}()}
+\code{\link{polyname2orig}()}
 }
 \concept{Miscellaneous Functions}

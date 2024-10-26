@@ -24,13 +24,10 @@ Even though the original use-case is the real-time capturing of developer notes,
 }
 \seealso{
 Other Miscellaneous Functions: 
-\code{\link{as.regex}()},
 \code{\link{call.recursion}()},
 \code{\link{checksum}()},
 \code{\link{gen.primes}()},
-\code{\link{is.regex}()},
 \code{\link{polyname2orig}()},
-\code{\link{unregex}()},
 \code{\link{vlogical}()}
 }
 \concept{Miscellaneous Functions}
