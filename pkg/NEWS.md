@@ -1,8 +1,13 @@
+# book.of.utilities 0.2.1210
+- `ratio()`:
+  - `NA` check when *'type == "cumulative"' will now error if `NA` is detected in the input.
+  - Fixed a bug where argument 'sort.type' ordering was not being applied to names of the output.
+  
 # book.of.utilities 0.2.1110
 - `ratio()`:
   - Names will only return if the input had names.
   - Helper functions pulled out of the function and are now unexported library functions.
-  - Added an 'NA' check when *'type == "cumulative"'* since `cumsum()` does not have an *'na.rm'* argument.
+  - Added an `NA` check when *'type == "cumulative"'* since `cumsum()` does not have an *'na.rm'* argument.
   
 # book.of.utilities 0.2.1100
 - `ratio()`:

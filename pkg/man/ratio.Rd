@@ -45,23 +45,35 @@ A numeric vector
 Because this function produces values on a \emph{ratio} scale, all values are internally shifted such that all values are >= 0.
 }
 \examples{
-# Argument "sort.type" = "none" (the default):
-y <- ratio(print(x), type = pareto, as_density = FALSE)
-plot(x = x, y = y, col = "blue", main = "cumulative")
-y <- ratio(x, type = pareto, as_density = TRUE) 
-plot(x = x, y = y, col = "red", main = "cumulative w/ density")
-y <- ratio(x, type = of.max, as_density = FALSE) 
-plot(x = x, y = y, col = "green", main = "of.max")
-y <- ratio(x, type = of.max, as_density = TRUE)
-plot(x = x, y = y, col = "orange", main = "of.max w/density")
-# Argument "sort.type" (type = "of.sum", the default"):
-(\(x2) list(
-	orig = x2
-	, none = ratio(x2, decimals = 8, sort.type = "none")
-	, value = ratio(x2, decimals = 8, sort.type = "value")
-	, label = ratio(x2, decimals = 8, sort.type = "label")
-	, num_label = ratio(x2, decimals = 8, sort.type = "num_label")
-	))(sample(100, 5, TRUE) |> (\(m) rlang::set_names(m, m + 50))())
+ (x <- sample(-100:100, 30))
+
+ (d <- cbind(
+ 	x
+ 	, of.sum = ratio(x, of.sum)
+ 	, of.sum.dens = ratio(x, of.sum, as = TRUE)
+ 	, of.max = ratio(x, of.max)
+ 	, of.max.dens = ratio(x, of.max, as = TRUE)
+ 	, cumulative = ratio(x, cumulative)
+ 	, cumulative.dens = ratio(x, cumulative, as = TRUE)
+ 	))
+
+ plot(of.sum ~ x, data = d, main = "of.sum", col = "red")
+ plot(of.max ~ x, data = d, main = "of.max", col = "green")
+ plot(cumulative ~ x, data = d, main = "cumulative", col = "blue")
+ plot(of.sum.dens ~ x, data = d, main = "of.sum w/ density", col = "red")
+ points(of.max.dens ~ x, data = d, main = "of.max w/ density", col = "green")
+ points(cumulative.dens ~ x, data = d, main = "cumulative w/ density", col = "blue")
+
+ # sort.type:
+ (x2 <- sample(100, 5, TRUE) \%>\% rlang::set_names(. + 50))
+
+ list(
+ 	`orig := table(...)` = x2
+ 	, `ratio(<args>, sort.type = none)` = ratio(x2, sort.type = "none")
+ 	, `ratio(<args>, sort.type = value)` = ratio(x2, sort.type = "value")
+ 	, `ratio(<args>, sort.type = label)` = ratio(x2, sort.type = "label")
+ 	, `ratio(<args>, sort.type = num_label)` = ratio(x2, sort.type = "num_label")
+ 	)
 
 }
 \seealso{
