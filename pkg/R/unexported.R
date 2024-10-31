@@ -5,11 +5,7 @@ of.max <- \(.i) .i/max(.i, na.rm = TRUE);
 
 of.sum <- \(.i) .i/sum(.i, na.rm = TRUE);
 
-cumulative <- \(.i){
-  x <- sort(.i)
-  res <- cumsum(x)/sum(x)
-  res[match(.i, x)]
-}
+cumulative <- \(.i){ cumsum(.i)/sum(.i) }
 
 dens <- \(.i, .type = "of.sum"){
   .p <- .i
