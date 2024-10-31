@@ -253,7 +253,7 @@ ratio <- function(i, type = "of.sum", as_density = FALSE, sort.type = c("none", 
 	.i <- i
 	
 	# Set the origin of the vector to a minimum of zero because ratio levels of measurement require an absolute zero point. 
-	if (any(.i < 0)){ .i <- .i + abs(min(.i)) }
+	if (any(.i < 0)){ .i <- .i + abs(min(.i, na.rm = TRUE)) }
 
 	# Define actions based on `sort.type`:
 	sort.actions <- rlang::exprs(
