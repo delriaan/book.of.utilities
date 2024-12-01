@@ -1,1 +1,0 @@
-"0","readLines(""pkg/toc.html"") |> paste(collapse = ""\n"") |> htmltools::tagList()"
