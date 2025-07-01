@@ -4,11 +4,7 @@
 \alias{kr_key}
 \title{Store an encrypted \code{keyring} key}
 \usage{
-kr_key(
-  service = class_missing,
-  username = class_missing,
-  keyring = class_missing
-)
+kr_key(service = character(0), username = character(0), keyring = character(0))
 }
 \description{
 The \code{kr_key} class
@@ -18,12 +14,14 @@ The \code{kr_key} class
 \describe{
 \item{\code{service,usernane,keyring}}{See \code{\link[keyring]{key_get}}}
 
-\item{\code{key}}{A function to retrieve the \code{keyring} key}
+\item{\code{key,password}}{An anonymous function to retrieve and return the value of the current \code{keyring} key.}
+
+\item{\code{update}}{An anonymous function to set a new value for the \code{keyring} key referenced by the object.}
 }}
 
 \seealso{
 Other Authentication Functions: 
-\code{\link{gen.pass}()},
+\code{\link{gen_pass}()},
 \code{\link{keyring_export}()},
 \code{\link{keyring_import}()}
 }

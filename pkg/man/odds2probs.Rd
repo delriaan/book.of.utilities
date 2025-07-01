@@ -4,10 +4,12 @@
 \alias{odds2probs}
 \title{Calculate percentages from odds ratios}
 \usage{
-odds2probs(...)
+odds2probs(..., log = FALSE)
 }
 \arguments{
 \item{...}{(\code{\link[rlang]{dots_list}}): Numeric vectors or "odds" strings (e.g., "x:y"). For vectors or string representations, the number of operands can be of any length but must represent positive real values.}
+
+\item{log}{(logical) Are the inputs log-odds? If \code{TRUE}, arguments of length-1 are processed as-is; otherwise, arguments are natural-logged.}
 }
 \value{
 A numeric list length as the input(s) representing the percentage of the odds ratio(s): values that cannot be converted will return \code{NULL}.
@@ -16,7 +18,7 @@ A numeric list length as the input(s) representing the percentage of the odds ra
 \code{odds2probs} converts odds ratios to percentages.
 }
 \note{
-Length-1 arguments are assumed to be odds ratios and are converted to percentages via sigmoid function.
+Length-1 arguments are assumed to be raw odds (or log-odds)
 }
 \examples{
 odds2probs(c(3, 4), c(3L, 4L), "3:4", c("3", "4"), c(4,5,6), "6:3:1", c(3,-1), "1:1", 1, 2/5, "2:3", 2)

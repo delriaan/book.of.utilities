@@ -482,14 +482,15 @@ range_diff <- function(...){
 	if (any(purrr::map_lgl(i, \(x) length(x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
 #
-odds2probs <- function(...){
+odds2probs <- function(..., log = FALSE){
 	#' Calculate percentages from odds ratios
 	#'
 	#' \code{odds2probs} converts odds ratios to percentages.
 	#'
 	#' @param ... (\code{\link[rlang]{dots_list}}): Numeric vectors or "odds" strings (e.g., "x:y"). For vectors or string representations, the number of operands can be of any length but must represent positive real values.
-	#'
-	#' @note Length-1 arguments are assumed to be odds ratios and are converted to percentages via sigmoid function.
+	#' @param log (logical) Are the inputs log-odds? If \code{TRUE}, arguments of length-1 are processed as-is; otherwise, arguments are natural-logged. 
+  #'
+	#' @note Length-1 arguments are assumed to be raw odds (or log-odds)
 	#'
 	#' @return A numeric list length as the input(s) representing the percentage of the odds ratio(s): values that cannot be converted will return \code{NULL}.
 	#'
@@ -499,36 +500,30 @@ odds2probs <- function(...){
 	#' odds2probs(c(3, 4), c(3L, 4L), "3:4", c("3", "4"), c(4,5,6), "6:3:1", c(3,-1), "1:1", 1, 2/5, "2:3", 2)
 	#'
 	#' @export
-  fun <- (\(i, j){
-    res <- if (i$type == "character" && i$len == 1) {
-      if (grepl(":", arg_list[[j]])) {
-        strsplit(arg_list[[j]], ":") |> unlist() |> as.numeric()
-      } else {
-        as.numeric(arg_list[[j]])
-      }
-    } else if (i$type == "character" && i$len > 1) {
-      arg_list[[j]] |> unlist() |> as.numeric()
-    } else if (i$type %in% c("integer", "numeric", "double")) {
-      if (i$len > 1){
-        arg_list[[j]]
-      } else {
-        as.numeric(arg_list[[j]])
-      }
-    } else {
-      numeric()
-    }
-    # browser()
+  fun <- \(i, j){
+    res <- if (i$type == "character") {
+          if (grepl(":", arg_list[[j]])) {
+            strsplit(arg_list[[j]], ":") |> unlist() |> as.numeric()
+          } else {
+            as.numeric(arg_list[[j]])
+          }
+        } else if (i$type %in% c("integer", "numeric", "double")) {
+          as.numeric(arg_list[[j]])
+      } else { numeric() }
+
     if (rlang::is_empty(res) || (any(res <= 0) & !all(res <= 0))){
       NULL
-    } else if (length(unique(res)) == 1 || all(res <= 0)){
+    } else if (length(unique(res)) == 1){
       res <- unique(res)
-      # warning("Assuming input as odds ratio ...")
+      if (!log){ res <- log(res) }
       exp(res)/(1 + exp(res))
-    } else{
+    } else if (all(res <= 0)){
+      exp(res)/(1 + exp(res))
+    } else {
       res/sum(res)
     }
-  });
-  arg_list <- rlang::list2(...);
-  arg_types <- purrr::map(arg_list, \(i) data.frame(type = typeof(i), len = length(i)));
-  arg_types |> purrr::imap(purrr::possibly(fun, otherwise = NULL));
+  }
+  arg_list <- rlang::list2(...)
+  arg_types <- purrr::map(arg_list, \(i) data.frame(type = typeof(i), len = length(i)))
+  purrr::imap(arg_types, purrr::possibly(fun, otherwise = NULL))
 }

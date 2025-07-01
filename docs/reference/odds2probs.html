@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1110</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">odds2probs</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">odds2probs</span><span class="op">(</span><span class="va">...</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,6 +63,10 @@
 <dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>(<code><a href="https://rlang.r-lib.org/reference/list2.html" class="external-link">dots_list</a></code>): Numeric vectors or "odds" strings (e.g., "x:y"). For vectors or string representations, the number of operands can be of any length but must represent positive real values.</p></dd>
 
+
+<dt id="arg-log">log<a class="anchor" aria-label="anchor" href="#arg-log"></a></dt>
+<dd><p>(logical) Are the inputs log-odds? If <code>TRUE</code>, arguments of length-1 are processed as-is; otherwise, arguments are natural-logged.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -70,7 +74,7 @@
     </div>
     <div id="note">
     <h2>Note</h2>
-    <p>Length-1 arguments are assumed to be odds ratios and are converted to percentages via sigmoid function.</p>
+    <p>Length-1 arguments are assumed to be raw odds (or log-odds)</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -99,7 +103,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4285714 0.5714286</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4285714 0.5714286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2666667 0.3333333 0.4000000</span>
@@ -111,19 +115,19 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7310586</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7310586</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5986877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2857143</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4 0.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8807971</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6666667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -140,7 +144,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer></div>

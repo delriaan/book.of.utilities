@@ -33,7 +33,7 @@ A list of logical vectors indicating success or failure of import for each keyri
 }
 \seealso{
 Other Authentication Functions: 
-\code{\link{gen.pass}()},
+\code{\link{gen_pass}()},
 \code{\link{keyring_export}()},
 \code{\link{kr_key}()}
 }

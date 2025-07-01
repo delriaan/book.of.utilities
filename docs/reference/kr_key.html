@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">book.of.utilities</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1110</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1220</span>
       </span>
     </div>
 
@@ -53,11 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">kr_key</span><span class="op">(</span></span>
-<span>  service <span class="op">=</span> <span class="va">class_missing</span>,</span>
-<span>  username <span class="op">=</span> <span class="va">class_missing</span>,</span>
-<span>  keyring <span class="op">=</span> <span class="va">class_missing</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">kr_key</span><span class="op">(</span>service <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, username <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, keyring <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="slots">
@@ -68,15 +64,19 @@
 <dd><p>See <code><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_get</a></code></p></dd>
 
 
-<dt><code>key</code></dt>
-<dd><p>A function to retrieve the <code>keyring</code> key</p></dd>
+<dt><code>key,password</code></dt>
+<dd><p>An anonymous function to retrieve and return the value of the current <code>keyring</code> key.</p></dd>
+
+
+<dt><code>update</code></dt>
+<dd><p>An anonymous function to set a new value for the <code>keyring</code> key referenced by the object.</p></dd>
 
 
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other Authentication Functions:
-<code><a href="gen.pass.html">gen.pass</a>()</code>,
+<code><a href="gen_pass.html">gen_pass</a>()</code>,
 <code><a href="keyring_export.html">keyring_export</a>()</code>,
 <code><a href="keyring_import.html">keyring_import</a>()</code></p></div>
     </div>

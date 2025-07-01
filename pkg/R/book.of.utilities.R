@@ -8,7 +8,7 @@
 #'
 #' @section Chapter 1 - Authentication: 
 #' \itemize{
-#' \item{\code{\link{?gen.pass}}}
+#' \item{\code{\link{?gen_pass}}}
 #' \item{\code{\link{?keyring_export}}}
 #' \item{\code{\link{?keyring_import}}}
 #' \item{\code{\link{?kr_key}}}
