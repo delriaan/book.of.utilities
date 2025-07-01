@@ -1,4 +1,9 @@
 # book.of.utilities Version 0.2
+## 0.2.13
+### Bug Fixes
+- `odds2probs()`: 
+   - Fixed a runtime error that treated all input as log-odds by adding argument `log`, allowing the user to indicate such.
+
 ## 0.2.1220
 ### Bug Fixes
 - `kr_key()`:
