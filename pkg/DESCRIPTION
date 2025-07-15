@@ -5,7 +5,6 @@ Author: Chionesu George <imperialprofessional@duck.com>
 Description: `book.of.utilities` seeks to facilitate execution of those
     repetitive, ad-hoc tasks often encountered during data processing.
 License: file LICENSE
-URL: https://github.com/delriaan/book.of.utilities
 Depends: 
     purrr (>= 1.0),
     R (>= 4.5.0)
