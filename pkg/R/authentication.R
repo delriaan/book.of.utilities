@@ -245,22 +245,26 @@ keyring_import <- function(kr_data, kr_name = names(kr_data), kr_pass = NULL, dr
 	})
 }
 
-kr_key <- {
-  #' Store an encrypted \code{keyring} key
-  #'
-  #' The \code{kr_key} class
-  #'
-  #' @slot service,usernane,keyring See \code{\link[keyring]{key_get}}
-  #' @slot key,password An anonymous function to retrieve and return the value of the current \code{keyring} key.
-  #' @slot update An anonymous function to set a new value for the \code{keyring} key referenced by the object.
-  #'
-  # @rdname kr_key
-  # @name kr_key
-  #'
-  #' @family Authentication Functions
-  #'
-  #' @export
-	# Set the structure for the class properties in a separte, unexported list
+#' Store an encrypted \code{keyring} key
+#'
+#' The \code{kr_key} class
+#'
+#' @slot service See \code{\link[keyring]{key_get}}
+#' @slot username See \code{\link[keyring]{key_get}}
+#' @slot keyring See \code{\link[keyring]{key_get}}
+#' @slot key,password An anonymous function to retrieve and return the value of the current \code{keyring} key.
+#' @slot update An anonymous function to set a new value for the \code{keyring} key referenced by the object.
+#'
+#' @rdname kr_key
+#' @name kr_key
+#'
+#' @family Authentication Functions
+#'
+#' @export
+# Set the structure for the class properties in a separte, unexported list
+NULL
+
+kr_key <- local({
 	s7_properties <- list(
 		service = S7::new_property(class = S7::class_character, name = "service", default = NULL)
 		, username = S7::new_property(class = S7::class_character, name = "username", default = NULL)
@@ -295,4 +299,4 @@ kr_key <- {
 		)
 
 	S7::new_class(name = "kr_key", properties = s7_properties, package = "book.of.utilities")
-}
+})

@@ -3,16 +3,17 @@
 \name{kr_key}
 \alias{kr_key}
 \title{Store an encrypted \code{keyring} key}
-\usage{
-kr_key(service = character(0), username = character(0), keyring = character(0))
-}
 \description{
 The \code{kr_key} class
 }
 \section{Slots}{
 
 \describe{
-\item{\code{service,usernane,keyring}}{See \code{\link[keyring]{key_get}}}
+\item{\code{service}}{See \code{\link[keyring]{key_get}}}
+
+\item{\code{username}}{See \code{\link[keyring]{key_get}}}
+
+\item{\code{keyring}}{See \code{\link[keyring]{key_get}}}
 
 \item{\code{key,password}}{An anonymous function to retrieve and return the value of the current \code{keyring} key.}
 
