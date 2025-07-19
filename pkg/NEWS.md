@@ -1,3 +1,7 @@
+---
+title: NEWS
+---
+
 # book.of.utilities Version 0.2
 ## 0.2.13
 ### Bug Fixes

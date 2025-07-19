@@ -1,10 +1,12 @@
 Package: book.of.utilities
 Title: Book of Utilities: utilities for working with data
 Version: 0.2.13
-Author: Chionesu George <imperialprofessional@duck.com>
+Author: Chionesu George 
+Maintainer: Chionesu George <imperialprofessional@duck.com>
 Description: `book.of.utilities` seeks to facilitate execution of those
     repetitive, ad-hoc tasks often encountered during data processing.
 License: file LICENSE
+URL: https://github.com/delriaan/book.of.utilities
 Depends: 
     purrr (>= 1.0),
     R (>= 4.5.0)
@@ -23,9 +25,6 @@ Imports:
     slider (>= 0.3),
     sodium (>= 1.4),
     stringi (>= 1.8)
-VignetteBuilder: 
-    knitr
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
