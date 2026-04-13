@@ -1,4 +1,3 @@
-# Active: ----
 log_note <- function(..., file = "", show = FALSE, append = TRUE){
 	#' Create an Entry into a Development Log
 	#'
@@ -14,7 +13,7 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 	#' @family Miscellaneous Functions
 	#' @export
 
-	tstamp = sprintf("[%s]\n", Sys.time());
+	tstamp = sprintf("[%s]\n", Sys.time())
 
 	if (...length() > 0){
 		out.txt = paste0(
@@ -24,9 +23,9 @@ log_note <- function(..., file = "", show = FALSE, append = TRUE){
 					unname(rlang::exprs(...))
 					, \(x) if (!is.character(x)){ capture.output(eval(x)) |> paste(collapse = "\n") } else { x }
 				) |> paste(collapse = "\n")
-		);
+		)
 
-		cat(paste0(out.txt, "\n"), file = file, append = append & !(file == ""));
+		cat(paste0(out.txt, "\n"), file = file, append = append & !(file == ""))
 	}
 
 	if (show & (!file == "")){ readtext::readtext(file)$text |> message() }
@@ -61,10 +60,10 @@ vlogical <- function(vector, vpattern, test = stringi::stri_detect_regex, simpli
 	#' 				c(a = sample(LETTERS, 1), b = sample(letters, 1))
 	#' 			}) |>
 	#' 		data.table::as.data.table() |>
-	#' 	t();
+	#' 	t()
 	#'
-	#' head(vl_data, 10);
-	#' dim(vl_data);
+	#' head(vl_data, 10)
+	#' dim(vl_data)
 	#'
 	#' vlogical(
 	#' 	vector = vl_data
@@ -109,16 +108,16 @@ polyname2orig <- function(poly.names, orig.names, degree, ...){
 	.paste.args = list(
 			sep = ifelse("sep" %in% ...names(), list(...)$sep,  "_")
 			, collapse = ifelse("collapse" %in% ...names(), list(...)$collapse, "_x_")
-			);
+			)
 
 	.new.names = stringi::stri_split_fixed(poly.names, ".", simplify = TRUE) |>
     rbind() |>
-		apply(MARGIN = 1, FUN = function(j){ paste(orig.names[j != "0"], j[j != "0"], sep = .paste.args$sep, collapse = .paste.args$collapse) });
+		apply(MARGIN = 1, FUN = function(j){ paste(orig.names[j != "0"], j[j != "0"], sep = .paste.args$sep, collapse = .paste.args$collapse) })
 
-  return(.new.names);
+  return(.new.names)
 }
 
-gen.primes <- function(n = 1, domain = 2:n, random = FALSE, distinct = TRUE, chatty = FALSE){
+gen_primes <- function(n = 1, domain, random = FALSE, distinct = TRUE, chatty = FALSE){
 	#' Prime Number Generator
 	#'
 	#' \code{get.primes} generates \code{n} prime numbers..
@@ -130,66 +129,119 @@ gen.primes <- function(n = 1, domain = 2:n, random = FALSE, distinct = TRUE, cha
 	#'
 	#' @return A vector of prime numbers
 	#' @family Miscellaneous Functions
+	#' @aliases gen.primes
 	#' @export
 
 	# Initialize
-	set.seed(Sys.time(), kind = sample(c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Knuth-TAOCP-2002", "L'Ecuyer-CMRG"), 1));
-	x = min(domain, na.rm = TRUE):max(domain, na.rm = TRUE);
-	z = 1:max(domain, na.rm = TRUE);
+	set.seed(Sys.time(), kind = sample(c("Wichmann-Hill", "Marsaglia-Multicarry", "Super-Duper", "Knuth-TAOCP-2002", "L'Ecuyer-CMRG"), 1))
+	if (length(domain) != 2 || !is.numeric(domain)){
+		cli::cli_abort("`domain` must be length-two numeric vector: Exiting ...")
+	}
+	
+	x = min(domain, na.rm = TRUE):max(domain, na.rm = TRUE)
+	z = 1:max(domain, na.rm = TRUE)
 
-	logi.vec = rowSums(outer(x, z, `%%`) == 0) == 2;
+	logi.vec = rowSums(outer(x, z, `%%`) == 0) == 2
 
-	output = x[logi.vec];
+	output = x[logi.vec]
 	output = if (random){ sample(output, n, replace = TRUE) } else { output[1:n] }
 	output = if (distinct){ unique(output) } else { output }
 	sort(output)
-	# gen.primes(n = 100, domain = c(450, 9571), random = FALSE, distinct = TRUE) %>% { data.table::data.table(x = ., d = c(0, diff(.))) } %T>% print %>% plot
+	# gen_primes(n = 100, domain = c(450, 9571), random = FALSE, distinct = TRUE) %>% { data.table::data.table(x = ., d = c(0, diff(.))) } %T>% print %>% plot
 }
 
-call.recursion <- function(x, fun, test, ..., nxt = I, max.iter = 1, cur.iter = 0, simplify = TRUE){
+call_recursion <- function(x, fun, test, ..., nxt = I, max_iter = 1, cur_iter = 0, simplify = TRUE){
 	#' Execute a Function as Recursively
 	#'
-	#' \code{call.recursion} Executes a recursive calls to \code{fun} based on the output of \code{test} up to \code{max.iter} times
+	#' \code{call_recursion} Executes a recursive calls to \code{fun} based on the output of \code{test} up to \code{max_iter} times
 	#'
 	#' @param x The input object
 	#' @param fun A function that operates on \code{x} and produces output
 	#' @param test A single-argument function returning a single Boolean: \code{FALSE} stops iteration
 	#' @param ... Additional arguments passed to \code{fun}
 	#' @param nxt A function that operates on the current output of \code{fun(x)} to send to the \emph{next} iterative call to \code{fun()}
-	#' @param max.iter (integer) The maximum number of iterations
-	#' @param cur.iter (integer) The current iteration index
+	#' @param max_iter (integer) The maximum number of iterations
+	#' @param cur_iter (integer) The current iteration index
 	#' @param simplify (logical) Should only the last value be returned (\code{TRUE}) or intermediate values as well (\code{FALSE})?
 	#'
+	#' @section History Access:
+	#' In the function body of \code{fun}, \code{test}, and \code{nxt}, objects \code{.curnt_iter} and \code{.iterations} can be used to access iteration counts and states, respectively. These cannot be written to in user code.
+	#' 
 	#' @importFrom magrittr %>% %<>%
 	#'
 	#' @family Miscellaneous Functions
+	#' @aliases call.recursion
 	#'
 	#' @export
 
-	force(fun);
-	force(test);
+	force(fun)
+	force(test)
 	force(nxt)
 
-	iterations <- list();
+	.old_fun <- fun
+	.old_test <- test
+	.old_nxt <- nxt
 
-	ans <- fun(x);
+	fun <- methods::new("function")
+	test <- methods::new("function")
+	nxt <- methods::new("function")
 
-	iterations[[1]] <- mget(c("ans", "test"));
+	formals(fun) <- rlang::exprs(
+		!!!formals(.old_fun)
+		, .iterations = parent.frame()$iterations
+		, .curnt_iter = parent.frame()$cur_iter
+		)
 
-	while(test(ans) & (cur.iter < max.iter)){
-		cur.iter <- cur.iter + 1;
+	formals(test) <- rlang::exprs(
+		!!!formals(.old_test)
+		, .iterations = parent.frame()$iterations
+		, .curnt_iter = parent.frame()$cur_iter
+		)
 
-		x <- nxt(ans);
+	formals(nxt) <- rlang::exprs(
+		!!!formals(.old_nxt)
+		, .iterations = parent.frame()$iterations
+		, .curnt_iter = parent.frame()$cur_iter
+		)
+	#
+	new_call_fun <- rlang::expr({
+		rlang::env_binding_lock(environment(), c(".curnt_iter"))
+		rlang::env_binding_lock(environment(), c(".iterations"))
+		!!!as.list(.old_fun)[-1]
+	})
+	functionBody(fun) <- new_call_fun	
+	
+	new_call_test <- rlang::expr({
+		rlang::env_binding_lock(environment(), c(".curnt_iter"))
+		rlang::env_binding_lock(environment(), c(".iterations"))
+		!!!as.list(.old_test)[-1]
+	})
+	functionBody(test) <- new_call_test	
+	
+	new_call_nxt <- rlang::expr({
+		rlang::env_binding_lock(environment(), c(".curnt_iter"))
+		rlang::env_binding_lock(environment(), c(".iterations"))
+		!!!as.list(.old_nxt)[-1]
+	})	
+	functionBody(nxt) <- new_call_nxt
 
-		ans <- fun(x, ...);
+	iterations <- list()
+	ans <- fun(x)
 
-		iterations[[cur.iter]] <- mget(c("cur.iter", "x", "ans")) |> purrr::modify_at(c("x", "ans"), list);
+	iterations[[1]] <- mget(c("ans", "test"))
+
+	while(test(ans) & (cur_iter < max_iter)){
+		cur_iter <- cur_iter + 1
+
+		x <- nxt(ans)
+
+		ans <- fun(x, ...)
+
+		iterations[[cur_iter]] <- mget(c("cur_iter", "x", "ans")) |> purrr::modify_at(c("x", "ans"), list)
 	}
 
-	if (!simplify){
-		purrr::map(iterations, \(x) x$ans)
-	} else {
-		iterations[[length(iterations)]][["ans"]]
+	if (!simplify){ purrr::map(iterations, \(x) x$ans)
+	} else { iterations[[length(iterations)]][["ans"]]
 	}
 }
 
@@ -204,7 +256,7 @@ checksum <- function(object, hash, ...){
 	#' @return A logical scalar
 	#' @family Miscellaneous Functions
 	#' @export
-	msg_list <- list(object = "Enter the path of the file to check: ", hash = "Enter the hash to compare");
+	msg_list <- list(object = "Enter the path of the file to check: ", hash = "Enter the hash to compare")
 
 	if (missing(object)){
 		object <- if (interactive()){
@@ -230,3 +282,9 @@ checksum <- function(object, hash, ...){
 
 	identical(check_result, hash)
 }
+
+#' @export
+gen.primes <- function(...) gen_primes(...)
+
+#' @export
+call.recursion <- function(...) call_recursion(...)

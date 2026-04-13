@@ -24,9 +24,9 @@ Even though the original use-case is the real-time capturing of developer notes,
 }
 \seealso{
 Other Miscellaneous Functions: 
-\code{\link{call.recursion}()},
+\code{\link{call_recursion}()},
 \code{\link{checksum}()},
-\code{\link{gen.primes}()},
+\code{\link{gen_primes}()},
 \code{\link{polyname2orig}()},
 \code{\link{vlogical}()}
 }

@@ -19,8 +19,8 @@ A logical scalar
 }
 \seealso{
 Other Miscellaneous Functions: 
-\code{\link{call.recursion}()},
-\code{\link{gen.primes}()},
+\code{\link{call_recursion}()},
+\code{\link{gen_primes}()},
 \code{\link{log_note}()},
 \code{\link{polyname2orig}()},
 \code{\link{vlogical}()}

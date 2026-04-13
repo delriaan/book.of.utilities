@@ -89,7 +89,7 @@ calc.means <- function(data, mean.type = "am", post.op = eval, as.zscore = FALSE
 
 	post.op(if (rlang::has_length(output, 1)){ output[[1]] } else { output });
 }
-#
+
 calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population = FALSE){
 	#' Calculate the Zero-Mean
 	#'
@@ -124,7 +124,7 @@ calc.zero_mean <- function(a, post.op = eval, as.zscore = FALSE, use.population 
   	return(.out)
   }
 }
-#
+
 calc.rms <- function(a, post.op = eval) {
 	#' Calculate the Root-Mean-Square
 	#'
@@ -139,7 +139,7 @@ calc.rms <- function(a, post.op = eval) {
 
   calc.means(a, mean.type = "rms", post.op = post.op) |> unlist()
 }
-#
+
 calc.harmonic_mean <- function(a, post.op = eval) {
 	#' Calculate the Harmonic Mean
 	#'
@@ -154,7 +154,7 @@ calc.harmonic_mean <- function(a, post.op = eval) {
 
   calc.means(a, mean.type = "hm", post.op = post.op) |> unlist()
 }
-#
+
 calc.geo_mean <- function(a, post.op = eval) {
 	#' Calculate the Geometric Mean
 	#'
@@ -169,7 +169,7 @@ calc.geo_mean <- function(a, post.op = eval) {
 
   calc.means(a, mean.type = "gm", post.op = post.op) |> unlist()
 }
-#
+
 ratio <- function(i, type = "of.sum", as_density = FALSE, sort.type = c("none", "value", "label", "num_label"), ...){
 	#' Ratio Calculator
 	#'
@@ -293,7 +293,7 @@ ratio <- function(i, type = "of.sum", as_density = FALSE, sort.type = c("none", 
 	# Return
 	return(.out)
 }
-#
+
 ranking.algorithm <- function(
 	scores, rank.size, poss.scores, test = `>=`, rescale = 1
 	, map.only = FALSE, show.all = FALSE, use.futures = FALSE, dflt.fn = min
@@ -352,116 +352,7 @@ ranking.algorithm <- function(
 		else { output }
   }
 }
-#
-radix <- function(x, ...){
-	#' Radix Conversion
-	#'
-	#' \code{radix} converts the \emph{representation} of the input(s) using a radix basis.  This is not to be confused with a conversion between \emph{scales}.
-	#'
-	#' @param x (numeric[],symbol[]) One or more whole numbers: coercion for non-numeric and fractional input will result in loss of precision. For hexadecimal values, be sure to use the \bold{\code{"0x"}} prefix.
-	#' @param ... (string,symbol,integer) The target radix to which the values in \code{x} will be converted.\cr
-	#' \itemize{
-	#'   \item{Length: If two values are provided, the output is the conversion from the first radix to the second}
-	#'   \item{String/symbol: If given as a strings or symbols, the following are supported (partial matching supported):\cr
-	#'   \itemize{
-	#'    \item{\code{binary}}
-	#'    \item{\code{octal}}
-	#'    \item{\code{decimal}}
-	#'    \item{\code{duodecimal}}
-	#'    \item{\code{hexadecimal}}
-	#'    \item{\code{vigesimal}}
-	#'    \item{\code{sexagesimal}}
-	#'    }
-	#'   }
-	#' }
-	#'
-	#' @examples
-	#' # As binary
-	#' radix(12, bin)
-	#' radix(c(12, 20), bin)
-	#'
-	#' # To hexadecimal
-	#' radix(c(12, 20), hex)
-	#'
-	#' # As hex to decimal
-	#' radix(c(18, 32), hex, dec)
-	#'
-	#' # Hex to binary vs. as hex to binary (equivalent outcomes)
-	#' radix(c(18, 32), hex, bin)
-	#' radix(!!radix(c(12, 20), hex), hex, bin)
-	#'
-	#' # Arbitrary radix
-	#' radix(c(10, 26), 3)
-	#'
-	#' # Arbitrary radix to hex
-	#' radix(c(10, 26), 3, h)
-	#'
-	#' # Mixed input types to binary
-	#' radix(c(100, "0110"), b)
-	#' radix(c(100, "1001", 0x1D), b)
-	#'
-	#' @return The \emph{decimal} representation of the input(s) using the supplied radix.
-	#'
-	#' @family Calculators
-	#'
-	#' @export
-	r <- rlang::enexprs(...);
-	if (rlang::is_empty(r)){ stop("No radix bases provided.") }
 
-	if (missing(x)){
-		stop("No values for 'x' provided.")
-	} else {
-		x <- rlang::enexpr(x) |> as.list();
-
-		if (length(x) == 1){
-			x <- as.character(x)
-		} else {
-			# A call was passed (e.g., x = c(...)).
-			# Remove the first element as this is the call symbol (the rest are arguments):
-			x <- sapply(x[-1], as.character);
-		}
-
-		x <- as.numeric(x) |> round();
-	}
-
-	# :: `.named` is a look-up list mapping names to bases:
-	.named <- { rlang::set_names(
-			c(2, 8, 10, 12, 16, 20, 60)
-			, "binary",  "octal",  "decimal",  "duodecimal"
-			,  "hexadecimal",  "vigesimal",  "sexagesimal"
-			) |> as.list();
-	}
-
-	# :: Vector of values:
-	if (!rlang::has_length(r, 1)){
-		k <- purrr::map_int(r, \(i){
-			ifelse(
-				typeof(i) %in% c("character", "symbol", "call")
-				, .named[[which(grepl(paste0("^", as.character(i)), names(.named)))]]
-				, as.integer(i)
-				)
-		});
-
-		# Recursive call to the function:
-		.mod <- x %% k[[1]];
-
-		radix(x = !!(10 * (x - .mod)/k[[1]] + .mod), !!r[[2]]);
-	} else {
-	# :: Single value:
-		r <- ifelse(
-				typeof(r[[1]]) %in% c("character", "symbol", "call")
-				, .named[[which(grepl(paste0("^", as.character(r[[1]])), names(.named)))]]
-				, as.integer(r[[1]])
-				)
-
-		stringi::stri_extract_all_regex(x, "\\d") |>
-			purrr::map(\(i){
-				n <- seq(stringi::stri_length(i)) |> rev()
-				sum(as.integer(i) * r^(n-1))
-			}) |> unlist(use.names = FALSE)
-	}
-}
-#
 range_diff <- function(...){
 	#' Magnitude of a Range of Values
 	#'
@@ -481,7 +372,7 @@ range_diff <- function(...){
 
 	if (any(purrr::map_lgl(i, \(x) length(x) > 1))){ purrr::map(i, action) } else { action(i = i) }
 }
-#
+
 odds2probs <- function(..., log = FALSE){
 	#' Calculate percentages from odds ratios
 	#'

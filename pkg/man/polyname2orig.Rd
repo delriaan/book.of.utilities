@@ -23,9 +23,9 @@ The polynomial names vector with positions replaced with original name elements
 }
 \seealso{
 Other Miscellaneous Functions: 
-\code{\link{call.recursion}()},
+\code{\link{call_recursion}()},
 \code{\link{checksum}()},
-\code{\link{gen.primes}()},
+\code{\link{gen_primes}()},
 \code{\link{log_note}()},
 \code{\link{vlogical}()}
 }

@@ -1,4 +1,3 @@
-# Active: ----
 distinct.list <- function(i, logical.only = FALSE){
 	#' Unique List Selection
 	#'
@@ -28,7 +27,7 @@ distinct.list <- function(i, logical.only = FALSE){
 
 	if (logical.only){ x } else { i[x] }
 }
-#
+
 enlist <- function(x, ...){
 	#' Create a Named List
 	#'
@@ -75,7 +74,7 @@ enlist <- function(x, ...){
 	names(x) <- ifelse(is.na(.out), unlist(x), .out);
 	as.list(x)
 }
-#
+
 get.object_sizes <- function(i = rlang::caller_env(), nm = as.character(substitute(i)), depth = 0L, max.depth = 2L, chatty = FALSE, ...){
 	#' Recursive Object Size Retrieval
 	#'
@@ -118,4 +117,3 @@ get.object_sizes <- function(i = rlang::caller_env(), nm = as.character(substitu
     .out;
   }
 }
-#
