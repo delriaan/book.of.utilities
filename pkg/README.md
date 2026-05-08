@@ -1,6 +1,4 @@
 ---
-engines:
-- path: /home/delriaan/.positron-server/bin/ae29de6747f9f15cc38783410ec9a46a5b428393/quarto/share/extension-subtrees/julia-engine/\_extensions/julia-engine/julia-engine.js
 toc-title: Table of contents
 ---
 
